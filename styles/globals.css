@@ -15,6 +15,19 @@ a {
   box-sizing: border-box;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Tammudu+2&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@components {
+  .primary-button {
+    @apply bg-yellow-300 hover:bg-yellow-400 text-black font-bold py-2 px-4 rounded shadow-md;
+  };
+}
+
+/* .primary-button {
+  @apply bg-yellow-300 hover:bg-yellow-400 text-black font-bold py-2 px-4 rounded shadow-md;
+}
+@apply */
