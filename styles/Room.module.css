@@ -1,0 +1,43 @@
+.grid {
+  width: 50vw;
+  height: 50vh;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-template-rows: repeat(auto-fit, minmax(100px, 1fr));
+  border: solid 1px #000;
+}
+
+.room {
+  background-color: #ffd900;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tile {
+  width: 100px;
+  height: 100px;
+  border: solid 1px #fff;
+  color: white;
+  background-color: #000;
+  font-size: 50px;
+}
+
+.playerTiles {
+  display: inherit;
+}
+
+.letters {
+  display: inherit;
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.gamefield {
+  height: 60vh;
+  width: 60vw;
+  background-color: white;
+
+}
