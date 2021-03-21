@@ -4,7 +4,7 @@ import LoginNavbar from './LoginNavbar';
 import Register from './Register';
 
 const LoginPopup = ({ closeLogin }) => {
-  const [loginTab, setLoginTab] = useState(true);
+  const [loginTab, setLoginTab] = useState<boolean>(true);
 
   const handleLoginTab = () => {
     setLoginTab(true);
@@ -22,7 +22,7 @@ const LoginPopup = ({ closeLogin }) => {
         handleLoginTab={handleLoginTab}
         handleRegisterTab={handleRegisterTab}
       />
-      { loginTab ? <Login /> : <Register />}
+      { loginTab ? <Login closeLogin={closeLogin} /> : <Register closeLogin={closeLogin} />}
     </div>
   );
 };

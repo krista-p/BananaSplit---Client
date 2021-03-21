@@ -2,11 +2,13 @@ import { useState } from 'react';
 import ButtonContainer from './ButtonContainer';
 import LoginPopup from './popups/loginpopup/LoginPopup';
 import PlayPopup from './popups/playpopup/PlayPopup';
+import LoggedInMessage from './popups/loggedinmessage/LoggedInMessage';
 import Rules from './Rules';
 
 const LandingPage = () => {
-  const [loginOpen, setLoginOpen] = useState(false);
-  const [playOpen, setPlayOpen] = useState(false);
+  const [loginOpen, setLoginOpen] = useState<boolean>(false);
+  const [playOpen, setPlayOpen] = useState<boolean>(false);
+  const [loggedInMessage, setLoggedInMessage] = useState<boolean>(false);
 
   const toggleLoginPopup = () => {
     setLoginOpen(!loginOpen);
@@ -14,6 +16,10 @@ const LandingPage = () => {
 
   const togglePlayPopup = () => {
     setPlayOpen(!playOpen);
+  };
+
+  const toggleLoggedInMessage = () => {
+    setLoggedInMessage(!loggedInMessage);
   };
 
   return (
@@ -28,9 +34,14 @@ const LandingPage = () => {
       </div>
 
       <div className="bottom-16 right-8 fixed h-1/3 w-1/4 border-black border-4 rounded-lg shadow-lg">
-        <ButtonContainer toggleLogin={toggleLoginPopup} togglePlay={togglePlayPopup} />
+        <ButtonContainer
+          openLogin={toggleLoginPopup}
+          openPlay={togglePlayPopup}
+          openLoggedInMessage={toggleLoggedInMessage}
+        />
       </div>
 
+      {loggedInMessage && <LoggedInMessage closeLoggedInMessage={toggleLoggedInMessage} />}
       {loginOpen && <LoginPopup closeLogin={toggleLoginPopup} />}
       {playOpen && <PlayPopup closePlay={togglePlayPopup} />}
 

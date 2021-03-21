@@ -4,7 +4,7 @@ import PlayNavbar from './PlayNavbar';
 import CreateRoom from './CreateRoom';
 
 const PlayPopup = ({ closePlay }) => {
-  const [joinGameTab, setJoinGameTab] = useState(true);
+  const [joinGameTab, setJoinGameTab] = useState<boolean>(true);
 
   const handleJoinGameTab = () => {
     setJoinGameTab(true);
