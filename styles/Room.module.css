@@ -7,6 +7,22 @@
   border: solid 1px #000;
 }
 
+.gameBoard {
+  width: 70vw;
+  height: 70vh;
+  background-color: white;
+}
+
+.gameRow {
+  height: 100px;
+  display: flex;
+  flex-direction: row;
+}
+
+.gameSquare {
+  width: 100px;
+}
+
 .room {
   background-color: #ffd900;
   height: 100vh;

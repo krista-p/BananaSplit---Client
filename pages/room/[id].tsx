@@ -8,11 +8,12 @@ import styles from '../../styles/Room.module.css';
 const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
 
 export default function GameRoom() {
-  const grid = 4;
   return (
     <div className={styles.room}>
-      <Board />
-      <PlayerTiles />
+      <DragDropContext>
+        <Board />
+        <PlayerTiles />
+      </DragDropContext>
     </div>
   );
 }

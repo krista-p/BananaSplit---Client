@@ -1,21 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import styles from '../../styles/Room.module.css';
 
 const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
 
 export default function PlayerTiles() {
+  const [playerTiles, setPlayerTiles] = useState([]);
   return (
     <div className={styles.playerTiles}>
-      <DragDropContext>
+      {/* <DragDropContext> */}
         <Droppable droppableId="letters" direction="horizontal">
           {(provided) => (
-            <ul className={styles.letters} {...provided.droppableProps} ref={provided.innerRef}>
+            <ul
+              className={styles.letters}
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
               {letters.map((letter, index) => (
                 <div className={styles.gameTile}>
-                  <Draggable key={letter} draggableId={letter} index={index}>
+                  <Draggable
+                    key={letter}
+                    draggableId={letter}
+                    index={index}
+                  >
                     {(provided) => (
-                      <li ref={provided.innerRef}
+                      <li
+                        ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                       >
@@ -28,7 +38,7 @@ export default function PlayerTiles() {
             </ul>
           )}
         </Droppable>
-      </DragDropContext>
+      {/* </DragDropContext> */}
     </div>
   );
 }
