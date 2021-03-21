@@ -5,9 +5,9 @@ const ButtonContainer = ({ openLogin, openPlay, openLoggedInMessage }) => {
   const { currentUser } = useContext(AuthContext);
 
   return (
-    <div className="flex flex-col content-center">
-      <button type="button" onClick={currentUser ? openLoggedInMessage : openLogin} className="bg-black border-yellow-300 border-4 hover:bg-yellow-300 text-yellow-300 hover:text-black font-bold text-3xl py-2 px-4 m-4 rounded shadow-md">login/register</button>
-      <button type="button" onClick={openPlay} className="bg-black border-yellow-300 border-4 hover:bg-yellow-300 text-yellow-300 hover:text-black font-bold text-3xl py-2 px-4 m-4 rounded shadow-md">play</button>
+    <div className="flex flex-col fit-content">
+      <button type="button" onClick={currentUser ? openLoggedInMessage : openLogin} className="bg-secondary border-primary border-8 hover:bg-primary text-primary hover:text-secondary font-bold text-3xl rounded-full py-3 px-6 m-2 shadow-md">login/register</button>
+      <button type="button" onClick={openPlay} className="bg-secondary border-primary border-8 hover:bg-primary text-primary hover:text-secondary font-bold text-3xl rounded-full py-3 px-6 m-2 shadow-md">play</button>
     </div>
   );
 };

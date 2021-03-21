@@ -19,29 +19,29 @@ const Login = ({ closeLogin }) => {
     try {
       await auth.signInWithEmailAndPassword(email, password);
     } catch (err) {
-      console.log({ errorInSignUp: err });
+      console.log({ errorInSignIn: err });
     }
   };
 
   return (
-    <div className="flex flex-col w-full h-full">
-      <div className="m-4">
+    <div className="flex flex-col items-center">
+      <div className="m-4 font-bold text-5xl text-secondary">
         <h1>Login</h1>
       </div>
 
       <form onSubmit={handleLogin}>
-        <div className="m-4">
-          <h2>Email</h2>
-          <input type="text" placeholder="banana@peel.com..." onChange={handleEmailChange} className="border-black border-2" />
+        <div className="m-4 flex flex-col items-center">
+          <h2 className="m-2 font-bold text-2xl text-primary">Email</h2>
+          <input type="text" placeholder="banana@peel.com..." onChange={handleEmailChange} className="focus:outline-none focus:ring-4 focus:ring-primary bg-secondary text-primary rounded-full py-3 px-6" />
         </div>
 
-        <div className="m-4">
-          <h2>Password</h2>
-          <input type="password" placeholder="bananabread..." onChange={handlePasswordChange} className="border-black border-2" />
+        <div className="m-4 flex flex-col items-center">
+          <h2 className="m-2 font-bold text-2xl text-primary">Password</h2>
+          <input type="password" placeholder="bananabread..." onChange={handlePasswordChange} className="focus:outline-none focus:ring-4 focus:ring-primary bg-secondary text-primary rounded-full py-3 px-6" />
         </div>
 
-        <div className="m-4">
-          <button type="submit" className="bg-yellow-300 hover:bg-yellow-400 text-black font-bold py-2 px-4 rounded shadow-md">Go bananas!</button>
+        <div className="m-4 flex flex-col items-center">
+          <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md">Go bananas!</button>
         </div>
       </form>
 

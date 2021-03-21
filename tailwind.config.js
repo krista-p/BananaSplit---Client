@@ -9,6 +9,14 @@ module.exports = {
       fontFamily: {
         sans: ['Baloo Tammudu 2', ...defaultTheme.fontFamily.sans],
       },
+      colors: {
+        primary: '#FDD62F',
+        primary_hover: '#F5C72B',
+        secondary: '#261E1B',
+      },
+      backgroundImage: {
+        'hero-pattern': "url('/AWbanana.png')",
+      },
     },
   },
   variants: {

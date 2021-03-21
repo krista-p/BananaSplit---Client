@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Image from 'next/image';
 import ButtonContainer from './ButtonContainer';
 import LoginPopup from './popups/loginpopup/LoginPopup';
 import PlayPopup from './popups/playpopup/PlayPopup';
@@ -23,17 +24,18 @@ const LandingPage = () => {
   };
 
   return (
-    <div className="flex flex-grow w-full justify-between">
+    <div className="flex flex-grow w-full justify-between bg-hero-pattern bg-center bg-contain bg-no-repeat">
+      { loginOpen
+        || playOpen
+        || loggedInMessage
+        ? <div className="absolute w-full h-full bg-gray-900 opacity-50" />
+        : null }
 
-      <div className="mt-16 ml-8">
+      <div className="mt-8 ml-8">
         <Rules />
       </div>
 
-      <div className="w-1/3 h-full">
-        <img src="../../images/AWbanana.png" alt="banana" className="object-fit h-full w-1/3" />
-      </div>
-
-      <div className="bottom-16 right-8 fixed h-1/3 w-1/4 border-black border-4 rounded-lg shadow-lg">
+      <div className="self-end mb-8 mr-8 h-1/3 w-1/4 bg-secondary rounded-lg shadow-lg">
         <ButtonContainer
           openLogin={toggleLoginPopup}
           openPlay={togglePlayPopup}
