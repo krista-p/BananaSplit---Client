@@ -5,12 +5,11 @@ export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
-  const [pending, setPending] = useState(true);
+  const [pending, setPending] = useState<boolean>(true);
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
-      console.log(user);
       setPending(false);
     });
   }, []);

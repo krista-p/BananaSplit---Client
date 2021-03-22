@@ -12,6 +12,7 @@ module.exports = {
       colors: {
         primary: '#FDD62F',
         primary_hover: '#F5C72B',
+        primary_light: '#FCCE7C',
         secondary: '#261E1B',
       },
       backgroundImage: {

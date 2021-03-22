@@ -23,6 +23,7 @@ const Register = ({ closeLogin }) => {
   // NOTE: Can grab {email, password} = e.target.elements in handleSignUp;
   const handleSignUp = async (e) => {
     e.preventDefault();
+    const { user, email, password } = e.target.elements;
     closeLogin();
     try {
       await auth.createUserWithEmailAndPassword(newEmail, newPassword);
@@ -30,7 +31,7 @@ const Register = ({ closeLogin }) => {
       await user.updateProfile({
         displayName: userName,
       });
-      const uid = user.uid;
+      const { uid } = user;
       console.log(uid, 'user uid');
       createUser(newEmail, userName, uid);
     } catch (err) {
@@ -48,17 +49,17 @@ const Register = ({ closeLogin }) => {
       <form onSubmit={handleSignUp}>
         <div className="m-2 flex flex-col items-center">
           <h2 className="m-2 font-bold text-2xl text-primary">Email</h2>
-          <input type="text" placeholder="banana@peel.com..." onChange={handleNewEmailChange} className="focus:outline-none focus:ring-4 focus:ring-primary bg-secondary text-primary rounded-full py-3 px-6" />
+          <input type="text" name="email" placeholder="banana@peel.com..." onChange={handleNewEmailChange} className="focus:outline-none focus:ring-4 focus:ring-primary bg-secondary text-primary rounded-full py-3 px-6 placeholder-primary_light" />
         </div>
 
         <div className="m-4 flex flex-col items-center">
           <h2 className="m-2 font-bold text-2xl text-primary">Username</h2>
-          <input type="text" placeholder="bananaKing..." onChange={handleUserName} className="focus:outline-none focus:ring-4 focus:ring-primary bg-secondary text-primary rounded-full py-3 px-6" />
+          <input type="text" name="userName" placeholder="bananaKing..." onChange={handleUserName} className="focus:outline-none focus:ring-4 focus:ring-primary bg-secondary text-primary rounded-full py-3 px-6 placeholder-primary_light" />
         </div>
 
         <div className="m-4 flex flex-col items-center">
           <h2 className="m-2 font-bold text-2xl text-primary">Password</h2>
-          <input type="password" placeholder="bananabread..." onChange={handleNewPasswordChange} className="focus:outline-none focus:ring-4 focus:ring-primary bg-secondary text-primary rounded-full py-3 px-6" />
+          <input type="password" name="password" placeholder="bananabread..." onChange={handleNewPasswordChange} className="focus:outline-none focus:ring-4 focus:ring-primary bg-secondary text-primary rounded-full py-3 px-6 placeholder-primary_light" />
         </div>
 
         <div className="m-4 flex flex-col items-center">

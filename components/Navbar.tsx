@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../contexts/auth';
 import { auth } from '../firebase';
 
@@ -30,7 +30,7 @@ const NavBar = () => {
       { currentUser && profileOpen
         && (
         <div>
-          <Link href="/profile/[id]" as={`/profile/${auth.currentUser.displayName}`}>
+          <Link href="/profile/[id]" as={auth.currentUser ? `/profile/${auth.currentUser.displayName}` : null}>
             <button type="button" className="bg-primary hover:bg-primary_hover text-secondary font-bold py-2 px-4 rounded shadow-md">profile</button>
           </Link>
           <Link href="/">

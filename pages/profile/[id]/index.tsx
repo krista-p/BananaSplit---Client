@@ -1,14 +1,15 @@
-import { useRouter } from 'next/router';
+import { useContext } from 'react';
 import NavBar from '../../../components/Navbar';
+import ProfilePage from '../../../components/profilePage/ProfilePage';
+import { AuthContext } from '../../../contexts/auth';
 
 const Profile = () => {
-  const router = useRouter();
-  const { id } = router.query;
+  const { currentUser } = useContext(AuthContext);
 
   return (
     <div className="flex flex-col h-screen w-screen font-sans">
       <NavBar />
-      <div>username: {id}</div>
+      {currentUser ? <ProfilePage /> : null}
     </div>
   );
 };
