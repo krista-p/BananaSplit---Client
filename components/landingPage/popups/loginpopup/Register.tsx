@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { auth } from '../../../../firebase';
+import { createUser } from '../../../lib/api/api';
 
 const Register = ({ closeLogin }) => {
   const [newEmail, setNewEmail] = useState<string>('');
@@ -14,13 +15,24 @@ const Register = ({ closeLogin }) => {
     setNewPassword(event.target.value);
   };
 
+  const handleUserName = (event) => {
+    setUserName(event.target.value);
+  };
+
+  // NOTE: Don't think state is needed for email/password
+  // NOTE: Can grab {email, password} = e.target.elements in handleSignUp;
   const handleSignUp = async (e) => {
     e.preventDefault();
     closeLogin();
     try {
       await auth.createUserWithEmailAndPassword(newEmail, newPassword);
       const user = auth.currentUser;
-      console.log(user)
+      await user.updateProfile({
+        displayName: userName,
+      });
+      const uid = user.uid;
+      console.log(uid, 'user uid');
+      createUser(newEmail, userName, uid);
     } catch (err) {
       console.log({ errorInSignUp: err });
     }
@@ -41,7 +53,7 @@ const Register = ({ closeLogin }) => {
 
         <div className="m-4 flex flex-col items-center">
           <h2 className="m-2 font-bold text-2xl text-primary">Username</h2>
-          <input type="text" placeholder="bananaKing..." className="focus:outline-none focus:ring-4 focus:ring-primary bg-secondary text-primary rounded-full py-3 px-6" />
+          <input type="text" placeholder="bananaKing..." onChange={handleUserName} className="focus:outline-none focus:ring-4 focus:ring-primary bg-secondary text-primary rounded-full py-3 px-6" />
         </div>
 
         <div className="m-4 flex flex-col items-center">
