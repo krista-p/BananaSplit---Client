@@ -5,7 +5,6 @@ import LoginPopup from './popups/loginpopup/LoginPopup';
 import PlayPopup from './popups/playpopup/PlayPopup';
 import LoggedInMessage from './popups/loggedinmessage/LoggedInMessage';
 import Rules from './Rules';
-import Rooms from './Rooms';
 
 const LandingPage = () => {
   const [loginOpen, setLoginOpen] = useState<boolean>(false);
@@ -34,11 +33,6 @@ const LandingPage = () => {
 
       <div className="mt-8 ml-8">
         <Rules />
-      </div>
-
-      {/* TODO: Testing for socket connection, this component will not live here! */}
-      <div className="mt-8 ml-8">
-        <Rooms />
       </div>
 
       <div className="self-end mb-8 mr-8 h-1/3 w-1/4 bg-secondary rounded-lg shadow-lg">
