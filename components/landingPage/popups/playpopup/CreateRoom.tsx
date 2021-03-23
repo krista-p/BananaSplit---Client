@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { AuthContext } from '../../../../contexts/auth';
+import { createGameRoomCode } from '../../../lib/utils/createGameRoomCode';
 
 const CreateRoom = () => {
   const router = useRouter();
@@ -11,7 +12,7 @@ const CreateRoom = () => {
     e.preventDefault();
 
     try {
-      const gameRoomCode = createRoomCode(6);
+      const gameRoomCode = createGameRoomCode(6);
       
       // NOTE: Will add socket logic soon
       router.push(`/room/${gameRoomCode}`);
