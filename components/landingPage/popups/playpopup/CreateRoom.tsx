@@ -1,8 +1,24 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useContext } from 'react';
+import { AuthContext } from '../../../../contexts/auth';
 
 const CreateRoom = () => {
-  // right now, just have random number for room slug
-  const testFunction = () => Math.floor(Math.random() * 10);
+  const router = useRouter();
+  const { currentUser } = useContext(AuthContext);
+
+  const handleNewGame = (e) => {
+    e.preventDefault();
+
+    try {
+      const gameRoomCode = createRoomCode(6);
+      
+      // NOTE: Will add socket logic soon
+      router.push(`/room/${gameRoomCode}`);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="flex flex-col items-center">
@@ -25,9 +41,7 @@ const CreateRoom = () => {
         </div>
 
         <div className="m-4 flex flex-col items-center">
-          <Link href="/room/[id]" as={`/room/${testFunction()}`}>
-            <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md">Go bananas!</button>
-          </Link>
+          <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md" onClick={handleNewGame}>Go bananas!</button>
         </div>
       </form>
 
