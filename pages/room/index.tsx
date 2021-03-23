@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import NavBar from '../../../components/Navbar';
+import NavBar from '../../components/Navbar';
 
 const Room = () => {
   const router = useRouter();
