@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { io } from 'socket.io-client';
-import { createGameRoomCode } from '../../../lib/api/api';
+import { createGameRoomCode } from '../../../lib/utils/createGameRoomCode';
 import { AuthContext } from '../../../../contexts/auth';
 
 export const socket = io('http://localhost:4300', {
