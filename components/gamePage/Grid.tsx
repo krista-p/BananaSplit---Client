@@ -48,18 +48,18 @@ export default function Grid() {
           background-color: white;
         `}
       </style> */}
-      <Droppable
+      {/* <Droppable
         droppableId="gameBoard"
       >
-        {(provided) => (
+        {(provided) => ( */}
           <div
-            {...provided.droppableProps}
-            ref={provided.innerRef}
+            // {...provided.droppableProps}
+            // ref={provided.innerRef}
           >
             {gridBoard()}
           </div>
-        )}
-      </Droppable>
+        {/* )}
+      </Droppable> */}
     </div>
   );
 }
