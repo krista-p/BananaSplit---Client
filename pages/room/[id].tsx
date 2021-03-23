@@ -31,6 +31,15 @@ const Room = () => {
           ))
         }
       </div>
+      <div>
+        <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md">Leave Game</button>
+
+        {/* NOTE: Dump will handle player giving one tile back and receiving three. */}
+        <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md">Dump!</button>
+
+        {/* NOTE: Peel will be handled automatically once player runs out of tiles. Button can still be used to test function though. */}
+        <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md">Peel!</button>
+      </div>
     </div>
   );
 };
