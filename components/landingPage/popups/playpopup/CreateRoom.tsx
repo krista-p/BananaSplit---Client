@@ -1,8 +1,8 @@
-import Link from 'next/link';
-import { useState } from 'react';
+import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { io } from 'socket.io-client';
 import { createGameRoomCode } from '../../../lib/api/api';
+import { AuthContext } from '../../../../contexts/auth';
 
 export const socket = io('http://localhost:4300', {
   withCredentials: true,
@@ -10,13 +10,24 @@ export const socket = io('http://localhost:4300', {
 
 const CreateRoom = () => {
   const router = useRouter();
+  const { currentUser } = useContext(AuthContext);
+  const userName = currentUser.displayName;
+  const userID = currentUser.uid;
 
-  const handleNewGame = () => {
+  const handleNewGame = (e) => {
+    e.preventDefault();
+
     try {
-      const roomId = createGameRoomCode(6);
-      socket.emit('privateGame', roomId);
-      router.push(`/room/${roomId}`);
-      console.log(`New Game: ${roomId}`);
+      const gameRoomCode = createGameRoomCode(6);
+      socket.emit('privateGame', { gameRoomCode, userName, userID });
+      socket.on('gameRoomCreated', (res) => {
+        if (res) {  
+          console.log('Room Created');
+          router.push(`/room/${gameRoomCode}`);
+        } else {  
+          console.log('Player already has game!');
+        }
+      });
     } catch (err) {
       console.error(err);
     }
