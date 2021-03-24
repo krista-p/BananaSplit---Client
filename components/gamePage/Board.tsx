@@ -97,49 +97,55 @@ const Board = () => {
     setPlayerTiles(tiles);
   };
 
+  const onDragStart = () => {
+    console.log('dragging');
+  };
+
   return (
-    // <BunchProvider>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <div className={styles.room}>
-          <div className={styles.gamefield}>
-            <Grid />
-          </div>
-          <Droppable
-            droppableId="playerTiles"
-            direction="horizontal"
-          >
-            {(provided) => (
-              <div
-                className={styles.playerTiles}
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-              >
-                {
-                  playerTiles.map((currentTile, index) => (
-                    <Draggable
-                      key={currentTile.id}
-                      draggableId={currentTile.id}
-                      index={index}
-                    >
-                      {(provided) => (
-                        <div
-                          className={styles.tile}
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                        >
-                          {currentTile.letter}
-                        </div>
-                      )}
-                    </Draggable>
-                  ))
-                }
-              </div>
-            )}
-          </Droppable>
+    <DragDropContext
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
+    >
+      <div className={styles.room}>
+        <div className={styles.gamefield}>
+          <Grid />
         </div>
-      </DragDropContext>
-    // </BunchProvider>
+        <Droppable
+          droppableId="playerTiles"
+          direction="horizontal"
+        >
+          {(provided) => (
+            <div
+              className={styles.playerTiles}
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {
+                playerTiles.map((currentTile, index) => (
+                  <Draggable
+                    key={currentTile.id}
+                    draggableId={currentTile.id}
+                    index={index}
+                  >
+                    {(provided, snapshot) => (
+                      <div
+                        className={snapshot.isDragging ? styles.dragging : styles.tile}
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        {currentTile.letter}
+                        {console.log(snapshot.isDragging)}
+                      </div>
+                    )}
+                  </Draggable>
+                ))
+              }
+            </div>
+          )}
+        </Droppable>
+      </div>
+    </DragDropContext>
   );
 };
 

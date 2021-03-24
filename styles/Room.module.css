@@ -43,6 +43,15 @@
   font-size: 50px;
 }
 
+.dragging {
+  width: 40px !important;
+  height: 40px !important;
+  border: solid 1px #fff;
+  color: white;
+  background-color: black;
+  font-size: 18px;
+}
+
 .playerTiles {
   width: 100vw;
   display: flex;
