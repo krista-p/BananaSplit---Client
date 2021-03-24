@@ -38,28 +38,33 @@ const Room = () => {
       <div className="flex w-screen h-3/4 justify-center">
         <div className="flex flex-col h-full flex-grow content-center">
           <div className="flex justify-center">
-            <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md" onClick={handleLeaveGame}>Leave Game</button>
+            <button className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center" onClick={handleLeaveGame}>Leave Game</button>
           </div>
         
           <div className="flex border-black border-2 h-1/4 rounded-md m-2">
             <div>Actions Coming!</div>
           </div>
 
-          <div className="flex border-black border-2 h-1/4 rounded-md m-2">
+          {/* // TODO: Highlight players that are ready */}
+          <div className="flex flex-col border-black border-2 h-1/4 rounded-md m-2">
             { playersInRoom &&
               playersInRoom.map((player, index) => (
                 <div key={index+player}>Player {index + 1}: {player}</div>
                 ))
               }
           </div>
+
+          <div className="flex justify-center">
+            <button className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center">Ready?!</button>
+          </div>
         </div>
 
-        <div className="flex justify-center items-center border-black border-2 w-1/2 h-3/4 rounded-lg">
+        <div className="flex justify-center items-center border-black border-2 w-3/5 h-3/4 rounded-lg">
           <div>Game Incoming!</div>
         </div>
 
 
-        <div className="flex flex-col">
+        <div className="flex flex-col flex-grow m-2">
           {/* NOTE: Dump will handle player giving one tile back and receiving three. */}
           <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md">Dump!</button>
 
