@@ -11,8 +11,14 @@ export const socket = io('http://localhost:4300', {
 const CreateRoom = () => {
   const router = useRouter();
   const { currentUser } = useContext(AuthContext);
-  const userName = currentUser.displayName;
-  const userID = currentUser.uid;
+
+  let userName, userID;
+  if (currentUser) {
+    userName = currentUser.displayName;
+    userID = currentUser.uid;
+  } else {
+    console.log('Not Logged In');
+  }
 
   const handleNewGame = (e) => {
     e.preventDefault();

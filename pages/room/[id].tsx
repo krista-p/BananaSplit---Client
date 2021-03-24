@@ -1,11 +1,18 @@
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
 import NavBar from '../../components/Navbar';
+import { AuthContext } from '../../contexts/auth';
 
 const Room = () => {
   const router = useRouter();
   const { id } = router.query;
+  const { currentUser } = useContext(AuthContext);
+
+  let userName;
+  if (currentUser) {
+    userName = currentUser.displayName;
+  }
 
   const [playersInRoom, setPlayersInRoom] = useState([]);
   
@@ -13,6 +20,17 @@ const Room = () => {
   useEffect(() => {
     socket.on('playersInRoom', player => setPlayersInRoom(player));
   }, [socket]);
+
+  const handleLeaveGame = (e) => {
+    e.preventDefault();
+
+    try {
+      router.push('/');
+      socket.emit('leaveGame', id);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="flex flex-col h-screen w-screen font-sans items-center">
@@ -25,14 +43,14 @@ const Room = () => {
 
       <div className="flex flex-col justify-center items-center border-black border-2 w-1/6 h-1/6 rounded-lg">
         <div>Socket Room #</div>
-        {
+        { playersInRoom &&
           playersInRoom.map((player, index) => (
             <div key={index+player}>Player {index + 1}: {player}</div>
           ))
         }
       </div>
       <div>
-        <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md">Leave Game</button>
+        <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md" onClick={handleLeaveGame}>Leave Game</button>
 
         {/* NOTE: Dump will handle player giving one tile back and receiving three. */}
         <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md">Dump!</button>

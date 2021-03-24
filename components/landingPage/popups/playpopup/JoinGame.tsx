@@ -29,7 +29,7 @@ const JoinGame = () => {
     e.preventDefault();
 
     try {
-      console.log(gameRoomCode);
+      console.log(gameRoomCode, 'handle submit join');
       if (userName) {
         console.log(userName);
         socket.emit('joinGame', { gameRoomCode, userName, userID });
