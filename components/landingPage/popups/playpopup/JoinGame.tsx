@@ -9,11 +9,9 @@ const JoinGame = () => {
   const [gameRoomCode, setGameRoomCode] = useState('');
   const [guestUserName, setGuestUserName] = useState('');
   
-  let userName, userID;
-
+  let userName;
   if (currentUser) {
     userName = currentUser.displayName;
-    userID = currentUser.uid;
   }
 
   const handleGuestUserName = (e) => {
@@ -24,26 +22,36 @@ const JoinGame = () => {
     setGameRoomCode(e.target.value);
   }
 
-  // NOTE: Added logic for if User or Guest is joining
+  // User or Guest can Join Game (Only Private Currently)
+  // TODO: Bug where page doesn't always push from response
   const handleSumbitJoinGame = (e) => {
     e.preventDefault();
-
     try {
-      console.log(gameRoomCode, 'handle submit join');
       if (userName) {
-        console.log(userName);
-        socket.emit('joinGame', { gameRoomCode, userName, userID });
+        socket.emit('joinGame', { gameRoomCode, userName });
       } else {
-        console.log(guestUserName);
         userName = guestUserName;
-        socket.emit('joinGame', { gameRoomCode, userName, userID });
+        socket.emit('joinGame', { gameRoomCode, userName });
       }
+      
+      socket.on('joinGameResponse', ({ res, userName }) => {
+        console.log(res, 'hello');
+        if (res === 'No Room') {
+          console.log('No Room Available');
+        } else if (res === 'Room Full') {
+          console.log('Room Full');
+        } else {
+          console.log('should join and push');
+          router.push(`/room/${gameRoomCode}`);
+        }
+      })
+      
 
-      router.push(`/room/${gameRoomCode}`);
     } catch (err) {
       console.error(err);
     }
   };
+
 
   return (
     <div className="flex flex-col items-center">
