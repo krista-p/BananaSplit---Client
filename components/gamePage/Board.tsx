@@ -68,7 +68,7 @@ const Board = () => {
       const newMatrix = _.cloneDeep(state.matrix);
       newMatrix[dCol][dRow] = tileToPlace;
       const newPlayerTiles = result[sourceId];
-      const newState: GameStateType = {
+      const newState = {
         playerTiles: newPlayerTiles,
         matrix: newMatrix,
       };
