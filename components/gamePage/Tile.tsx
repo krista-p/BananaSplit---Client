@@ -1,8 +1,15 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import styles from '../../styles/Room.module.css';
+import { TileType } from '../../types';
 
-export default function Tile({ currentTile, index }) {
+type TileProps = {
+  currentTile: TileType,
+  index: number,
+};
+
+export default function Tile(props: TileProps) {
+  const { currentTile, index } = props;
   return (
     <Draggable
       key={currentTile.id}
