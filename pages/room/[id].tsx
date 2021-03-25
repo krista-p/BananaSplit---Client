@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
-import Board from '../../../components/gamePage/Board';
-import NavBar from '../../../components/Navbar';
+import Board from '../../components/gamePage/Board';
+import NavBar from '../../components/Navbar';
 
 const Room = () => {
   const router = useRouter();
