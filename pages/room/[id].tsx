@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
+import Board from '../../components/gamePage/Board';
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
 import NavBar from '../../components/Navbar';
 
@@ -70,7 +71,9 @@ const Room = () => {
         </div>
 
         <div className="flex justify-center items-center border-black border-2 w-3/5 h-3/4 rounded-lg">
-          <div>Game Incoming!</div>
+          <div>
+            <Board />
+          </div>
         </div>
 
 
