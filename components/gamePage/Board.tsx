@@ -4,51 +4,52 @@ import _ from 'lodash';
 import Grid from './Grid';
 // import BunchProvider, { useBunchContext } from '../../contexts/BunchContext';
 import styles from '../../styles/Room.module.css';
+import PlayerTiles from './PlayerTiles';
 
-const mockBunch = [
-  ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A'],
-  ['B', 'B', 'B'],
-  ['C', 'C', 'C'],
-  ['D', 'D', 'D', 'D', 'D', 'D'],
-  ['E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E'],
-  ['F', 'F', 'F'],
-  ['G', 'G', 'G', 'G'],
-  ['H', 'H', 'H'],
-  ['I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I'],
-  ['J', 'J'],
-  ['K', 'K'],
-  ['L', 'L', 'L', 'L', 'L'],
-  ['M', 'M', 'M'],
-  ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-  ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
-  ['P', 'P', 'P'],
-  ['Q', 'Q'],
-  ['R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R'],
-  ['S', 'S', 'S', 'S', 'S', 'S'],
-  ['T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T'],
-  ['U', 'U', 'U', 'U', 'U', 'U'],
-  ['V', 'V', 'V'],
-  ['W', 'W', 'W'],
-  ['X', 'X'],
-  ['Y', 'Y', 'Y'],
-  ['Z', 'Z'],
-];
+// const mockBunch = [
+//   ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A'],
+//   ['B', 'B', 'B'],
+//   ['C', 'C', 'C'],
+//   ['D', 'D', 'D', 'D', 'D', 'D'],
+//   ['E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E'],
+//   ['F', 'F', 'F'],
+//   ['G', 'G', 'G', 'G'],
+//   ['H', 'H', 'H'],
+//   ['I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I'],
+//   ['J', 'J'],
+//   ['K', 'K'],
+//   ['L', 'L', 'L', 'L', 'L'],
+//   ['M', 'M', 'M'],
+//   ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+//   ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
+//   ['P', 'P', 'P'],
+//   ['Q', 'Q'],
+//   ['R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R'],
+//   ['S', 'S', 'S', 'S', 'S', 'S'],
+//   ['T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T'],
+//   ['U', 'U', 'U', 'U', 'U', 'U'],
+//   ['V', 'V', 'V'],
+//   ['W', 'W', 'W'],
+//   ['X', 'X'],
+//   ['Y', 'Y', 'Y'],
+//   ['Z', 'Z'],
+// ];
 const gridSize = 6;
 
-const getRandomTile = () => {
-  const tileToAdd = {
-    letter: '',
-    id: '',
-  };
-  const index = Math.floor(Math.random() * 26);
-  if (mockBunch[index].length > 0) {
-    tileToAdd.id = mockBunch[index][0] + mockBunch[index].length.toString();
-    tileToAdd.letter = mockBunch[index].pop();
-    return tileToAdd;
-  }
-  getRandomTile();
-  return null;
-};
+// const getRandomTile = () => {
+//   const tileToAdd = {
+//     letter: '',
+//     id: '',
+//   };
+//   const index = Math.floor(Math.random() * 26);
+//   if (mockBunch[index].length > 0) {
+//     tileToAdd.id = mockBunch[index][0] + mockBunch[index].length.toString();
+//     tileToAdd.letter = mockBunch[index].pop();
+//     return tileToAdd;
+//   }
+//   getRandomTile();
+//   return null;
+// };
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -89,21 +90,21 @@ const Board = () => {
   //   return { letter: bunch[index].letter, id };
   // };
 
-  const drawTiles = (drawNumber) => {
-    let newPlayerTiles = [];
-    for (let i = 0; i < drawNumber; i++) {
-      const newTile = getRandomTile();
-      newPlayerTiles = [...newPlayerTiles, newTile];
-      setState({
-        ...state,
-        playerTiles: newPlayerTiles,
-      });
-    }
-  };
+  // const drawTiles = (drawNumber) => {
+  //   let newPlayerTiles = [];
+  //   for (let i = 0; i < drawNumber; i++) {
+  //     const newTile = getRandomTile();
+  //     newPlayerTiles = [...newPlayerTiles, newTile];
+  //     setState({
+  //       ...state,
+  //       playerTiles: newPlayerTiles,
+  //     });
+  //   }
+  // };
 
-  useEffect(() => {
-    drawTiles(18);
-  }, []);
+  // useEffect(() => {
+  //   drawTiles(18);
+  // }, []);
 
   const onDragStart = () => {
     console.log('dragging');
@@ -150,7 +151,6 @@ const Board = () => {
     }
   };
 
-  console.log(state);
   return (
     <DragDropContext
       onDragStart={onDragStart}
@@ -164,39 +164,10 @@ const Board = () => {
             gridSize={gridSize}
           />
         </div>
-        <Droppable
-          droppableId="playerTiles"
-          direction="horizontal"
-        >
-          {(provided) => (
-            <div
-              className={styles.playerTiles}
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              {
-                state.playerTiles.map((currentTile, index) => (
-                  <Draggable
-                    key={currentTile.id}
-                    draggableId={currentTile.id}
-                    index={index}
-                  >
-                    {(provided, snapshot) => (
-                      <div
-                        className={snapshot.isDragging ? styles.dragging : styles.tile}
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        {currentTile.letter}
-                      </div>
-                    )}
-                  </Draggable>
-                ))
-              }
-            </div>
-          )}
-        </Droppable>
+        <PlayerTiles
+          state={state}
+          setState={setState}
+        />
       </div>
     </DragDropContext>
   );

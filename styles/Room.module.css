@@ -69,8 +69,7 @@
 } */
 
 .gamefield {
-  height: 80vh;
-  width: 80vw;
+  height: 1000px;
+  width: 1000px;
   background-color: white;
-
 }
