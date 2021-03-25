@@ -9,14 +9,18 @@ const Room = () => {
   const router = useRouter();
   const { id } = router.query;
   const [playersInRoom, setPlayersInRoom] = useState([]);
+  const [playersReady, setPlayersReady] = useState(false);
+  const [playerHost, setPlayerHost] = useState(false);
 
-  // Update player list in room
-  socket.emit('getPlayersInRoom', id);
-  useEffect(() => {
-    socket.on('playersInRoom', player => {
-      setPlayersInRoom(player);
-    });
-  }, []);
+  socket.emit('getPlayersInRoom', id, (res) => {
+    setPlayersInRoom(res);
+  });
+  socket.emit('roomReady', id, (res) => {
+    setPlayersReady(res);
+  });
+  socket.emit('hostSearch', id, (res) => {
+    setPlayerHost(res);
+  });
   
   const handleLeaveGame = (e) => {
     e.preventDefault();
@@ -30,9 +34,8 @@ const Room = () => {
 
   const handleReadyPlayer = (e) => {
     e.preventDefault();
-
     try {
-      socket.emit('playerReady');
+      socket.emit('playerReady', id);
     } catch (err) {
       console.error(err);
     }
@@ -43,7 +46,7 @@ const Room = () => {
   const bunch = [];
   socket.emit('store', bunch);
   const getRandomTile = (x) => {
-    for(let i = 0; i<x; i++) {
+    for(let i = 0; i < x; i++) {
       socket.emit('getOneTile');
       socket.on('returnOneTile', (tile) => {
         setPlayerTiles(current => [...current, tile]);
@@ -90,17 +93,22 @@ const Room = () => {
               playersInRoom.map((player, index) => (
                 <div key={index+player}>Player {index + 1}: {player}</div>
                 ))
-              }
+            }
           </div>
 
           <div className="flex justify-center">
-            <button className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center" onClick={handleReadyPlayer}>Ready?!</button>
+            { !playersReady &&
+              <button className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center" onClick={handleReadyPlayer}>Ready?!</button>
+            }
+            { playersReady && playerHost &&
+              <button className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center">Start Game!</button>
+            }
           </div>
         </div>
 
         <div className="flex justify-center items-center border-black border-2 w-3/5 h-3/4 rounded-lg">
           <div>
-            <Board />
+            {/* <Board /> */}
           </div>
         </div>
 
