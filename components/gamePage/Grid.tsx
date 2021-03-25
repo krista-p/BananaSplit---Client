@@ -1,65 +1,83 @@
-import { serialize } from 'node:v8';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import styles from '../../styles/Room.module.css';
 import Tile from './Tile';
 
-export default function Grid() {
+// const gridSize = 7;
+
+export default function Grid({ state, setState, gridSize }) {
+  const boardMatrix = [];
+  const row = [];
+  const { playerTiles, matrix } = state;
+
+  const squareContents = (squareId) => {
+    if (!matrix[squareId[2]][squareId[0]]) {
+      return squareId;
+    }
+    return matrix[squareId[2]][squareId[0]].letter;
+  };
+
   const gridSquare = (squareId) => (
     <Droppable
       droppableId={squareId}
+      renderClone={(provided, snapshot, rubric) => (
+        <div
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          ref={provided.innerRef}
+        />
+      )}
     >
       {(provided) => (
         <div
           {...provided.droppableProps}
           ref={provided.innerRef}
         >
-          <div className={styles.gameSquare}>SQUARE</div>
+          <div className={squareContents(squareId) === squareId ? styles.gameSquare : styles.tile}>{squareContents(squareId)}</div>
         </div>
       )}
     </Droppable>
   );
 
+  const renderCol = (rowNum) => {
+    row.push(gridSquare(`${rowNum}`));
+  };
+
+  const renderBoardMatrix = () => {
+    for (let rowNum = 0; rowNum < gridSize; rowNum++) {
+      renderCol(rowNum);
+      boardMatrix.push(row);
+    }
+    console.log('line 45:', state);
+  };
+
+  renderBoardMatrix();
+
+  useEffect(() => {
+    setState({ ...state, gridTiles: boardMatrix });
+  }, []);
+
   const gridRow = (rowId) => (
     <div className={styles.gameRow}>
-      {gridSquare('A'.concat(rowId))}
-      {gridSquare('B'.concat(rowId))}
-      {gridSquare('C'.concat(rowId))}
-      {gridSquare('D'.concat(rowId))}
+      {
+        row.map((_, index) => gridSquare(`${rowId}-${index}`))
+      }
     </div>
   );
 
   const gridBoard = () => (
     <div className={styles.gameBoard}>
-      {gridRow('1')}
-      {gridRow('2')}
-      {gridRow('3')}
-      {gridRow('4')}
+      {
+        boardMatrix.map((_, index) => gridRow(index))
+      }
     </div>
   );
-  const [gridState, setGridState] = useState(gridBoard);
+
   return (
     <div className={styles.gameBoard}>
-      {/* <style jsx>
-        {`
-          margin-top: 5vh;
-          height: 75vh;
-          width: 75vw;
-          background-color: white;
-        `}
-      </style> */}
-      {/* <Droppable
-        droppableId="gameBoard"
-      >
-        {(provided) => ( */}
-          <div
-            // {...provided.droppableProps}
-            // ref={provided.innerRef}
-          >
-            {gridBoard()}
-          </div>
-        {/* )}
-      </Droppable> */}
+      <div>
+        {gridBoard()}
+      </div>
     </div>
   );
 }

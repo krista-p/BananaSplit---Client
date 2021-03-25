@@ -7,25 +7,26 @@
   align-items: center;
 }
 
-.grid {
+/* .grid {
   width: 50vw;
   height: 50vh;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   grid-template-rows: repeat(auto-fit, minmax(100px, 1fr));
   border: solid 1px #000;
-}
+} */
 
-.gameBoard {
+/* .gameBoard {
   width: 70vw;
   height: 70vh;
   background-color: white;
-}
+} */
 
 .gameRow {
   height: 100px;
   display: flex;
   flex-direction: row;
+  padding-bottom: 50px;
 }
 
 .gameSquare {
@@ -37,19 +38,23 @@
 .tile {
   width: 100px;
   height: 100px;
-  border: solid 1px #fff;
+  border: solid 1px rgb(90, 65, 42);
+  border-radius: 10px;
   color: white;
-  background-color: #000;
-  font-size: 50px;
+  background-color: rgb(155, 87, 42);
+  font-size: 25px;
+  margin: 0 0.25px 0 0.25px;
 }
 
 .dragging {
-  width: 40px !important;
-  height: 40px !important;
-  border: solid 1px #fff;
+  width: 100px;
+  height: 100px;
+  border: solid 1px rgb(90, 65, 42);
+  border-radius: 10px;
   color: white;
-  background-color: black;
-  font-size: 18px;
+  background-color: rgb(155, 87, 42);
+  font-size: 50px;
+  margin: 0 0.25px 0 1px;
 }
 
 .playerTiles {
@@ -64,8 +69,8 @@
 } */
 
 .gamefield {
-  height: 60vh;
-  width: 60vw;
+  height: 80vh;
+  width: 80vw;
   background-color: white;
 
 }
