@@ -69,8 +69,8 @@ const Board = () => {
       newMatrix[dCol][dRow] = tileToPlace;
       const newPlayerTiles = result[sourceId];
       const newState: GameStateType = {
-        playerTiles?: newPlayerTiles,
-        matrix?: newMatrix,
+        playerTiles: newPlayerTiles,
+        matrix: newMatrix,
       };
       setState(newState);
     }
