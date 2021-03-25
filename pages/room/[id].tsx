@@ -26,6 +26,16 @@ const Room = () => {
     }
   };
 
+  const handleReadyPlayer = (e) => {
+    e.preventDefault();
+
+    try {
+      socket.emit('playerReady');
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div className="flex flex-col h-screen w-screen font-sans items-center">
       <NavBar />
@@ -55,7 +65,7 @@ const Room = () => {
           </div>
 
           <div className="flex justify-center">
-            <button className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center">Ready?!</button>
+            <button className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center" onClick={handleReadyPlayer}>Ready?!</button>
           </div>
         </div>
 

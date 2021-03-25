@@ -8,15 +8,20 @@ const JoinGame = () => {
   const router = useRouter();
   const { currentUser } = useContext(AuthContext);
   const [gameRoomCode, setGameRoomCode] = useState('');
-  const [guestUserName, setGuestUserName] = useState('');
+  const [guestPrivateUserName, setGuestPrivateUserName] = useState('');
+  const [guestRandomUserName, setGuestRandomUserName] = useState('');
   
   let userName;
   if (currentUser) {
     userName = currentUser.displayName;
   }
 
-  const handleGuestUserName = (e) => {
-    setGuestUserName(e.target.value);
+  const handlePrivateUserName = (e) => {
+    setGuestPrivateUserName(e.target.value);
+  }
+
+  const handleRandomUserName = (e) => {
+    setGuestRandomUserName(e.target.value);
   }
 
   const handleGameCode = (e) => {
@@ -24,13 +29,14 @@ const JoinGame = () => {
   }
 
   // User or Guest can Join Game (Only Private Currently)
-  const handleSumbitJoinGame = (e) => {
+  const handleSumbitJoinPrivateGame = (e) => {
     e.preventDefault();
     try {
       if (userName) {
         socket.emit('joinGame', { gameRoomCode, userName });
       } else {
-        userName = guestUserName;
+        userName = guestPrivateUserName;
+        console.log(userName);
         socket.emit('joinGame', { gameRoomCode, userName });
       }
       
@@ -63,12 +69,12 @@ const JoinGame = () => {
       </div>
 
       <div className="flex flex-row">
-        <form onSubmit={handleSumbitJoinGame}>
+        <form onSubmit={handleSumbitJoinPrivateGame}>
           <div className="m-4 flex flex-col items-center">
             <h2 className="m-2 font-bold text-2xl text-primary">Private</h2>
             {
               !currentUser &&
-              <input type="text" placeholder="enter username..." className="focus:outline-none focus:ring-4 focus:ring-primary bg-secondary text-primary rounded-full py-3 px-6 m-2" value={guestUserName} onChange={handleGuestUserName} />
+              <input type="text" placeholder="enter username..." className="focus:outline-none focus:ring-4 focus:ring-primary bg-secondary text-primary rounded-full py-3 px-6 m-2" value={guestPrivateUserName} onChange={handlePrivateUserName} />
             }
 
             <input type="text" placeholder="enter room code..." className="focus:outline-none focus:ring-4 focus:ring-primary bg-secondary text-primary rounded-full py-3 px-6" value={gameRoomCode} onChange={handleGameCode} />
@@ -82,7 +88,7 @@ const JoinGame = () => {
             <h2 className="m-2 font-bold text-2xl text-primary">Random</h2>
             {
               !currentUser &&
-              <input type="text" placeholder="enter username..." className="focus:outline-none focus:ring-4 focus:ring-primary bg-secondary text-primary rounded-full py-3 px-6 m-2" value={guestUserName} onChange={handleGuestUserName} />
+              <input type="text" placeholder="enter username..." className="focus:outline-none focus:ring-4 focus:ring-primary bg-secondary text-primary rounded-full py-3 px-6 m-2" value={guestRandomUserName} onChange={handleRandomUserName} />
             }
 
             <div className="m-4 flex flex-col items-center">
