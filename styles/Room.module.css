@@ -1,0 +1,76 @@
+.room {
+  background-color: #dfcf74;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* .grid {
+  width: 50vw;
+  height: 50vh;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-template-rows: repeat(auto-fit, minmax(100px, 1fr));
+  border: solid 1px #000;
+} */
+
+/* .gameBoard {
+  width: 70vw;
+  height: 70vh;
+  background-color: white;
+} */
+
+.gameRow {
+  height: 100px;
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 50px;
+}
+
+.gameSquare {
+  width: 100px;
+  height: 100px;
+  border: 1px solid lightgrey;
+}
+
+.tile {
+  width: 100px;
+  height: 100px;
+  border: solid 1px rgb(90, 65, 42);
+  border-radius: 10px;
+  color: white;
+  background-color: rgb(155, 87, 42);
+  font-size: 25px;
+  margin: 0 0.25px 0 0.25px;
+}
+
+.dragging {
+  width: 100px;
+  height: 100px;
+  border: solid 1px rgb(90, 65, 42);
+  border-radius: 10px;
+  color: white;
+  background-color: rgb(155, 87, 42);
+  font-size: 50px;
+  margin: 0 0.25px 0 1px;
+}
+
+.playerTiles {
+  width: 100vw;
+  display: flex;
+}
+
+/* .letters {
+  display: inherit;
+  flex-direction: row;
+  align-items: flex-end;
+} */
+
+.gamefield {
+  height: 80vh;
+  width: 80vw;
+  background-color: white;
+
+}
