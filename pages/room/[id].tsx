@@ -16,7 +16,7 @@ const Room = () => {
       setPlayersInRoom(player);
     });
   }, []);
-  
+
   const handleLeaveGame = (e) => {
     e.preventDefault();
     try {

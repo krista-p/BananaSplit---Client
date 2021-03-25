@@ -1,82 +1,62 @@
-import React, { useEffect, useState } from 'react';
-import { Droppable } from 'react-beautiful-dnd';
+import React, { useEffect } from 'react';
+import GridSquare from './GridSquare';
 import styles from '../../styles/Room.module.css';
-import Tile from './Tile';
-
-// const gridSize = 7;
 
 export default function Grid({ state, setState, gridSize }) {
-  const boardMatrix = [];
-  const row = [];
-  const { playerTiles, matrix } = state;
-
-  const squareContents = (squareId) => {
-    if (!matrix[squareId[2]][squareId[0]]) {
-      return squareId;
-    }
-    return matrix[squareId[2]][squareId[0]].letter;
-  };
-
-  const gridSquare = (squareId) => (
-    <Droppable
-      droppableId={squareId}
-      renderClone={(provided, snapshot, rubric) => (
-        <div
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          ref={provided.innerRef}
-        />
-      )}
-    >
-      {(provided) => (
-        <div
-          {...provided.droppableProps}
-          ref={provided.innerRef}
-        >
-          <div className={squareContents(squareId) === squareId ? styles.gameSquare : styles.tile}>{squareContents(squareId)}</div>
-        </div>
-      )}
-    </Droppable>
-  );
-
-  const renderCol = (rowNum) => {
-    row.push(gridSquare(`${rowNum}`));
-  };
-
-  const renderBoardMatrix = () => {
-    for (let rowNum = 0; rowNum < gridSize; rowNum++) {
-      renderCol(rowNum);
-      boardMatrix.push(row);
-    }
-    console.log('line 45:', state);
-  };
-
-  renderBoardMatrix();
+  const boardMatrix: any[] = [];
+  const row: any[] = [];
 
   useEffect(() => {
     setState({ ...state, gridTiles: boardMatrix });
   }, []);
 
-  const gridRow = (rowId) => (
+  /* NOTE Start game board render functions */
+
+  const renderSquare = (squareId: string) => (
+    <div className={styles.gameSquare}>
+      <GridSquare
+        state={state}
+        squareId={squareId}
+      />
+    </div>
+  );
+
+  const renderRow = (colId: number) => (
     <div className={styles.gameRow}>
       {
-        row.map((_, index) => gridSquare(`${rowId}-${index}`))
+        row.map((_, index: number) => renderSquare(`${colId}-${index}`))
       }
     </div>
   );
 
-  const gridBoard = () => (
+  const renderBoard = () => (
     <div className={styles.gameBoard}>
       {
-        boardMatrix.map((_, index) => gridRow(index))
+        boardMatrix.map((_, index: number) => renderRow(index))
       }
     </div>
   );
+  /* NOTE End game board render functions */
+
+  /* NOTE Start game board builder functions */
+  const buildCol = (rowNum: number) => {
+    row.push(renderSquare(`${rowNum}`));
+  };
+
+  const buildBoard = () => {
+    for (let rowNum = 0; rowNum < gridSize; rowNum++) {
+      buildCol(rowNum);
+      boardMatrix.push(row);
+    }
+  };
+
+  buildBoard();
+  /* NOTE End game board builder functions */
 
   return (
     <div className={styles.gameBoard}>
       <div>
-        {gridBoard()}
+        {renderBoard()}
       </div>
     </div>
   );
