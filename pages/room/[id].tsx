@@ -84,7 +84,6 @@ const Room = () => {
             <div>Actions Coming!</div>
           </div>
 
-<<<<<<< HEAD
           {/* // TODO: Highlight players that are ready */}
           <div className="flex flex-col border-black border-2 h-1/4 rounded-md m-2">
             { playersInRoom &&
@@ -108,18 +107,11 @@ const Room = () => {
 
         <div className="flex flex-col flex-grow m-2">
           {/* NOTE: Dump will handle player giving one tile back and receiving three. */}
-          <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md">Dump!</button>
+          <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md" onClick={handleDump}>Dump!</button>
 
           {/* NOTE: Peel will be handled automatically once player runs out of tiles. Button can still be used to test function though. */}
-          <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md">Peel!</button>
+          <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md" onClick={handlePeel}>Peel!</button>
         </div>
-=======
-        {/* NOTE: Dump will handle player giving one tile back and receiving three. */}
-        <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md" onClick={handleDump}>Dump!</button>
-
-        {/* NOTE: Peel will be handled automatically once player runs out of tiles. Button can still be used to test function though. */}
-        <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md" onClick={handlePeel}>Peel!</button>
->>>>>>> 60bc4867791068623621d2c1468f615f36ee7570
       </div>
 
     </div>
