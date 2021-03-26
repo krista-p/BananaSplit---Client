@@ -17,57 +17,55 @@ const reorder = (playerTiles: TileType[], startIndex: number, endIndex: number) 
 };
 
 const move = (state, dragSource, dragDestination, source, destination) => {
-  console.log('Move(): source:', dragSource);
-  console.log('Move(): destination:', dragDestination);
-  console.log('Move(): droppableSource:', source);
-  console.log('Move(): droppableDestination:', destination);
   const stateClone = _.cloneDeep(state);
-  console.log(stateClone);
   const [sRow,, sCol] = source.droppableId;
   const [dRow,, dCol] = destination.droppableId;
 
   const dragSourceClone = _.cloneDeep(dragSource);
   const result: any = {};
   if (source.droppableId === 'playerTiles') {
+    // NOTE Drag from player tiles to game board
     const dragDestClone = _.cloneDeep(dragDestination);
     const [removedTile] = dragSourceClone.splice(source.index, 1);
 
-    console.log(dragDestClone);
-    console.log(removedTile);
     dragDestClone[dRow][dCol] = removedTile;
-    console.log(dragDestClone);
 
     stateClone.playerTiles = dragSourceClone;
     stateClone.matrix = dragDestClone;
-    console.log(stateClone);
+
     result.state = stateClone;
     result[source.droppableId] = dragSourceClone;
     result[destination.droppableId] = dragDestClone[dRow][dCol];
   } else if (destination.droppableId !== 'playerTiles') {
+    // NOTE Drag from game board to game board
     const dragDestClone = _.cloneDeep(dragDestination);
     const removedTile = dragSourceClone[sRow][sCol];
 
-    console.log(dragSourceClone);
-    console.log(removedTile);
     dragSourceClone[sRow][sCol] = dragDestination[dRow][dCol];
     dragDestClone[sRow][sCol] = dragDestClone[dRow][dCol];
     dragDestClone[dRow][dCol] = removedTile;
-    console.log(dragSourceClone);
 
     stateClone.playerTiles = state.playerTiles;
     stateClone.matrix = dragDestClone;
-    console.log('state', stateClone);
+
     result.state = stateClone;
     result[source.droppableId] = dragSourceClone[sRow][sCol];
     result[destination.droppableId] = dragDestClone[dRow][dCol];
-  } /*else {
+  } else {
+    // NOTE Drag from game board to player tiles
     const dragDestClone = _.cloneDeep(dragDestination);
     const removedTile = dragSourceClone[sRow][sCol];
 
     dragSourceClone[sRow][sCol] = 0;
     dragDestClone.splice(destination.index, 0, removedTile);
-    res
-  }*/
+
+    stateClone.playerTiles = dragDestClone;
+    stateClone.matrix = dragSourceClone;
+
+    result.state = stateClone;
+    result[source.droppableId] = dragSourceClone[sRow][sCol];
+    result[destination.droppableId] = dragSourceClone[dRow][dCol];
+  }
   return result;
 };
 

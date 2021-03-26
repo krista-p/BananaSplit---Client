@@ -116,11 +116,6 @@ export default function PlayerTiles({ state, setState }) {
   );
 }
 
-
-
-
-
-
 // import { useEffect, useState } from 'react';
 // import { Droppable } from 'react-beautiful-dnd';
 // import { io } from 'socket.io-client';
