@@ -141,6 +141,7 @@ const getRandomTile = () => {
   const tileToAdd = {
     letter: '',
     id: '',
+    onBoard: false,
   };
   const index = Math.floor(Math.random() * 26);
   if (mockBunch[index].length > 0) {
@@ -175,6 +176,7 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 };
 
 export default function PlayerTiles({ state, setState }) {
+  console.log(state);
   const drawTiles = (drawNumber) => {
     let newPlayerTiles = [];
     for (let i = 0; i < drawNumber; i++) {
@@ -190,7 +192,6 @@ export default function PlayerTiles({ state, setState }) {
   useEffect(() => {
     drawTiles(18);
   }, []);
-
   return (
     <div className={styles.playerTiles}>
       <Droppable
@@ -211,7 +212,7 @@ export default function PlayerTiles({ state, setState }) {
                 />
               ))
             }
-            {provided.placeholder}
+            {provided.placeh}
           </div>
         )}
       </Droppable>
