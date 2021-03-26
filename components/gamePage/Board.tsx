@@ -6,7 +6,12 @@ import styles from '../../styles/Room.module.css';
 import PlayerTiles from './PlayerTiles';
 import { GameStateType, TileType } from '../../types';
 
-const gridSize: number = 6;
+const gridSize: number = 9;
+
+const initialState = {
+  playerTiles: [],
+  matrix: Array.from({ length: gridSize }, () => Array(gridSize).fill(0)),
+};
 
 const reorder = (playerTiles: TileType[], startIndex: number, endIndex: number) => {
   const result: TileType[] = Array.from(playerTiles);
@@ -26,7 +31,13 @@ const move = (state, dragSource, dragDestination, source, destination) => {
   if (source.droppableId === 'playerTiles') {
     // NOTE Drag from player tiles to game board
     const dragDestClone = _.cloneDeep(dragDestination);
-    const [removedTile] = dragSourceClone.splice(source.index, 1);
+    const tileToSwap = dragDestClone[dRow][dCol];
+    let removedTile = [];
+    if (tileToSwap) {
+      [removedTile] = dragSourceClone.splice(source.index, 1, tileToSwap);
+    } else {
+      [removedTile] = dragSourceClone.splice(source.index, 1);
+    }
 
     dragDestClone[dRow][dCol] = removedTile;
 
@@ -70,13 +81,13 @@ const move = (state, dragSource, dragDestination, source, destination) => {
 };
 
 const Board = () => {
-  const [state, setState] = useState({
-    playerTiles: [],
-    matrix: Array.from({ length: gridSize }, () => Array(gridSize).fill(0)),
-  });
+  const [state, setState] = useState(initialState);
 
   const onDragStart = (start) => {
-    console.log(start);
+    if (start.source.droppableId !== 'playerTiles') {
+      const id = document.getElementById(start.source.droppableId);
+      id.style.opacity = '0';
+    }
   };
 
   const onDragEnd = (result) => {
@@ -119,6 +130,10 @@ const Board = () => {
           matrix: newMatrix,
         } : result.state;
       setState(newState);
+      if (sourceId !== 'playerTiles') {
+        const id = document.getElementById(sourceId);
+        id.style.opacity = '100';
+      }
     }
   };
 
