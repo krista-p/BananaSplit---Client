@@ -6,7 +6,7 @@ import styles from '../../styles/Room.module.css';
 import PlayerTiles from './PlayerTiles';
 import { GameStateType, TileType } from '../../types';
 
-const gridSize: number = 6;
+const gridSize: number = 9;
 
 const initialState = {
   playerTiles: [],
@@ -31,7 +31,13 @@ const move = (state, dragSource, dragDestination, source, destination) => {
   if (source.droppableId === 'playerTiles') {
     // NOTE Drag from player tiles to game board
     const dragDestClone = _.cloneDeep(dragDestination);
-    const [removedTile] = dragSourceClone.splice(source.index, 1);
+    const tileToSwap = dragDestClone[dRow][dCol];
+    let removedTile = [];
+    if (tileToSwap) {
+      [removedTile] = dragSourceClone.splice(source.index, 1, tileToSwap);
+    } else {
+      [removedTile] = dragSourceClone.splice(source.index, 1);
+    }
 
     dragDestClone[dRow][dCol] = removedTile;
 
