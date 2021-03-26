@@ -30,12 +30,12 @@ const gridSquare = (props: SquarePropsType) => {
   return (
     <Droppable
       droppableId={squareId}
-      renderClone={(provided) => (
+      renderClone={(provided, snapshot) => (
         <div
-          className={styles.tile}
+          className={snapshot.isDragging ? styles.dragging : styles.tile}
+          ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          ref={provided.innerRef}
         >
           {placeholderTile.letter}
         </div>
