@@ -46,7 +46,10 @@ const gridSquare = (props: SquarePropsType) => {
           {...provided.droppableProps}
           ref={provided.innerRef}
         >
-          <div className={squareContents(squareId) === squareId ? styles.gameSquare : styles.tile}>
+          <div
+            id={squareId}
+            className={squareContents(squareId) === squareId ? styles.gameSquare : styles.tile}
+          >
             {squareContents(squareId)}
           </div>
           {provided.placeholder}

@@ -23,7 +23,7 @@ const Register = ({ closeLogin }) => {
   // NOTE: Can grab {email, password} = e.target.elements in handleSignUp;
   const handleSignUp = async (e) => {
     e.preventDefault();
-    const { user, email, password } = e.target.elements;
+    // const { user, email, password } = e.target.elements;
     closeLogin();
     try {
       await auth.createUserWithEmailAndPassword(newEmail, newPassword);

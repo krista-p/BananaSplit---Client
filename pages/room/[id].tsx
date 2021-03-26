@@ -123,6 +123,7 @@ const Room = () => {
         <div className="flex justify-center items-center border-black border-2 w-3/5 h-3/4 rounded-lg">
           <div>
             {/* <Board /> */}
+            <Board />
           </div>
         </div>
 

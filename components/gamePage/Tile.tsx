@@ -14,7 +14,7 @@ export default function Tile(props: TileProps) {
   return (
     <Draggable
       key={currentTile.id}
-      draggableId={currentTile.id}
+      draggableId={currentTile?.id}
       index={index}
     >
       {(provided, snapshot) => (

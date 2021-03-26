@@ -77,6 +77,11 @@ const Board = () => {
 
   const onDragStart = (start) => {
     console.log(start);
+    if (start.source.droppableId !== 'playerTiles') {
+      const id = document.getElementById(start.source.droppableId);
+      console.log(id)
+      id.style.opacity = '0';
+    }
   };
 
   const onDragEnd = (result) => {
@@ -119,6 +124,10 @@ const Board = () => {
           matrix: newMatrix,
         } : result.state;
       setState(newState);
+    }
+    if (sourceId !== 'playerTiles') {
+      const id = document.getElementById(sourceId);
+      id.style.opacity = '100';
     }
   };
 
