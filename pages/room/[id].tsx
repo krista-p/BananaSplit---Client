@@ -47,14 +47,11 @@ const Room = () => {
     e.preventDefault();
     try {
       socket.emit('startGame');
-      socket.emit('createBunch');
+      socket.emit('createBunch', id);
     } catch (err) {
       console.error(err);
     }
   };
-  socket.on('startGame', () => {
-    console.log('Start Game');
-  });
 
   const [playerTiles, setPlayerTiles] = useState([]);
   const [playerTileCount, setPlayerTileCount] = useState(0);
