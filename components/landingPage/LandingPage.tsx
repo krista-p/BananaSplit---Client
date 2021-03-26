@@ -35,7 +35,7 @@ const LandingPage = () => {
         <Rules />
       </div>
 
-      <div className="self-end mb-8 mr-8 h-1/3 w-1/4 bg-secondary rounded-lg shadow-lg">
+      <div className="self-end mb-8 mr-8 h-60 w-60 sm:h-80 sm:w-80 bg-secondary rounded-full shadow-lg flex items-center justify-center">
         <ButtonContainer
           openLogin={toggleLoginPopup}
           openPlay={togglePlayPopup}

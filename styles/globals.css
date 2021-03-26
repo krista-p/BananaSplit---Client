@@ -20,3 +20,9 @@ a {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .button-landing {
+    @apply bg-secondary hover:bg-primary border-primary border-8 text-primary hover:text-secondary font-extrabold text-lg md:text-3xl rounded-full py-3 px-6 m-2 shadow-md;
+  }
+}
