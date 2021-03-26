@@ -75,8 +75,8 @@ const Board = () => {
     matrix: Array.from({ length: gridSize }, () => Array(gridSize).fill(0)),
   });
 
-  const onDragStart = () => {
-    console.log('DRAGGING TODO');
+  const onDragStart = (start) => {
+    console.log(start);
   };
 
   const onDragEnd = (result) => {
@@ -91,7 +91,6 @@ const Board = () => {
     const [sRow,, sCol] = sourceId;
     const [dRow,, dCol] = destId;
 
-    console.log(dRow, dCol);
     const tileToPlace = sourceId === 'playerTiles' ? state.playerTiles[sourceIndex] : state.matrix[sRow][sCol];
 
     if (sourceId === destId) {
@@ -105,13 +104,12 @@ const Board = () => {
         playerTiles: tiles,
       });
     } else {
-      tileToPlace.onBoard = true;
       // resolve source before state[sourceId]
       // if sourceId === 'playerTiles' -> state.playerTiles : state.matrix
       const dragSource = sourceId !== 'playerTiles' ? state.matrix : state.playerTiles;
       const dragDest = destId !== 'playerTiles' ? state.matrix : state.playerTiles;
       const result = move(state, dragSource, dragDest, source, destination);
-      console.log('result:', result);
+
       const newMatrix = _.cloneDeep(state.matrix);
       newMatrix[dRow][dCol] = tileToPlace;
       const newPlayerTiles = sourceId === 'playerTiles' ? result[sourceId] : state.playerTiles;
@@ -123,13 +121,13 @@ const Board = () => {
       setState(newState);
     }
   };
-  console.log(state);
+
   return (
-    <DragDropContext
-      onDragStart={onDragStart}
-      onDragEnd={onDragEnd}
-    >
-      <div className={styles.room}>
+    <div className={styles.room}>
+      <DragDropContext
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
+      >
         <Grid
           state={state}
           setState={setState}
@@ -139,8 +137,8 @@ const Board = () => {
           state={state}
           setState={setState}
         />
-      </div>
-    </DragDropContext>
+      </DragDropContext>
+    </div>
   );
 };
 

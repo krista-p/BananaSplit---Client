@@ -45,11 +45,12 @@
 }
 
 .dragging {
-  width: 60px;
-  height: 60px;
+  user-select: none;
+  width: 10px;
+  height: 10px;
   border: solid 1px rgb(90, 65, 42);
-  border-radius: 10px;
-  color: rgb(255, 255, 255);
+  border-radius: 100px;
+  color: rgb(255, 0, 0);
   background-color: rgb(155, 87, 42);
   font-size: 25px;
   margin: 0 0.25px 0 0.25px;
