@@ -13,8 +13,8 @@ export default function Tile(props: TileProps) {
 
   return (
     <Draggable
-      key={currentTile.id}
-      draggableId={currentTile.id}
+      key={currentTile?.id}
+      draggableId={currentTile?.id}
       index={index}
     >
       {(provided, snapshot) => (
@@ -24,7 +24,7 @@ export default function Tile(props: TileProps) {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          {currentTile.letter}
+          {currentTile?.letter}
         </div>
       )}
     </Draggable>

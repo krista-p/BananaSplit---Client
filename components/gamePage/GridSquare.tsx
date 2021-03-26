@@ -1,7 +1,7 @@
 import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import styles from '../../styles/Room.module.css';
-import { TileType } from '../../types';
+import { GameStateType, TileType } from '../../types';
 import Tile from './Tile';
 
 type SquarePropsType = {
@@ -37,7 +37,7 @@ const gridSquare = (props: SquarePropsType) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          {placeholderTile.letter}
+          {placeholderTile?.letter}
         </div>
       )}
     >

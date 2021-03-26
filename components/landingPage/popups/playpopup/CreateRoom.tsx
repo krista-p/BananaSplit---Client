@@ -7,6 +7,7 @@ import { alertNotification } from '../alertpopup/AlertPopup';
 
 export const socket = io('http://localhost:4300', {
   withCredentials: true,
+  forceNew: true,
 });
 
 const CreateRoom = () => {
