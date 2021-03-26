@@ -212,7 +212,7 @@ export default function PlayerTiles({ state, setState }) {
                 />
               ))
             }
-            {provided.placeh}
+            {provided.placeholder}
           </div>
         )}
       </Droppable>
