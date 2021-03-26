@@ -138,28 +138,18 @@ const mockBunch = [
 // const gridSize = 6;
 
 const getRandomTile = () => {
-  //////////////////////////////////////////////////////////////////////////
-  // NOTE CODE BELOW IS BROKENISH: RETURNS NULL/UNDEFINED
-  // NOTE IF it PULLS AN EXHAUSTED LETTER FROM THE BUNCH
-  //////////////////////////////////////////////////////////////////////////
   const tileToAdd = {
     letter: '',
     id: '',
   };
-  const index = Math.floor(Math.random() * 26);
-  console.log(`letter: ${index}`);
-  if (mockBunch[index].length > 0) {
-    tileToAdd.id = mockBunch[index][0] + mockBunch[index].length.toString();
-    tileToAdd.letter = mockBunch[index].pop();
-    return tileToAdd;
+  let index = Math.floor(Math.random() * 26);
+  while (mockBunch[index].length < 1) {
+    index = Math.floor(Math.random() * 26);
   }
-  getRandomTile();
-  return null;
+  tileToAdd.id = mockBunch[index][0] + mockBunch[index].length.toString();
+  tileToAdd.letter = mockBunch[index].pop();
+  return tileToAdd;
 };
-//////////////////////////////////////////////////////////////////////////
-// NOTE CODE ABOVE IS BROKENISH: RETURNS NULL/UNDEFINED
-// NOTE IF it PULLS AN EXHAUSTED LETTER FROM THE BUNCH
-//////////////////////////////////////////////////////////////////////////
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
