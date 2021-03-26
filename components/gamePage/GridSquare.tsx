@@ -15,7 +15,7 @@ const gridSquare = (props: SquarePropsType) => {
 
   const squareContents = (squareId: string) => {
     if (!matrix[squareId[0]][squareId[2]]) {
-      return squareId;
+      return '';
     }
     const currentTile: TileType = matrix[squareId[0]][squareId[2]];
     const index: number = parseInt(squareId[0], 10) * 7 + parseInt(squareId[2], 10);
@@ -32,7 +32,11 @@ const gridSquare = (props: SquarePropsType) => {
       droppableId={squareId}
       renderClone={(provided, snapshot) => (
         <div
-          className={snapshot.isDragging ? styles.dragging : styles.tile}
+          className={
+            snapshot.isDragging
+              ? styles.dragging
+              : styles.tile
+          }
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
@@ -48,7 +52,11 @@ const gridSquare = (props: SquarePropsType) => {
         >
           <div
             id={squareId}
-            className={squareContents(squareId) === squareId ? styles.gameSquare : styles.tile}
+            className={
+              !squareContents(squareId)
+                ? styles.gameSquare
+                : styles.tile
+            }
           >
             {squareContents(squareId)}
           </div>

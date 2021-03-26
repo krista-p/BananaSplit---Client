@@ -10,7 +10,7 @@ type TileProps = {
 
 export default function Tile(props: TileProps) {
   const { currentTile, index } = props;
-
+  console.log(currentTile);
   return (
     <Draggable
       key={currentTile.id}

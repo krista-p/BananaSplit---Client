@@ -108,41 +108,46 @@ import Tile from './Tile';
 import styles from '../../styles/Room.module.css';
 
 const mockBunch = [
-  ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A'],
-  ['B', 'B', 'B'],
-  ['C', 'C', 'C'],
-  ['D', 'D', 'D', 'D', 'D', 'D'],
-  ['E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E'],
-  ['F', 'F', 'F'],
-  ['G', 'G', 'G', 'G'],
-  ['H', 'H', 'H'],
-  ['I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I'],
-  ['J', 'J'],
-  ['K', 'K'],
-  ['L', 'L', 'L', 'L', 'L'],
-  ['M', 'M', 'M'],
-  ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
-  ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
-  ['P', 'P', 'P'],
-  ['Q', 'Q'],
-  ['R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R'],
-  ['S', 'S', 'S', 'S', 'S', 'S'],
-  ['T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T'],
-  ['U', 'U', 'U', 'U', 'U', 'U'],
-  ['V', 'V', 'V'],
-  ['W', 'W', 'W'],
-  ['X', 'X'],
-  ['Y', 'Y', 'Y'],
-  ['Z', 'Z'],
+/*0*/  ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A'],
+/*1*/  ['B', 'B', 'B'],
+/*2*/  ['C', 'C', 'C'],
+/*3*/  ['D', 'D', 'D', 'D', 'D', 'D'],
+/*4*/  ['E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E'],
+/*5*/  ['F', 'F', 'F'],
+/*6*/  ['G', 'G', 'G', 'G'],
+/*7*/  ['H', 'H', 'H'],
+/*8*/  ['I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I'],
+/*9*/  ['J', 'J'],
+/*10*/  ['K', 'K'],
+/*11*/  ['L', 'L', 'L', 'L', 'L'],
+/*12*/  ['M', 'M', 'M'],
+/*13*/  ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
+/*14*/  ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'],
+/*15*/  ['P', 'P', 'P'],
+/*16*/  ['Q', 'Q'],
+/*17*/  ['R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R'],
+/*18*/  ['S', 'S', 'S', 'S', 'S', 'S'],
+/*19*/  ['T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T'],
+/*20*/  ['U', 'U', 'U', 'U', 'U', 'U'],
+/*21*/  ['V', 'V', 'V'],
+/*22*/  ['W', 'W', 'W'],
+/*23*/  ['X', 'X'],
+/*24*/  ['Y', 'Y', 'Y'],
+/*25*/  ['Z', 'Z'],
 ];
 // const gridSize = 6;
 
 const getRandomTile = () => {
+  //////////////////////////////////////////////////////////////////////////
+  // NOTE CODE BELOW IS BROKENISH: RETURNS NULL/UNDEFINED
+  // NOTE IF it PULLS AN EXHAUSTED LETTER FROM THE BUNCH
+  //////////////////////////////////////////////////////////////////////////
   const tileToAdd = {
     letter: '',
     id: '',
   };
   const index = Math.floor(Math.random() * 26);
+  console.log(`letter: ${index}`);
   if (mockBunch[index].length > 0) {
     tileToAdd.id = mockBunch[index][0] + mockBunch[index].length.toString();
     tileToAdd.letter = mockBunch[index].pop();
@@ -151,6 +156,10 @@ const getRandomTile = () => {
   getRandomTile();
   return null;
 };
+//////////////////////////////////////////////////////////////////////////
+// NOTE CODE ABOVE IS BROKENISH: RETURNS NULL/UNDEFINED
+// NOTE IF it PULLS AN EXHAUSTED LETTER FROM THE BUNCH
+//////////////////////////////////////////////////////////////////////////
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -175,6 +184,7 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 };
 
 export default function PlayerTiles({ state, setState }) {
+  console.log(state);
   const drawTiles = (drawNumber) => {
     let newPlayerTiles = [];
     for (let i = 0; i < drawNumber; i++) {
@@ -190,7 +200,6 @@ export default function PlayerTiles({ state, setState }) {
   useEffect(() => {
     drawTiles(18);
   }, []);
-
   return (
     <div className={styles.playerTiles}>
       <Droppable
@@ -203,6 +212,7 @@ export default function PlayerTiles({ state, setState }) {
             {...provided.droppableProps}
             ref={provided.innerRef}
           >
+            {console.log(state.playerTiles)}
             {
               state.playerTiles.map((currentTile, index) => (
                 <Tile

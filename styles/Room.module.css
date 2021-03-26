@@ -30,7 +30,7 @@
 .gameSquare {
   width: 62px;
   height: 62px;
-  border: 1px solid lightgrey;
+  border: 1px dotted lightgrey;
 }
 
 .tile {

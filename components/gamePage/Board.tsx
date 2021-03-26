@@ -8,6 +8,11 @@ import { GameStateType, TileType } from '../../types';
 
 const gridSize: number = 6;
 
+const initialState = {
+  playerTiles: [],
+  matrix: Array.from({ length: gridSize }, () => Array(gridSize).fill(0)),
+};
+
 const reorder = (playerTiles: TileType[], startIndex: number, endIndex: number) => {
   const result: TileType[] = Array.from(playerTiles);
   const [removedTile] = result.splice(startIndex, 1);
@@ -70,16 +75,11 @@ const move = (state, dragSource, dragDestination, source, destination) => {
 };
 
 const Board = () => {
-  const [state, setState] = useState({
-    playerTiles: [],
-    matrix: Array.from({ length: gridSize }, () => Array(gridSize).fill(0)),
-  });
+  const [state, setState] = useState(initialState);
 
   const onDragStart = (start) => {
-    console.log(start);
     if (start.source.droppableId !== 'playerTiles') {
       const id = document.getElementById(start.source.droppableId);
-      console.log(id)
       id.style.opacity = '0';
     }
   };
@@ -124,6 +124,10 @@ const Board = () => {
           matrix: newMatrix,
         } : result.state;
       setState(newState);
+      if (sourceId !== 'playerTiles') {
+        const id = document.getElementById(sourceId);
+        id.style.opacity = '100';
+      }
     }
     if (sourceId !== 'playerTiles') {
       const id = document.getElementById(sourceId);
