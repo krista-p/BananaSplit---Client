@@ -21,10 +21,10 @@ export default function Grid({ state, setState, gridSize }) {
     </div>
   );
 
-  const renderRow = (colId: number) => (
+  const renderRow = (rowId: number) => (
     <div className={styles.gameRow}>
       {
-        row.map((_, index: number) => renderSquare(`${colId}-${index}`))
+        row.map((_, index: number) => renderSquare(`${rowId}-${index}`))
       }
     </div>
   );

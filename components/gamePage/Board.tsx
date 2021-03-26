@@ -16,17 +16,58 @@ const reorder = (playerTiles: TileType[], startIndex: number, endIndex: number) 
   return result;
 };
 
-const move = (source, destination, droppableSource, droppableDestination) => {
-  const sourceClone = Array.from(source);
-  const destClone = Array.from(destination);
-  const [removedTile] = sourceClone.splice(droppableSource.index, 1);
+const move = (state, dragSource, dragDestination, source, destination) => {
+  console.log('Move(): source:', dragSource);
+  console.log('Move(): destination:', dragDestination);
+  console.log('Move(): droppableSource:', source);
+  console.log('Move(): droppableDestination:', destination);
+  const stateClone = _.cloneDeep(state);
+  console.log(stateClone);
+  const [sRow,, sCol] = source.droppableId;
+  const [dRow,, dCol] = destination.droppableId;
 
-  destClone.splice(droppableDestination.index, 0, removedTile);
-
+  const dragSourceClone = _.cloneDeep(dragSource);
   const result: any = {};
-  result[droppableSource.droppableId] = sourceClone;
-  result[droppableDestination.droppableId] = destClone;
+  if (source.droppableId === 'playerTiles') {
+    const dragDestClone = _.cloneDeep(dragDestination);
+    const [removedTile] = dragSourceClone.splice(source.index, 1);
 
+    console.log(dragDestClone);
+    console.log(removedTile);
+    dragDestClone[dRow][dCol] = removedTile;
+    console.log(dragDestClone);
+
+    stateClone.playerTiles = dragSourceClone;
+    stateClone.matrix = dragDestClone;
+    console.log(stateClone);
+    result.state = stateClone;
+    result[source.droppableId] = dragSourceClone;
+    result[destination.droppableId] = dragDestClone[dRow][dCol];
+  } else if (destination.droppableId !== 'playerTiles') {
+    const dragDestClone = _.cloneDeep(dragDestination);
+    const removedTile = dragSourceClone[sRow][sCol];
+
+    console.log(dragSourceClone);
+    console.log(removedTile);
+    dragSourceClone[sRow][sCol] = dragDestination[dRow][dCol];
+    dragDestClone[sRow][sCol] = dragDestClone[dRow][dCol];
+    dragDestClone[dRow][dCol] = removedTile;
+    console.log(dragSourceClone);
+
+    stateClone.playerTiles = state.playerTiles;
+    stateClone.matrix = dragDestClone;
+    console.log('state', stateClone);
+    result.state = stateClone;
+    result[source.droppableId] = dragSourceClone[sRow][sCol];
+    result[destination.droppableId] = dragDestClone[dRow][dCol];
+  } /*else {
+    const dragDestClone = _.cloneDeep(dragDestination);
+    const removedTile = dragSourceClone[sRow][sCol];
+
+    dragSourceClone[sRow][sCol] = 0;
+    dragDestClone.splice(destination.index, 0, removedTile);
+    res
+  }*/
   return result;
 };
 
@@ -46,12 +87,14 @@ const Board = () => {
       return;
     }
 
-    const sourceId: string = source.droppableId === 'playerTiles' ? source.droppableId : 'matrix';
+    const sourceId: string = source.droppableId;
     const sourceIndex: number = source.index;
     const destId: string = destination.droppableId;
+    const [sRow,, sCol] = sourceId;
     const [dRow,, dCol] = destId;
 
-    const tileToPlace = state.playerTiles[sourceIndex];
+    console.log(dRow, dCol);
+    const tileToPlace = sourceId === 'playerTiles' ? state.playerTiles[sourceIndex] : state.matrix[sRow][sCol];
 
     if (sourceId === destId) {
       const tiles = reorder(
@@ -64,18 +107,25 @@ const Board = () => {
         playerTiles: tiles,
       });
     } else {
-      const result = move(state[sourceId], destId, source, destination);
+      tileToPlace.onBoard = true;
+      // resolve source before state[sourceId]
+      // if sourceId === 'playerTiles' -> state.playerTiles : state.matrix
+      const dragSource = sourceId !== 'playerTiles' ? state.matrix : state.playerTiles;
+      const dragDest = destId !== 'playerTiles' ? state.matrix : state.playerTiles;
+      const result = move(state, dragSource, dragDest, source, destination);
+      console.log('result:', result);
       const newMatrix = _.cloneDeep(state.matrix);
-      newMatrix[dCol][dRow] = tileToPlace;
-      const newPlayerTiles = result[sourceId];
-      const newState = {
-        playerTiles: newPlayerTiles,
-        matrix: newMatrix,
-      };
+      newMatrix[dRow][dCol] = tileToPlace;
+      const newPlayerTiles = sourceId === 'playerTiles' ? result[sourceId] : state.playerTiles;
+      const newState = sourceId === 'playerTiles'
+        ? {
+          playerTiles: newPlayerTiles,
+          matrix: newMatrix,
+        } : result.state;
       setState(newState);
     }
   };
-
+  console.log(state);
   return (
     <DragDropContext
       onDragStart={onDragStart}

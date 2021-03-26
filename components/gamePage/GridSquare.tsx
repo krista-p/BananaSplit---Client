@@ -1,7 +1,7 @@
 import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import styles from '../../styles/Room.module.css';
-import { TileType, GameStateType } from '../../types';
+import { TileType } from '../../types';
 import Tile from './Tile';
 
 type SquarePropsType = {
@@ -14,11 +14,11 @@ const gridSquare = (props: SquarePropsType) => {
   const { matrix } = state;
 
   const squareContents = (squareId: string) => {
-    if (!matrix[squareId[2]][squareId[0]]) {
+    if (!matrix[squareId[0]][squareId[2]]) {
       return squareId;
     }
-    const currentTile: TileType = matrix[squareId[2]][squareId[0]];
-    const index: number = parseInt(squareId[2], 10) * 7 + parseInt(squareId[0], 10);
+    const currentTile: TileType = matrix[squareId[0]][squareId[2]];
+    const index: number = parseInt(squareId[0], 10) * 7 + parseInt(squareId[2], 10);
     return (
       <Tile
         currentTile={currentTile}
