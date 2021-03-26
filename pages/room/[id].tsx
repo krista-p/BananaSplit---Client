@@ -12,6 +12,7 @@ const Room = () => {
   const [playersReady, setPlayersReady] = useState(false);
   const [playerHost, setPlayerHost] = useState(false);
 
+
   socket.emit('getPlayersInRoom', id, (res) => {
     setPlayersInRoom(res);
   });
@@ -32,6 +33,7 @@ const Room = () => {
     }
   };
 
+  // TODO: Logic to only be pressed once
   const handleReadyPlayer = (e) => {
     e.preventDefault();
     try {
@@ -40,6 +42,18 @@ const Room = () => {
       console.error(err);
     }
   };
+
+  const handleStartGame = (e) => {
+    e.preventDefault();
+    try {
+      socket.emit('startGame');
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  socket.on('startGame', () => {
+    console.log('Start Game');
+  });
 
   const [playerTiles, setPlayerTiles] = useState([]);
   const [playerTileCount, setPlayerTileCount] = useState(0);
@@ -101,7 +115,7 @@ const Room = () => {
               <button className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center" onClick={handleReadyPlayer}>Ready?!</button>
             }
             { playersReady && playerHost &&
-              <button className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center">Start Game!</button>
+              <button className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center" onClick={handleStartGame}>Start Game!</button>
             }
           </div>
         </div>
