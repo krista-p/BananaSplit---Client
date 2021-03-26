@@ -8,10 +8,10 @@ type SquarePropsType = {
   state: GameStateType,
   squareId: string,
 }
-
 const gridSquare = (props: SquarePropsType) => {
   const { state, squareId } = props;
   const { matrix } = state;
+  const placeholderTile = matrix[squareId[0]][squareId[2]];
 
   const squareContents = (squareId: string) => {
     if (!matrix[squareId[0]][squareId[2]]) {
@@ -30,12 +30,15 @@ const gridSquare = (props: SquarePropsType) => {
   return (
     <Droppable
       droppableId={squareId}
-      renderClone={(provided) => (
+      renderClone={(provided, snapshot) => (
         <div
+          className={snapshot.isDragging ? styles.dragging : styles.tile}
+          ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          ref={provided.innerRef}
-        />
+        >
+          {placeholderTile.letter}
+        </div>
       )}
     >
       {(provided) => (
@@ -46,6 +49,7 @@ const gridSquare = (props: SquarePropsType) => {
           <div className={squareContents(squareId) === squareId ? styles.gameSquare : styles.tile}>
             {squareContents(squareId)}
           </div>
+          {provided.placeholder}
         </div>
       )}
     </Droppable>
