@@ -33,23 +33,27 @@ const JoinGame = () => {
     e.preventDefault();
     try {
       if (userName) {
-        socket.emit('joinGame', { gameRoomCode, userName });
+        socket.emit('joinGame', { gameRoomCode, userName }, (res) => {
+          if (res === 'No Room') {
+            alertNotification('No Room Available');
+          } else if (res === 'Room Full') {
+            alertNotification('Room Full');
+          } else {
+            router.push(`/room/${gameRoomCode}`);
+          }
+        });
       } else {
         userName = guestPrivateUserName;
-        console.log(userName);
-        socket.emit('joinGame', { gameRoomCode, userName });
+        socket.emit('joinGame', { gameRoomCode, userName }, (res) => {
+          if (res === 'No Room') {
+            alertNotification('No Room Available');
+          } else if (res === 'Room Full') {
+            alertNotification('Room Full');
+          } else {
+            router.push(`/room/${gameRoomCode}`);
+          }
+        });
       }
-      
-      socket.on('joinGameResponse', ({ res, userName }) => {
-        console.log(res, 'hello');
-        if (res === 'No Room') {
-          alertNotification('No Room Available');
-        } else if (res === 'Room Full') {
-          alertNotification('Room Full');
-        } else {
-          router.push(`/room/${gameRoomCode}`);
-        }
-      })
     } catch (err) {
       console.error(err);
     }

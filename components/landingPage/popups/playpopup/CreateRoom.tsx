@@ -7,6 +7,7 @@ import { alertNotification } from '../alertpopup/AlertPopup';
 
 export const socket = io('http://localhost:4300', {
   withCredentials: true,
+  forceNew: true,
 });
 
 const CreateRoom = () => {
@@ -26,10 +27,8 @@ const CreateRoom = () => {
     try {
       if (currentUser) { 
         const gameRoomCode = createGameRoomCode(6);
-        socket.emit('privateGame', { gameRoomCode, userName });
-        socket.on('gameRoomCreated', (res) => {
+        socket.emit('privateGame', { gameRoomCode, userName }, (res) => {
           if (res) {  
-            console.log('Room Created');
             router.push(`/room/${gameRoomCode}`);
           } else {  
             console.log('Player already has game!');

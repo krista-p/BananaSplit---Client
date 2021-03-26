@@ -174,7 +174,7 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 };
 
 export default function PlayerTiles({ state, setState }) {
-  console.log(state);
+  // console.log(state);
   const drawTiles = (drawNumber) => {
     let newPlayerTiles = [];
     for (let i = 0; i < drawNumber; i++) {
@@ -202,7 +202,7 @@ export default function PlayerTiles({ state, setState }) {
             {...provided.droppableProps}
             ref={provided.innerRef}
           >
-            {console.log(state.playerTiles)}
+            {/* {console.log(state.playerTiles)} */}
             {
               state.playerTiles.map((currentTile, index) => (
                 <Tile

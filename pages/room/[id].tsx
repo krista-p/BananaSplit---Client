@@ -8,15 +8,20 @@ const Room = () => {
   const router = useRouter();
   const { id } = router.query;
   const [playersInRoom, setPlayersInRoom] = useState([]);
+  const [playersReady, setPlayersReady] = useState(false);
+  const [playerHost, setPlayerHost] = useState(false);
+  let readyPressed = 0;
 
-  // Update player list in room
-  socket.emit('getPlayersInRoom', id);
-  useEffect(() => {
-    socket.on('playersInRoom', player => {
-      setPlayersInRoom(player);
-    });
-  }, []);
-
+  socket.emit('getPlayersInRoom', id, (res) => {
+    setPlayersInRoom(res);
+  });
+  socket.emit('roomReady', id, (res) => {
+    setPlayersReady(res);
+  });
+  socket.emit('hostSearch', id, (res) => {
+    setPlayerHost(res);
+  });
+  
   const handleLeaveGame = (e) => {
     e.preventDefault();
     try {
@@ -27,14 +32,50 @@ const Room = () => {
     }
   };
 
+  // TODO: Logic to only be pressed once
   const handleReadyPlayer = (e) => {
     e.preventDefault();
-
     try {
-      socket.emit('playerReady');
+      readyPressed++;
+      socket.emit('playerReady', id);
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const handleStartGame = (e) => {
+    e.preventDefault();
+    try {
+      socket.emit('startGame');
+      socket.emit('createBunch', id);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const [playerTiles, setPlayerTiles] = useState([]);
+  const [playerTileCount, setPlayerTileCount] = useState(0);
+  const getRandomTile = (x) => {
+    for(let i = 0; i < x; i++) {
+      socket.emit('getOneTile');
+      socket.on('returnOneTile', (tile) => {
+        setPlayerTiles(current => [...current, tile]);
+        setPlayerTileCount(current => current + 1);
+      });
+    }
+    console.log(playerTiles, playerTileCount);
+  };
+  
+  const handleDump = (e) => {
+    e.preventDefault();
+    // send tile back into server
+    // then this:
+    getRandomTile(3);
+  };
+
+  const handlePeel = (e) => {
+    e.preventDefault();
+    socket.emit('getOneTile'); 
   };
 
   return (
@@ -60,13 +101,19 @@ const Room = () => {
           <div className="flex flex-col border-black border-2 h-1/4 rounded-md m-2">
             { playersInRoom &&
               playersInRoom.map((player, index) => (
+                // className="text-red-600"
                 <div key={index+player}>Player {index + 1}: {player}</div>
                 ))
-              }
+            }
           </div>
 
           <div className="flex justify-center">
-            <button className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center" onClick={handleReadyPlayer}>Ready?!</button>
+            { !playersReady && readyPressed < 1 &&
+              <button className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center" onClick={handleReadyPlayer}>Ready?!</button>
+            }
+            { playersReady && playerHost &&
+              <button className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center" onClick={handleStartGame}>Start Game!</button>
+            }
           </div>
         </div>
 
@@ -79,10 +126,10 @@ const Room = () => {
 
         <div className="flex flex-col flex-grow m-2">
           {/* NOTE: Dump will handle player giving one tile back and receiving three. */}
-          <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md">Dump!</button>
+          <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md" onClick={handleDump}>Dump!</button>
 
           {/* NOTE: Peel will be handled automatically once player runs out of tiles. Button can still be used to test function though. */}
-          <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md">Peel!</button>
+          <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md" onClick={handlePeel}>Peel!</button>
         </div>
       </div>
 
