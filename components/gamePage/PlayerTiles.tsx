@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import Tile from './Tile';
 import styles from '../../styles/Room.module.css';
 
 const mockBunch = [
@@ -30,139 +31,174 @@ const mockBunch = [
   ['Y', 'Y', 'Y'],
   ['Z', 'Z'],
 ];
+// const gridSize = 6;
 
-const mockBunch2 = ['B', 'I', 'T', 'C', 'H', 'I', 'N'];
-
-const move = (source, destination, droppableSource, droppableDestination) => {
-  const sourceClone = Array.from(source);
-  const destClone = Array.from(destination);
-  const [removed] = sourceClone.splice(droppableSource.index, 1);
-
-  destClone.splice(droppableDestination.index, 0, removed);
-
-  const result = {};
-  result[droppableSource.droppableId] = sourceClone;
-  result[droppableDestination.droppableId] = destClone;
-
-  return result;
+const getRandomTile = () => {
+  const tileToAdd = {
+    letter: '',
+    id: '',
+    onBoard: false,
+  };
+  const index = Math.floor(Math.random() * 26);
+  if (mockBunch[index].length > 0) {
+    tileToAdd.id = mockBunch[index][0] + mockBunch[index].length.toString();
+    tileToAdd.letter = mockBunch[index].pop();
+    return tileToAdd;
+  }
+  getRandomTile();
+  return null;
 };
 
-export default function PlayerTiles() {
-  // const { bunch, setBunch } = useBunchContext();\
-  const getRandomTile = () => {
-    const tileToAdd = {
-      letter: '',
-      id: '',
-    };
-    const index = Math.floor(Math.random() * 26);
-    // if (mockBunch[index].length > 0) {
-    //   tileToAdd.id = mockBunch[index][0] + mockBunch[index].length.toString();
-    //   tileToAdd.letter = mockBunch[index].pop();
-    //   return tileToAdd;
-    // }
-    return mockBunch2;
-    getRandomTile();
-    return null;
-  };
+// const reorder = (list, startIndex, endIndex) => {
+//   const result = Array.from(list);
+//   const [removed] = result.splice(startIndex, 1);
+//   result.splice(endIndex, 0, removed);
 
-  // const getRandomTile = () => {
-  //   const updatedBunch = bunch.slice(0);
-  //   const index = Math.floor(Math.random() * 26);
-  //   if (updatedBunch[index].count === 0) getRandomTile();
-  //   updatedBunch[index].count -= 1;
-  //   // setBunch([...bunch, updatedBunch]);
-  //   const id = bunch[index].letter + bunch[index].count.toString();
-  //   return { letter: bunch[index].letter, id };
-  // };
+//   return result;
+// };
 
+// const move = (source, destination, droppableSource, droppableDestination) => {
+//   const sourceClone = Array.from(source);
+//   const destClone = Array.from(destination);
+//   const [removed] = sourceClone.splice(droppableSource.index, 1);
+
+//   destClone.splice(droppableDestination.index, 0, removed);
+
+//   const result = {};
+//   result[droppableSource.droppableId] = sourceClone;
+//   result[droppableDestination.droppableId] = destClone;
+
+//   return result;
+// };
+
+export default function PlayerTiles({ state, setState }) {
+  console.log(state);
   const drawTiles = (drawNumber) => {
     let newPlayerTiles = [];
     for (let i = 0; i < drawNumber; i++) {
       const newTile = getRandomTile();
       newPlayerTiles = [...newPlayerTiles, newTile];
       setState({
+        ...state,
         playerTiles: newPlayerTiles,
       });
     }
   };
 
   useEffect(() => {
-    drawTiles(10);
+    drawTiles(18);
   }, []);
-
-  const reorder = (list, startIndex, endIndex) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-
-    return result;
-  };
-
-  const onDragEnd = (result) => {
-    const { source, destination } = result;
-
-    if (!destination) {
-      return;
-    }
-    const sInd = source.droppableId;
-    const dInd = destination.droppableId;
-
-    if (sInd === dInd) {
-      const tiles = reorder(
-        state.playerTiles,
-        result.source.index,
-        result.destination.index,
-      );
-      setState({ playerTiles: tiles });
-    } /*else {
-      const result = move(playerTiles[sInd], gridTiles[dInd], source, destination);
-    }*/
-  };
-
-  const onDragStart = () => {
-    console.log('dragging');
-  };
-
+  console.log(state.playerTiles)
   return (
-    <DragDropContext
-      onDragStart={onDragStart}
-      onDragEnd={onDragEnd}
-    >
-      <div className={styles.playerTiles}>
-        <Droppable
-          droppableId="playerTiles"
-          direction="horizontal"
-        >
-          {(provided) => (
-            <div
-              className={styles.playerTiles}
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              {
-                state.playerTiles.map((currentTile, index) => (
-                  <Draggable
-                    key={currentTile.id}
-                    draggableId={currentTile.id}
-                    index={index}
-                  >
-                    {(provided, snapshot) => (
-                      <div
-                        className={snapshot.isDragging ? styles.dragging : styles.tile}
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        {currentTile.letter}
-                      </div>
-                    )}
-                  </Draggable>
-                ))
-              }
-            </div>
-          )}
-        </Droppable>
-      </div>
-    </DragDropContext>
+    <div className={styles.playerTiles}>
+      <Droppable
+        droppableId="playerTiles"
+        direction="horizontal"
+      >
+        {(provided) => (
+          <div
+            className={styles.playerTiles}
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+          >
+            {
+              state.playerTiles.map((currentTile, index) => (
+                <Tile
+                  currentTile={currentTile}
+                  index={index}
+                />
+              ))
+            }
+          </div>
+        )}
+      </Droppable>
+    </div>
   );
 }
+
+
+
+
+
+
+// import { useEffect, useState } from 'react';
+// import { Droppable } from 'react-beautiful-dnd';
+// import { io } from 'socket.io-client';
+// import Tile from './Tile';
+// import styles from '../../styles/Room.module.css';
+// import { socket } from '../landingPage/popups/playpopup/CreateRoom';
+
+// socket.emit('store');
+// const getRandomTile = (x) => {
+//   socket.emit('getOneTile');
+//   // const tileToAdd = {
+//   //   letter: '',
+//   //   id: '',
+//   // };
+//   // const index = Math.floor(Math.random() * 26);
+//   // if (mockBunch[index].length > 0) {
+//   //   tileToAdd.id = mockBunch[index][0] + mockBunch[index].length.toString();
+//   //   tileToAdd.letter = mockBunch[index].pop();
+//   //   return tileToAdd;
+//   // }
+//   if (x !== 0) getRandomTile(x - 1);
+// };
+
+// export default function PlayerTiles({ state, setState }) {
+//   const { playerTiles } = state;
+//   //   const drawTiles = (drawNumber) => {
+//   //     let newPlayerTiles = [];
+//   //     for (let i = 0; i < drawNumber; i++) {
+//   //       const newTile = getRandomTile();
+//   //       newPlayerTiles = [...newPlayerTiles, newTile];
+//   //       setState({
+//   //         ...state,
+//   //         playerTiles: newPlayerTiles,
+//   //       });
+//   //     }
+//   //   };
+
+//   useEffect(() => {
+//     getRandomTile(10);
+//   }, []);
+
+//   // const [playerTiles, setPlayerTiles] = useState([]);
+//   socket.on('returnOneTile', (tile) => {
+//     setState({ playerTiles: [...playerTiles, tile] });
+//   });
+//   const handlePeel = (e) => {
+//     e.preventDefault();
+//     io('localhost:4300').emit('getOneTile');
+//   };
+//   const handleDump = (e) => {
+//     e.preventDefault();
+//     socket.emit('storeOneTile');
+//     getRandomTile(3);
+//   };
+
+//   return (
+//     <div className={styles.playerTiles}>
+//       <Droppable
+//         droppableId="playerTiles"
+//         direction="horizontal"
+//       >
+//         {(provided) => (
+//           <div
+//             className={styles.playerTiles}
+//             {...provided.droppableProps}
+//             ref={provided.innerRef}
+//           >
+//             {
+//               state.playerTiles.map((currentTile, index) => (
+//                 <Tile
+//                   currentTile={currentTile}
+//                   index={index}
+//                 />
+//               ))
+//             }
+//           </div>
+//         )}
+//       </Droppable>
+//     </div>
+//   );
+// }

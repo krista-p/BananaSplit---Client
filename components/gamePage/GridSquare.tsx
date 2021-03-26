@@ -1,20 +1,36 @@
 import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import styles from '../../styles/Room.module.css';
+import { TileType } from '../../types';
+import Tile from './Tile';
 
-const gridSquare = (state, setState, squareId) => {
+type SquarePropsType = {
+  state: GameStateType,
+  squareId: string,
+}
+
+const gridSquare = (props: SquarePropsType) => {
+  const { state, squareId } = props;
   const { matrix } = state;
-  
-  const squareContents = (squareId) => {
-    if (!matrix[squareId[2]][squareId[0]]) {
+
+  const squareContents = (squareId: string) => {
+    if (!matrix[squareId[0]][squareId[2]]) {
       return squareId;
     }
-    return matrix[squareId[2]][squareId[0]].letter;
+    const currentTile: TileType = matrix[squareId[0]][squareId[2]];
+    const index: number = parseInt(squareId[0], 10) * 7 + parseInt(squareId[2], 10);
+    return (
+      <Tile
+        currentTile={currentTile}
+        index={index}
+      />
+    );
   };
+
   return (
     <Droppable
       droppableId={squareId}
-      renderClone={(provided, snapshot, rubric) => (
+      renderClone={(provided) => (
         <div
           {...provided.draggableProps}
           {...provided.dragHandleProps}
@@ -27,13 +43,7 @@ const gridSquare = (state, setState, squareId) => {
           {...provided.droppableProps}
           ref={provided.innerRef}
         >
-          <div
-            className={
-              squareContents(squareId) === squareId
-                ? styles.gameSquare
-                : styles.tile
-            }
-          >
+          <div className={squareContents(squareId) === squareId ? styles.gameSquare : styles.tile}>
             {squareContents(squareId)}
           </div>
         </div>
