@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import { io } from 'socket.io-client';
 import { createGameRoomCode } from '../../../lib/utils/createGameRoomCode';

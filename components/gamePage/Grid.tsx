@@ -11,9 +11,8 @@ export default function Grid({ state, setState, gridSize }) {
   }, []);
 
   /* NOTE Start game board render functions */
-
   const renderSquare = (squareId: string) => (
-    <div className={styles.gameSquare}>
+    <div className={styles.gameSquare} key={`square${squareId}`}>
       <GridSquare
         state={state}
         squareId={squareId}
@@ -22,7 +21,7 @@ export default function Grid({ state, setState, gridSize }) {
   );
 
   const renderRow = (rowId: number) => (
-    <div className={styles.gameRow}>
+    <div className={styles.gameRow} key={`row${rowId}`}>
       {
         row.map((_, index: number) => renderSquare(`${rowId}-${index}`))
       }
