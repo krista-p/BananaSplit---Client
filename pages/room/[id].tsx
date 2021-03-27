@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { DragDropContext } from 'react-beautiful-dnd';
 import Board from '../../components/gamePage/Board';
 import { alertNotification } from '../../components/landingPage/popups/alertpopup/AlertPopup';
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
@@ -28,7 +29,6 @@ const Room = () => {
       setPlayersInRoom(res);
     });
 
-
     socket.emit('hostSearch', id, (res) => {
       setPlayerHost(res);
     });
@@ -36,10 +36,9 @@ const Room = () => {
     socket.on('receiveTiles', (tiles) => {
       setState({
         ...state,
-        playerTiles: tiles[socket.id]
+        playerTiles: tiles[socket.id],
       });
     });
-
   }, [socket]);
 
   socket.emit('getPlayersReady', id, useCallback((res) => {
@@ -49,7 +48,7 @@ const Room = () => {
   socket.emit('roomReady', id, useCallback((res) => {
     setRoomReady(res);
   }, []));
-  
+
   const handleLeaveGame = (e) => {
     e.preventDefault();
     try {
@@ -87,7 +86,7 @@ const Room = () => {
     e.preventDefault();
     try {
       if (state.playerTiles.length === 0) {
-        socket.emit('peelAction', id); 
+        socket.emit('peelAction', id);
       } else {
         alertNotification('Tiles still on board!');
       }
@@ -95,8 +94,6 @@ const Room = () => {
       console.error(err);
     }
   }, []);
-
-
 
   const handleDump = (e) => {
     e.preventDefault();
@@ -110,7 +107,7 @@ const Room = () => {
 
   const playerReady = (player) => {
     if (playersReady.indexOf(player) !== -1) {
-      return "text-primary"
+      return 'text-primary';
     }
   };
 
@@ -119,8 +116,14 @@ const Room = () => {
       <NavBar />
 
       <div className="flex flex-col items-center">
-        <div>Game Room Code: {id} </div>
-        <div>Socket ID: {socket.id} </div>
+        <div>
+          Game Room Code:
+          {id}
+        </div>
+        <div>
+          Socket ID:
+          {socket.id}
+        </div>
       </div>
 
       <div className="flex w-screen h-3/4 justify-center">
@@ -135,21 +138,23 @@ const Room = () => {
 
           {/* // TODO: Highlight players that are ready */}
           <div className="flex flex-col border-black border-2 h-1/4 rounded-md m-2">
-            { playersInRoom &&
-              playersInRoom.map((player, index) => (
-                // 
-                <div className={playerReady(player)} key={index+player}>Player {index + 1}: {player}</div>
-                ))
-            }
+            { playersInRoom
+              && playersInRoom.map((player, index) => (
+                //
+                <div className={playerReady(player)} key={index + player}>
+                  Player
+                  {index + 1}
+                  :
+                  {player}
+                </div>
+              ))}
           </div>
 
           <div className="flex justify-center">
-            { !roomReady && readyPressed < 1 &&
-              <button className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center" onClick={handleReadyPlayer}>Ready?!</button>
-            }
-            { roomReady && playerHost &&
-              <button className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center" onClick={handleStartGame}>Start Game!</button>
-            }
+            { !roomReady && readyPressed < 1
+              && <button className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center" onClick={handleReadyPlayer}>Ready?!</button>}
+            { roomReady && playerHost
+              && <button className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center" onClick={handleStartGame}>Start Game!</button>}
           </div>
         </div>
 

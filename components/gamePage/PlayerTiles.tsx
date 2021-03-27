@@ -20,7 +20,6 @@ const getRandomTile = () => {
 };
 
 export default function PlayerTiles({ state, setState }) {
-  console.log(state);
   const drawTiles = (drawNumber) => {
     let newPlayerTiles = [];
     for (let i = 0; i < drawNumber; i++) {
