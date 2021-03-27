@@ -54,6 +54,7 @@ const Room = () => {
     }
   };
 
+  // TODO: Hide button after game starts
   const handleStartGame = (e) => {
     e.preventDefault();
     try {
@@ -77,6 +78,7 @@ const Room = () => {
     // then this:
     console.log(state.playerTiles[0]);
     console.log(state.playerTiles, 'current tiles');
+    socket.emit('tileCheck', id);
     // getRandomTile(3);
   };
 

@@ -34,7 +34,9 @@ const JoinGame = () => {
     try {
       if (userName) {
         socket.emit('joinGame', { gameRoomCode, userName }, (res) => {
-          if (res === 'No Room') {
+          if (res === 'Game Active') {
+            alertNotification('Game in Progress!');
+          } else if (res === 'No Room') {
             alertNotification('No Room Available');
           } else if (res === 'Room Full') {
             alertNotification('Room Full');
@@ -45,7 +47,9 @@ const JoinGame = () => {
       } else {
         userName = guestPrivateUserName;
         socket.emit('joinGame', { gameRoomCode, userName }, (res) => {
-          if (res === 'No Room') {
+          if (res === 'Game Active') {
+            alertNotification('Game in Progress!');
+          } else if (res === 'No Room') {
             alertNotification('No Room Available');
           } else if (res === 'Room Full') {
             alertNotification('Room Full');
