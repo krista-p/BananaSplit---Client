@@ -1,6 +1,7 @@
   import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import Board from '../../components/gamePage/Board';
+import { alertNotification } from '../../components/landingPage/popups/alertpopup/AlertPopup';
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
 import NavBar from '../../components/Navbar';
 
@@ -15,23 +16,39 @@ const Room = () => {
   const router = useRouter();
   const { id } = router.query;
   const [playersInRoom, setPlayersInRoom] = useState([]);
-  const [playersReady, setPlayersReady] = useState(false);
+  const [playersReady, setPlayersReady] = useState([]);
+  const [roomReady, setRoomReady] = useState(false);
   const [playerHost, setPlayerHost] = useState(false);
-
-  // TODO: Moving state up to room
   const [state, setState] = useState(initialState);
 
   let readyPressed = 0;
 
-  socket.emit('getPlayersInRoom', id, (res) => {
-    setPlayersInRoom(res);
-  });
-  socket.emit('roomReady', id, (res) => {
+  useEffect(() => {
+    socket.emit('getPlayersInRoom', id, (res) => {
+      setPlayersInRoom(res);
+    });
+
+
+    socket.emit('hostSearch', id, (res) => {
+      setPlayerHost(res);
+    });
+
+    socket.on('receiveTiles', (tiles) => {
+      setState({
+        ...state,
+        playerTiles: tiles[socket.id]
+      });
+    });
+
+  }, [socket]);
+
+  socket.emit('getPlayersReady', id, useCallback((res) => {
     setPlayersReady(res);
-  });
-  socket.emit('hostSearch', id, (res) => {
-    setPlayerHost(res);
-  });
+  }, []));
+
+  socket.emit('roomReady', id, useCallback((res) => {
+    setRoomReady(res);
+  }, []));
   
   const handleLeaveGame = (e) => {
     e.preventDefault();
@@ -55,21 +72,29 @@ const Room = () => {
   };
 
   // TODO: Hide button after game starts
-  const handleStartGame = (e) => {
+  const handleStartGame = useCallback((e) => {
     e.preventDefault();
     try {
       socket.emit('startGame', id);
     } catch (err) {
       console.error(err);
     }
-  };
+  }, []);
 
-  socket.on('receiveTiles', (tiles) => {
-    setState({
-      ...state,
-      playerTiles: tiles[socket.id]
-    });
-  });
+  const handlePeel = useCallback((e) => {
+    e.preventDefault();
+    try {
+      if (state.playerTiles.length === 0) {
+        socket.emit('peelAction', id); 
+      } else {
+        alertNotification('Tiles still on board!');
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
+
+
 
   
   const handleDump = (e) => {
@@ -82,9 +107,10 @@ const Room = () => {
     // getRandomTile(3);
   };
 
-  const handlePeel = (e) => {
-    e.preventDefault();
-    socket.emit('getOneTile'); 
+  const playerReady = (player) => {
+    if (playersReady.indexOf(player) !== -1) {
+      return "text-primary"
+    }
   };
 
   return (
@@ -110,17 +136,17 @@ const Room = () => {
           <div className="flex flex-col border-black border-2 h-1/4 rounded-md m-2">
             { playersInRoom &&
               playersInRoom.map((player, index) => (
-                // className="text-red-600"
-                <div key={index+player}>Player {index + 1}: {player}</div>
+                // 
+                <div className={playerReady(player)} key={index+player}>Player {index + 1}: {player}</div>
                 ))
             }
           </div>
 
           <div className="flex justify-center">
-            { !playersReady && readyPressed < 1 &&
+            { !roomReady && readyPressed < 1 &&
               <button className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center" onClick={handleReadyPlayer}>Ready?!</button>
             }
-            { playersReady && playerHost &&
+            { roomReady && playerHost &&
               <button className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center" onClick={handleStartGame}>Start Game!</button>
             }
           </div>
