@@ -49,15 +49,19 @@ const Room = () => {
   const handleStartGame = (e) => {
     e.preventDefault();
     try {
-      socket.emit('startGame', id, (res) => {
-        setPlayerTiles(res);
-      });
+      socket.emit('startGame', id);
     } catch (err) {
       console.error(err);
     }
   };
+  socket.on('receiveTiles', (tiles) => {
+    setPlayerTiles(tiles);
+  });
 
 
+
+
+  
   const getRandomTile = (x) => {
     for(let i = 0; i < x; i++) {
       socket.emit('getOneTile');
