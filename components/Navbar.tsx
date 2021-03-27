@@ -13,28 +13,32 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="font-sans flex flex-col justify-between w-full py-2 px-6 bg-secondary shadow-lg md:flex-row md:items-center">
-      <div className="w-1/4 h=full cursor-pointer">
+    <nav className="flex justify-between w-full px-8 bg-secondary shadow-lg flex-row md:items-center">
+      <div className="cursor-pointer">
         <Link href="/">
           <Image
             src="/bananasplitlogo.png"
             alt="BananaSplit Logo"
-            width="160"
-            height="40"
+            width="195"
+            height="62"
           />
         </Link>
       </div>
       { currentUser
-        ? <button type="button" onClick={toggleProfilePopup} className="bg-primary hover:bg-primary_hover text-secondary font-bold py-2 px-4 rounded shadow-md">O</button>
+        ? <button type="button" onClick={toggleProfilePopup} className="profile-button">O</button>
         : null }
       { currentUser && profileOpen
         && (
-        <div>
+        <div className="absolute bg-secondary border-4 border-primary h-24 right-12 w-32 mt-16 md:mt-40 origin-top-right rounded-md shadow-lg md:w-32">
           <Link href="/profile/[id]" as={auth.currentUser ? `/profile/${auth.currentUser.displayName}` : null}>
-            <button type="button" className="bg-primary hover:bg-primary_hover text-secondary font-bold py-2 px-4 rounded shadow-md">profile</button>
+            <div className="profile-tab">
+              profile
+            </div>
           </Link>
           <Link href="/">
-            <button type="button" onClick={() => auth.signOut()} className="bg-primary hover:bg-primary_hover text-secondary font-bold py-2 px-4 rounded shadow-md">log out</button>
+            <div onClick={() => auth.signOut()} className="profile-tab">
+              log out
+            </div>
           </Link>
         </div>
         ) }

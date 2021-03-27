@@ -23,6 +23,50 @@ a {
 
 @layer components {
   .button-landing {
-    @apply bg-secondary hover:bg-primary border-primary border-8 text-primary hover:text-secondary font-extrabold text-lg md:text-3xl rounded-full py-3 px-6 m-2 shadow-md;
+    @apply bg-secondary hover:bg-primary border-primary border-8 text-primary hover:text-secondary font-extrabold text-lg md:text-3xl rounded-full py-3 px-6 m-2 shadow-md focus:outline-none focus:ring-4 focus:ring-white;
+  }
+
+  .profile-button {
+    @apply bg-primary hover:bg-primary_hover text-secondary font-bold h-12 w-12 mt-1 rounded-full shadow-lg focus:outline-none focus:ring-white focus:ring-4;
+  }
+
+  .profile-tab {
+    @apply w-full h-1/2 cursor-pointer font-bold text-lg md:text-3xl text-primary border-b-4 border-primary hover:bg-primary hover:text-secondary text-center;
+  }
+
+  .popup-big {
+    @apply w-3/4 md:w-1/2 h-auto inset-x-20 md:inset-x-1/4 top-40 md:top-24 bottom-24 fixed border-secondary border-8 bg-white shadow-lg rounded-lg overflow-y-scroll;
+  }
+
+  .open-tab-left {
+    @apply h-10 md:h-16 text-2xl text-primary w-2/3 border-t-4 border-r-4 border-primary focus:outline-none;
+  }
+
+  .open-tab-right {
+    @apply h-10 md:h-16 text-2xl text-primary w-2/3 border-t-4 border-l-4 border-primary focus:outline-none;
+  }  
+
+  .closed-tab {
+    @apply h-10 md:h-16 text-2xl text-secondary w-2/3 border-b-4 border-primary focus:outline-none;
+  }
+
+  .close-button {
+    @apply h-10 md:h-16 w-12 md:w-24 text-primary text-lg md:text-4xl font-bold bg-secondary border-4 border-primary hover:bg-primary hover:text-secondary;
+  }
+
+  .input-field {
+    @apply focus:outline-none focus:ring-4 focus:ring-primary bg-secondary text-primary rounded-full py-2 md:py-3 px-4 md:px-6 placeholder-primary_light;
+  }
+
+  .input-field-small {
+    @apply focus:outline-none focus:ring-4 focus:ring-primary bg-secondary text-primary rounded-full py-2 md:py-2 px-2 md:px-4 placeholder-primary_light;
+  }
+
+  .popup-title-small {
+    @apply m-2 font-bold text-lg md:text-2xl text-primary;
+  }
+
+  .button-yellow {
+    @apply bg-primary hover:bg-primary_hover text-secondary font-bold text-xl md:text-2xl rounded-full py-2 px-4 md:px-5 m-2 shadow-md focus:outline-none focus:ring-secondary focus:ring-4;
   }
 }

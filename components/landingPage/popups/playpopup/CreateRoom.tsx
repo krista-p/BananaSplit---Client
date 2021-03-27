@@ -44,7 +44,7 @@ const CreateRoom = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="m-4 font-bold text-5xl text-secondary">
+      <div className="mt-2 md:mt-4 font-bold text-3xl md:text-5xl text-secondary">
         <h1>Create a room!</h1>
       </div>
 
@@ -63,7 +63,7 @@ const CreateRoom = () => {
         </div>
 
         <div className="m-4 flex flex-col items-center">
-          <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md" onClick={handleCreateGame}>Go bananas!</button>
+          <button type="submit" className="button-yellow" onClick={handleCreateGame}>Go bananas!</button>
         </div>
       </form>
 

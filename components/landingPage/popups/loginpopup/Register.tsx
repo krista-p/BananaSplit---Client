@@ -42,28 +42,28 @@ const Register = ({ closeLogin }) => {
   return (
     <div className="flex flex-col items-center">
 
-      <div className="font-bold text-4xl text-secondary">
+      <div className="mt-2 md:mt-4 font-bold text-xl md:text-2xl text-secondary">
         <h1>Register</h1>
       </div>
 
       <form onSubmit={handleSignUp}>
-        <div className="m-2 flex flex-col items-center">
-          <h2 className="m-2 font-bold text-2xl text-primary">Email</h2>
-          <input type="text" name="email" placeholder="banana@peel.com..." onChange={handleNewEmailChange} className="focus:outline-none focus:ring-4 focus:ring-primary bg-secondary text-primary rounded-full py-3 px-6 placeholder-primary_light" />
+        <div className="flex flex-col items-center">
+          <h2 className="popup-title-small">Email</h2>
+          <input type="text" name="email" placeholder="banana@peel.com..." onChange={handleNewEmailChange} className="input-field-small" />
         </div>
 
-        <div className="m-4 flex flex-col items-center">
-          <h2 className="m-2 font-bold text-2xl text-primary">Username</h2>
-          <input type="text" name="userName" placeholder="bananaKing..." onChange={handleUserName} className="focus:outline-none focus:ring-4 focus:ring-primary bg-secondary text-primary rounded-full py-3 px-6 placeholder-primary_light" />
+        <div className="flex flex-col items-center">
+          <h2 className="popup-title-small">Username</h2>
+          <input type="text" name="userName" placeholder="bananaKing..." onChange={handleUserName} className="input-field-small" />
         </div>
 
-        <div className="m-4 flex flex-col items-center">
-          <h2 className="m-2 font-bold text-2xl text-primary">Password</h2>
-          <input type="password" name="password" placeholder="bananabread..." onChange={handleNewPasswordChange} className="focus:outline-none focus:ring-4 focus:ring-primary bg-secondary text-primary rounded-full py-3 px-6 placeholder-primary_light" />
+        <div className="flex flex-col items-center">
+          <h2 className="popup-title-small">Password</h2>
+          <input type="password" name="password" placeholder="bananabread..." onChange={handleNewPasswordChange} className="input-field-small" />
         </div>
 
-        <div className="m-4 flex flex-col items-center">
-          <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md">Become the banana!</button>
+        <div className="m-2 md:m-4 flex flex-col items-center">
+          <button type="submit" className="button-yellow">Become the banana!</button>
         </div>
 
       </form>

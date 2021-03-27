@@ -68,36 +68,33 @@ const JoinGame = () => {
   return (
     <div className="flex flex-col items-center">
 
-      <div className="m-4 font-bold text-5xl text-secondary">
+      <div className="mt-2 md:mt-4 font-bold text-3xl md:text-5xl text-secondary">
         <h1>Join A Room</h1>
       </div>
 
-      <div className="flex flex-row">
+      <div className="m-2 flex flex-row">
         <form onSubmit={handleSumbitJoinPrivateGame}>
-          <div className="m-4 flex flex-col items-center">
-            <h2 className="m-2 font-bold text-2xl text-primary">Private</h2>
+          <div className="m-2 md:m-4 flex flex-col items-center">
+            <h2 className="popup-title-small">private</h2>
             {
               !currentUser &&
-              <input type="text" placeholder="enter username..." className="focus:outline-none focus:ring-4 focus:ring-primary bg-secondary text-primary rounded-full py-3 px-6 m-2" value={guestPrivateUserName} onChange={handlePrivateUserName} />
+              <input type="text" placeholder="username..." className="my-4 w-full input-field" value={guestPrivateUserName} onChange={handlePrivateUserName} />
             }
 
-            <input type="text" placeholder="enter room code..." className="focus:outline-none focus:ring-4 focus:ring-primary bg-secondary text-primary rounded-full py-3 px-6" value={gameRoomCode} onChange={handleGameCode} />
+            <input type="text" placeholder="room code..." className="my-4 w-full input-field" value={gameRoomCode} onChange={handleGameCode} />
 
-            <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md">Go bananas!</button>
+            <button type="submit" className="w-full button-yellow">go bananas!</button>
           </div>
         </form>
 
         <form onSubmit={handleRandomGame}>
-          <div className="m-4 flex flex-col items-center">
-            <h2 className="m-2 font-bold text-2xl text-primary">Random</h2>
+          <div className="m-2 md:m-4 flex flex-col items-center">
+            <h2 className="popup-title-small">random</h2>
             {
-              !currentUser &&
-              <input type="text" placeholder="enter username..." className="focus:outline-none focus:ring-4 focus:ring-primary bg-secondary text-primary rounded-full py-3 px-6 m-2" value={guestRandomUserName} onChange={handleRandomUserName} />
+              !currentUser
+              && <input type="text" placeholder="username..." className="my-4 w-full input-field" value={guestRandomUserName} onChange={handleRandomUserName} />
             }
-
-            <div className="m-4 flex flex-col items-center">
-              <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md">Go bananas!</button>
-            </div>
+            <button type="submit" className="w-full button-yellow">go bananas!</button>
           </div>
         </form>
       </div>
