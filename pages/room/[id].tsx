@@ -10,9 +10,6 @@ const Room = () => {
   const [playersInRoom, setPlayersInRoom] = useState([]);
   const [playersReady, setPlayersReady] = useState(false);
   const [playerHost, setPlayerHost] = useState(false);
-  const [playerTiles, setPlayerTiles] = useState([]);
-  const [playerTileCount, setPlayerTileCount] = useState(0);
-
   let readyPressed = 0;
 
   socket.emit('getPlayersInRoom', id, (res) => {
@@ -50,24 +47,31 @@ const Room = () => {
   const handleStartGame = (e) => {
     e.preventDefault();
     try {
-      socket.emit('startGame', id);
+      socket.emit('startGame');
+      socket.emit('createBunch', id);
     } catch (err) {
       console.error(err);
     }
   };
 
-  socket.on('receiveTiles', (tiles) => {
-    setPlayerTiles(tiles[socket.id]);
-  });
-
+  const [playerTiles, setPlayerTiles] = useState([]);
+  const [playerTileCount, setPlayerTileCount] = useState(0);
+  const getRandomTile = (x) => {
+    for(let i = 0; i < x; i++) {
+      socket.emit('getOneTile');
+      socket.on('returnOneTile', (tile) => {
+        setPlayerTiles(current => [...current, tile]);
+        setPlayerTileCount(current => current + 1);
+      });
+    }
+    console.log(playerTiles, playerTileCount);
+  };
   
   const handleDump = (e) => {
     e.preventDefault();
     // send tile back into server
     // then this:
-    console.log(playerTiles[0]);
-    console.log(playerTiles, 'current tiles');
-    // getRandomTile(3);
+    getRandomTile(3);
   };
 
   const handlePeel = (e) => {
