@@ -54,24 +54,11 @@ const Room = () => {
       console.error(err);
     }
   };
+
   socket.on('receiveTiles', (tiles) => {
-    setPlayerTiles(tiles);
+    setPlayerTiles(tiles[socket.id]);
   });
 
-
-
-
-  
-  const getRandomTile = (x) => {
-    for(let i = 0; i < x; i++) {
-      socket.emit('getOneTile');
-      socket.on('returnOneTile', (tile) => {
-        setPlayerTiles(current => [...current, tile]);
-        setPlayerTileCount(current => current + 1);
-      });
-    }
-    console.log(playerTiles, playerTileCount);
-  };
   
   const handleDump = (e) => {
     e.preventDefault();
