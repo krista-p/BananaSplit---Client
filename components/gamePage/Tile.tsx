@@ -10,10 +10,10 @@ type TileProps = {
 
 export default function Tile(props: TileProps) {
   const { currentTile, index } = props;
-  console.log(currentTile);
+  // console.log(currentTile);
   return (
     <Draggable
-      key={currentTile.id}
+      key={currentTile?.id}
       draggableId={currentTile?.id}
       index={index}
     >
@@ -24,7 +24,7 @@ export default function Tile(props: TileProps) {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          {currentTile.letter}
+          {currentTile?.letter}
         </div>
       )}
     </Draggable>

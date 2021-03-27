@@ -14,7 +14,7 @@ const initialState = {
 };
 
 const reorder = (playerTiles: TileType[], startIndex: number, endIndex: number) => {
-  const result: TileType[] = Array.from(playerTiles);
+  const result: TileType[] = _.cloneDeep(playerTiles);
   const [removedTile] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removedTile);
 
@@ -67,7 +67,6 @@ const move = (state, dragSource, dragDestination, source, destination) => {
     const dragDestClone = _.cloneDeep(dragDestination);
     const removedTile = dragSourceClone[sRow][sCol];
 
-    dragSourceClone[sRow][sCol] = 0;
     dragDestClone.splice(destination.index, 0, removedTile);
 
     stateClone.playerTiles = dragDestClone;
@@ -75,7 +74,8 @@ const move = (state, dragSource, dragDestination, source, destination) => {
 
     result.state = stateClone;
     result[source.droppableId] = dragSourceClone[sRow][sCol];
-    result[destination.droppableId] = dragSourceClone[dRow][dCol];
+    result[destination.droppableId] = dragSourceClone[sRow][sCol];
+    dragSourceClone[sRow][sCol] = 0;
   }
   return result;
 };
@@ -105,15 +105,20 @@ const Board = () => {
     const tileToPlace = sourceId === 'playerTiles' ? state.playerTiles[sourceIndex] : state.matrix[sRow][sCol];
 
     if (sourceId === destId) {
-      const tiles = reorder(
-        state.playerTiles,
-        result.source.index,
-        result.destination.index,
-      );
-      setState({
-        ...state,
-        playerTiles: tiles,
-      });
+      if (sourceId === 'playerTiles') {
+        const tiles = reorder(
+          state.playerTiles,
+          result.source.index,
+          result.destination.index,
+        );
+        setState({
+          ...state,
+          playerTiles: tiles,
+        });
+      } else {
+        const matrixClone = _.cloneDeep(state.matrix);
+        setState({...state, matrix: matrixClone});
+      }
     } else {
       // resolve source before state[sourceId]
       // if sourceId === 'playerTiles' -> state.playerTiles : state.matrix
@@ -122,8 +127,13 @@ const Board = () => {
       const result = move(state, dragSource, dragDest, source, destination);
 
       const newMatrix = _.cloneDeep(state.matrix);
-      newMatrix[dRow][dCol] = tileToPlace;
       const newPlayerTiles = sourceId === 'playerTiles' ? result[sourceId] : state.playerTiles;
+      if (destId !== 'playerTiles') {
+        newMatrix[dRow][dCol] = tileToPlace;
+      } else {
+        newMatrix[sRow][sCol] = 0;
+      }
+
       const newState = sourceId === 'playerTiles'
         ? {
           playerTiles: newPlayerTiles,

@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import Board from '../../components/gamePage/Board';
-import { io } from 'socket.io-client';
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
 import NavBar from '../../components/Navbar';
 
@@ -11,7 +10,10 @@ const Room = () => {
   const [playersInRoom, setPlayersInRoom] = useState([]);
   const [playersReady, setPlayersReady] = useState(false);
   const [playerHost, setPlayerHost] = useState(false);
+  const [playerTiles, setPlayerTiles] = useState([]);
+  const [playerTileCount, setPlayerTileCount] = useState(0);
 
+  let readyPressed = 0;
 
   socket.emit('getPlayersInRoom', id, (res) => {
     setPlayersInRoom(res);
@@ -37,6 +39,7 @@ const Room = () => {
   const handleReadyPlayer = (e) => {
     e.preventDefault();
     try {
+      readyPressed++;
       socket.emit('playerReady', id);
     } catch (err) {
       console.error(err);
@@ -46,19 +49,19 @@ const Room = () => {
   const handleStartGame = (e) => {
     e.preventDefault();
     try {
-      socket.emit('startGame');
+      socket.emit('startGame', id);
     } catch (err) {
       console.error(err);
     }
   };
-  socket.on('startGame', () => {
-    console.log('Start Game');
+  socket.on('receiveTiles', (tiles) => {
+    setPlayerTiles(tiles);
   });
 
-  const [playerTiles, setPlayerTiles] = useState([]);
-  const [playerTileCount, setPlayerTileCount] = useState(0);
-  const bunch = [];
-  socket.emit('store', bunch);
+
+
+
+  
   const getRandomTile = (x) => {
     for(let i = 0; i < x; i++) {
       socket.emit('getOneTile');
@@ -74,12 +77,14 @@ const Room = () => {
     e.preventDefault();
     // send tile back into server
     // then this:
-    getRandomTile(3);
+    console.log(playerTiles[0]);
+    console.log(playerTiles, 'current tiles');
+    // getRandomTile(3);
   };
 
   const handlePeel = (e) => {
     e.preventDefault();
-    io('localhost:4300').emit('getOneTile'); 
+    socket.emit('getOneTile'); 
   };
 
   return (
@@ -105,13 +110,14 @@ const Room = () => {
           <div className="flex flex-col border-black border-2 h-1/4 rounded-md m-2">
             { playersInRoom &&
               playersInRoom.map((player, index) => (
+                // className="text-red-600"
                 <div key={index+player}>Player {index + 1}: {player}</div>
                 ))
             }
           </div>
 
           <div className="flex justify-center">
-            { !playersReady &&
+            { !playersReady && readyPressed < 1 &&
               <button className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center" onClick={handleReadyPlayer}>Ready?!</button>
             }
             { playersReady && playerHost &&
@@ -122,7 +128,6 @@ const Room = () => {
 
         <div className="flex justify-center items-center border-black border-2 w-3/5 h-3/4 rounded-lg">
           <div>
-            {/* <Board /> */}
             <Board />
           </div>
         </div>
