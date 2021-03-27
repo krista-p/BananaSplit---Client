@@ -37,6 +37,7 @@ const Room = () => {
     e.preventDefault();
     try {
       readyPressed++;
+      if (readyPressed > 1) throw new Error('OOPS, you bwoke it');
       socket.emit('playerReady', id);
     } catch (err) {
       console.error(err);
