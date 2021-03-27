@@ -1,8 +1,15 @@
-import { useRouter } from 'next/router';
+  import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import Board from '../../components/gamePage/Board';
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
 import NavBar from '../../components/Navbar';
+
+const gridSize: number = 9;
+
+const initialState = {
+  playerTiles: [],
+  matrix: Array.from({ length: gridSize }, () => Array(gridSize).fill(0)),
+};
 
 const Room = () => {
   const router = useRouter();
@@ -10,8 +17,9 @@ const Room = () => {
   const [playersInRoom, setPlayersInRoom] = useState([]);
   const [playersReady, setPlayersReady] = useState(false);
   const [playerHost, setPlayerHost] = useState(false);
-  const [playerTiles, setPlayerTiles] = useState([]);
-  const [playerTileCount, setPlayerTileCount] = useState(0);
+
+  // TODO: Moving state up to room
+  const [state, setState] = useState(initialState);
 
   let readyPressed = 0;
 
@@ -56,7 +64,10 @@ const Room = () => {
   };
 
   socket.on('receiveTiles', (tiles) => {
-    setPlayerTiles(tiles[socket.id]);
+    setState({
+      ...state,
+      playerTiles: tiles[socket.id]
+    });
   });
 
   
@@ -64,8 +75,8 @@ const Room = () => {
     e.preventDefault();
     // send tile back into server
     // then this:
-    console.log(playerTiles[0]);
-    console.log(playerTiles, 'current tiles');
+    console.log(state.playerTiles[0]);
+    console.log(state.playerTiles, 'current tiles');
     // getRandomTile(3);
   };
 
@@ -115,7 +126,11 @@ const Room = () => {
 
         <div className="flex justify-center items-center border-black border-2 w-3/5 h-3/4 rounded-lg">
           <div>
-            <Board />
+            <Board
+              state={state}
+              setState={setState}
+              gridSize={gridSize}
+            />
           </div>
         </div>
 

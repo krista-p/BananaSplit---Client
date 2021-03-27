@@ -175,21 +175,22 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 
 export default function PlayerTiles({ state, setState }) {
   // console.log(state);
-  const drawTiles = (drawNumber) => {
-    let newPlayerTiles = [];
-    for (let i = 0; i < drawNumber; i++) {
-      const newTile = getRandomTile();
-      newPlayerTiles = [...newPlayerTiles, newTile];
-      setState({
-        ...state,
-        playerTiles: newPlayerTiles,
-      });
-    }
-  };
+  // const drawTiles = (drawNumber) => {
+  //   let newPlayerTiles = [];
+  //   for (let i = 0; i < drawNumber; i++) {
+  //     const newTile = getRandomTile();
+  //     newPlayerTiles = [...newPlayerTiles, newTile];
+  //     setState({
+  //       ...state,
+  //       playerTiles: newPlayerTiles,
+  //     });
+  //   }
+  // };
 
-  useEffect(() => {
-    drawTiles(18);
-  }, []);
+  // useEffect(() => {
+  //   drawTiles(18);
+  // }, []);
+
   return (
     <div className={styles.playerTiles}>
       <Droppable

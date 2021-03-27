@@ -6,12 +6,13 @@ import styles from '../../styles/Room.module.css';
 import PlayerTiles from './PlayerTiles';
 import { GameStateType, TileType } from '../../types';
 
-const gridSize: number = 9;
+// TODO: Moving state up to room
+// const gridSize: number = 9;
 
-const initialState = {
-  playerTiles: [],
-  matrix: Array.from({ length: gridSize }, () => Array(gridSize).fill(0)),
-};
+// const initialState = {
+//   playerTiles: [],
+//   matrix: Array.from({ length: gridSize }, () => Array(gridSize).fill(0)),
+// };
 
 const reorder = (playerTiles: TileType[], startIndex: number, endIndex: number) => {
   const result: TileType[] = _.cloneDeep(playerTiles);
@@ -80,8 +81,8 @@ const move = (state, dragSource, dragDestination, source, destination) => {
   return result;
 };
 
-const Board = () => {
-  const [state, setState] = useState(initialState);
+const Board = ({ state, setState, gridSize }) => {
+  // const [state, setState] = useState(initialState);
 
   const onDragStart = (start) => {
     if (start.source.droppableId !== 'playerTiles') {
