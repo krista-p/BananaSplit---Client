@@ -16,11 +16,15 @@ const Board = ({ state, setState, gridSize }) => {
 
   const onDragEnd = (result) => {
     const { source, destination } = result;
+    const sourceId: string = source.droppableId;
     if (!destination) {
+      if (sourceId !== 'playerTiles') {
+        const id = document.getElementById(sourceId);
+        id.style.opacity = '100';
+      }
       return;
     }
 
-    const sourceId: string = source.droppableId;
     const sourceIndex: number = source.index;
     const destId: string = destination.droppableId;
     const [sRow,, sCol] = sourceId;
