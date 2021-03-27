@@ -145,6 +145,10 @@ const Board = () => {
         id.style.opacity = '100';
       }
     }
+    if (sourceId !== 'playerTiles') {
+      const id = document.getElementById(sourceId);
+      id.style.opacity = '100';
+    }
   };
 
   return (
