@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Baloo Tammudu 2', ...defaultTheme.fontFamily.sans],
+        sans: ['"Baloo 2"', ...defaultTheme.fontFamily.sans],
       },
       colors: {
         primary: '#FDD62F',

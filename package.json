@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "firebase": "^8.3.1",
+    "font-awesome": "^4.7.0",
     "lodash": "^4.17.21",
     "next": "10.0.9",
     "next-fonts": "^1.5.1",
