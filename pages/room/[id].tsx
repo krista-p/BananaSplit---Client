@@ -62,7 +62,6 @@ const Room = () => {
     e.preventDefault();
     try {
       readyPressed++;
-      if (readyPressed > 1) throw new Error('OOPS, you bwoke it');
       socket.emit('playerReady', id);
     } catch (err) {
       console.error(err);
@@ -127,7 +126,13 @@ const Room = () => {
       <div className="flex w-screen h-3/4 justify-center">
         <div className="flex flex-col h-full flex-grow content-center">
           <div className="flex justify-center">
-            <button className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center" onClick={handleLeaveGame}>Leave Game</button>
+            <button
+              type="button"
+              className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center"
+              onClick={handleLeaveGame}
+            >
+              Leave Game
+            </button>
           </div>
 
           <div className="flex border-black border-2 h-1/4 rounded-md m-2">
@@ -150,9 +155,25 @@ const Room = () => {
 
           <div className="flex justify-center">
             { !roomReady && readyPressed < 1
-              && <button className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center" onClick={handleReadyPlayer}>Ready?!</button>}
+              && (
+              <button
+                type="button"
+                className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center"
+                onClick={handleReadyPlayer}
+              >
+                Ready?!
+              </button>
+              )}
             { roomReady && playerHost
-              && <button className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center" onClick={handleStartGame}>Start Game!</button>}
+              && (
+              <button
+                type="button"
+                className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center"
+                onClick={handleStartGame}
+              >
+                Start Game!
+              </button>
+              )}
           </div>
         </div>
 
