@@ -48,10 +48,10 @@ export default function PlayerTiles({ state, setState }) {
             {...provided.droppableProps}
             ref={provided.innerRef}
           >
-            {/* {console.log(state.playerTiles)} */}
             {
               state.playerTiles.map((currentTile, index) => (
                 <Tile
+                  key={currentTile.id}
                   currentTile={currentTile}
                   index={index}
                 />

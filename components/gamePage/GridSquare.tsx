@@ -8,19 +8,22 @@ type SquarePropsType = {
   state: GameStateType,
   squareId: string,
 }
+
 const gridSquare = (props: SquarePropsType) => {
   const { state, squareId } = props;
   const { matrix } = state;
-  const placeholderTile = matrix[squareId[0]][squareId[2]];
+  const [rowIndex,, colIndex] = squareId;
+  const placeholderTile = matrix[rowIndex][colIndex];
 
-  const squareContents = (squareId: string) => {
-    if (!matrix[squareId[0]][squareId[2]]) {
+  const squareContents = () => {
+    if (!matrix[rowIndex][colIndex]) {
       return '';
     }
-    const currentTile: TileType = matrix[squareId[0]][squareId[2]];
-    const index: number = parseInt(squareId[0], 10) * 7 + parseInt(squareId[2], 10);
+    const currentTile: TileType = matrix[rowIndex][colIndex];
+    const index: number = parseInt(rowIndex, 10) * 7 + parseInt(colIndex, 10);
     return (
       <Tile
+        key={currentTile.id}
         currentTile={currentTile}
         index={index}
       />
@@ -53,12 +56,12 @@ const gridSquare = (props: SquarePropsType) => {
           <div
             id={squareId}
             className={
-              !squareContents(squareId)
+              !squareContents()
                 ? styles.gameSquare
                 : styles.tile
             }
           >
-            {squareContents(squareId)}
+            {squareContents()}
           </div>
           {provided.placeholder}
         </div>

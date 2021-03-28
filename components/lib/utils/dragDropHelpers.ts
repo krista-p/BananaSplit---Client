@@ -49,6 +49,8 @@ export const move = (state, dragSource, dragDestination, source, destination) =>
     result.state = stateClone;
     result[source.droppableId] = dragSourceClone[sRow][sCol];
     result[destination.droppableId] = dragDestClone[dRow][dCol];
+  } else if (droppableId === 'dumpzone') {
+    console.log('YAY YOU CAN DUMP');
   } else {
     // NOTE Drag from game board to player tiles
     const dragDestClone = _.cloneDeep(dragDestination);

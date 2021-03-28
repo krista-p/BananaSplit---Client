@@ -38,13 +38,13 @@ export default function Grid({ state, setState, gridSize }) {
   /* NOTE End game board render functions */
 
   /* NOTE Start game board builder functions */
-  const buildCol = (rowNum: number) => {
-    row.push(renderSquare(`${rowNum}`));
+  const buildCol = (colId: number) => {
+    row.push(renderSquare(`${colId}`));
   };
 
   const buildBoard = () => {
-    for (let rowNum = 0; rowNum < gridSize; rowNum++) {
-      buildCol(rowNum);
+    for (let colId = 0; colId < gridSize; colId++) {
+      buildCol(colId);
       boardMatrix.push(row);
     }
   };
