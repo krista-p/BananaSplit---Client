@@ -24,10 +24,9 @@ const Room = () => {
   let readyPressed = 0;
 
   useEffect(() => {
-    socket.emit('getPlayersInRoom', id, (res) => {
-      setPlayersInRoom(res);
-    });
-
+    // socket.emit('getPlayersInRoom', id, (res) => {
+    //   setPlayersInRoom(res);
+    // });
 
     socket.emit('hostSearch', id, (res) => {
       setPlayerHost(res);
@@ -42,14 +41,25 @@ const Room = () => {
 
   }, [socket]);
 
-  socket.emit('getPlayersReady', id, useCallback((res) => {
-    setPlayersReady(res);
-  }, []));
+  // useEffect(() => {
+  //   socket.emit('getPlayersReady', id, (res) => {
+  //     setPlayersReady(res);
+  //   });
+  // }, []);
 
-  socket.emit('roomReady', id, useCallback((res) => {
-    setRoomReady(res);
-  }, []));
-  
+  useEffect(() => {
+    socket.emit('getPlayersInRoom', id, (res) => {
+      setPlayersInRoom(res);
+    });
+  }, [playersInRoom]);
+
+  useEffect(() => {
+    socket.emit('roomReady', id, (res) => {
+      setRoomReady(res);
+    });
+  }, []);
+
+
   const handleLeaveGame = (e) => {
     e.preventDefault();
     try {
@@ -66,6 +76,9 @@ const Room = () => {
     try {
       readyPressed++;
       socket.emit('playerReady', id);
+      socket.emit('getPlayersReady', id, (res) => {
+        setPlayersReady(res);
+      });
     } catch (err) {
       console.error(err);
     }
@@ -108,9 +121,10 @@ const Room = () => {
   };
 
   const playerReady = (player) => {
-    if (playersReady.indexOf(player) !== -1) {
-      return "text-primary"
-    }
+    // if (playersReady.indexOf(player) !== -1) {
+    //   return "text-primary"
+    // }
+    console.log('hello')
   };
 
   return (

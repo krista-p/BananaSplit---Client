@@ -1,7 +1,27 @@
+import Image from "next/image";
+
 const LoggedInMessage = ({ closeLoggedInMessage }) => (
-  <div className="w-3/4 h-1/2 left-16 md:w-1/2 md:h-1/4 md:inset-x-1/4 top-24 bottom-24 fixed border-black border-4 bg-white shadow-lg rounded-lg">
-    <h1>You are already signed in!!!</h1>
-    <button type="button" onClick={closeLoggedInMessage} className="h-16 w-16 text-black font-bold bg-yellow-300 border-4 border-black rounded-sm">X</button>
+  <div className="popup-big">
+    <div className="flex justify-end">
+      <button
+        type="button"
+        onClick={closeLoggedInMessage}
+        className="h-16 w-16 close-button"
+      >
+        X
+      </button>
+    </div>
+
+    <div className="m-4 md:m-8 text-3xl md:text-4xl text-center">
+      <h1>you are already signed in!!</h1>
+      <Image
+        src="/AWbanana.png"
+        alt="Banana"
+        width="200"
+        height="200"
+      />
+      <h1>you silly <span className="font-bold text-3xl md:text-5xl text-primary">banana</span>!!</h1>
+    </div>
   </div>
 );
 
