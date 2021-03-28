@@ -22,11 +22,11 @@ const Room = () => {
 
   let readyPressed = 0;
 
-  useEffect(() => {
-    socket.emit('getPlayersInRoom', id, (res) => {
-      setPlayersInRoom(res);
-    });
+  socket.emit('getPlayersInRoom', id, (res) => {
+    setPlayersInRoom(res);
+  });
 
+  useEffect(() => {
     socket.emit('hostSearch', id, (res) => {
       setPlayerHost(res);
     });
@@ -82,7 +82,7 @@ const Room = () => {
   const handleStartGame = useCallback((e) => {
     e.preventDefault();
     try {
-      socket.emit('startGame');
+      socket.emit('startGame', id);
       socket.emit('createBunch', id);
     } catch (err) {
       console.error(err);
