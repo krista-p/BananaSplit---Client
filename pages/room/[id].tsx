@@ -37,15 +37,23 @@ const Room = () => {
         playerTiles: tiles[socket.id],
       });
     });
-  }, [socket]);
+  }, []);
 
-  socket.emit('getPlayersReady', id, useCallback((res) => {
-    setPlayersReady(res);
-  }, []));
+  /* client - room/[id].tsx */
+  useEffect(() => {
+    socket.emit('getPlayersReady', id, (res) => {
+      console.log('playersReady:', res);
+      if (!_.isEmpty(_.xor(playersInRoom, playersReady))) {
+        setRoomReady(true);
+      }
+    });
+  }, [playersReady]);
 
-  socket.emit('roomReady', id, useCallback((res) => {
-    setRoomReady(res);
-  }, []));
+  useEffect(() => {
+    socket.emit('roomReady', id, (res) => {
+      console.log('roomReady:', id, res);
+    });
+  }, [roomReady]);
 
   const handleLeaveGame = (e) => {
     e.preventDefault();
@@ -61,8 +69,10 @@ const Room = () => {
   const handleReadyPlayer = (e) => {
     e.preventDefault();
     try {
+      console.log(playersReady);
       readyPressed++;
       socket.emit('playerReady', id);
+      setPlayersReady([...playersReady, id]);
     } catch (err) {
       console.error(err);
     }
@@ -144,7 +154,7 @@ const Room = () => {
             { playersInRoom
               && playersInRoom.map((player, index) => (
                 //
-                <div className={playerReady(player)} key={index + player}>
+                <div className={playerReady(player)} key={index.toString().concat(player)}>
                   Player
                   {index + 1}
                   :
