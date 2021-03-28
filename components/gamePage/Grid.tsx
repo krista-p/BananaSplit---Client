@@ -16,6 +16,7 @@ export default function Grid({ state, setState, gridSize }) {
       <GridSquare
         state={state}
         squareId={squareId}
+        gridSize={gridSize}
       />
     </div>
   );

@@ -7,12 +7,13 @@ import Tile from './Tile';
 type SquarePropsType = {
   state: GameStateType,
   squareId: string,
+  gridSize: number,
 }
 
 const gridSquare = (props: SquarePropsType) => {
-  const { state, squareId } = props;
+  const { state, squareId, gridSize } = props;
   const { matrix } = state;
-  const [rowIndex,, colIndex] = squareId;
+  const [rowIndex, colIndex] = squareId.split('-');
   const placeholderTile = matrix[rowIndex][colIndex];
 
   const squareContents = () => {
@@ -20,7 +21,7 @@ const gridSquare = (props: SquarePropsType) => {
       return '';
     }
     const currentTile: TileType = matrix[rowIndex][colIndex];
-    const index: number = parseInt(rowIndex, 10) * 7 + parseInt(colIndex, 10);
+    const index: number = parseInt(rowIndex, 10) * gridSize + parseInt(colIndex, 10);
     return (
       <Tile
         key={currentTile.id}

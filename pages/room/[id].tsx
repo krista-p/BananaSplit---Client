@@ -5,8 +5,7 @@ import { alertNotification } from '../../components/landingPage/popups/alertpopu
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
 import NavBar from '../../components/Navbar';
 
-const gridSize: number = 9;
-
+const gridSize: number = 15;
 const initialState = {
   playerTiles: [],
   matrix: Array.from({ length: gridSize }, () => Array(gridSize).fill(0)),
@@ -157,14 +156,17 @@ const Room = () => {
           </div>
         </div>
 
-        <div className="flex justify-center items-center border-black border-2 w-3/5 h-3/4 rounded-lg">
-          <div>
-            <Board
-              state={state}
-              setState={setState}
-              gridSize={gridSize}
-            />
-          </div>
+        <div
+          className="flex justify-center items-center border-black border-2 w-3/5 h-3/4 rounded-lg"
+          style={{
+            overflow: 'auto',
+          }}
+        >
+          <Board
+            state={state}
+            setState={setState}
+            gridSize={gridSize}
+          />
         </div>
 
         <div className="flex flex-col flex-grow m-2">

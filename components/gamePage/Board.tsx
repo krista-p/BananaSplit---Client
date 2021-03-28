@@ -28,8 +28,8 @@ const Board = ({ state, setState, gridSize }) => {
 
     const sourceIndex: number = source.index;
     const destId: string = destination.droppableId;
-    const [sRow,, sCol] = sourceId;
-    const [dRow,, dCol] = destId;
+    const [sRow, sCol] = sourceId.split('-');
+    const [dRow, dCol] = destId.split('-');
 
     const tileToPlace = sourceId === 'playerTiles' ? state.playerTiles[sourceIndex] : state.matrix[sRow][sCol];
 

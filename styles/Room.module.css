@@ -14,11 +14,9 @@
   border: solid 1px #000;
 } */
 
-/* .gameBoard {
-  width: 70vw;
-  height: 70vh;
-  background-color: white;
-} */
+.gameBoard {
+  overflow: auto;
+}
 
 .gameRow {
   height: 60px;

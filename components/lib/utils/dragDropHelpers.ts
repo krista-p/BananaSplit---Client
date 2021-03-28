@@ -10,8 +10,8 @@ export const reorder = (playerTiles: TileType[], startIndex: number, endIndex: n
 
 export const move = (state, dragSource, dragDestination, source, destination) => {
   const stateClone = _.cloneDeep(state);
-  const [sRow,, sCol] = source.droppableId;
-  const [dRow,, dCol] = destination.droppableId;
+  const [sRow, sCol] = source.droppableId.split('-');
+  const [dRow, dCol] = destination.droppableId.split('-');
 
   const dragSourceClone = _.cloneDeep(dragSource);
   const result: any = {};
@@ -49,8 +49,8 @@ export const move = (state, dragSource, dragDestination, source, destination) =>
     result.state = stateClone;
     result[source.droppableId] = dragSourceClone[sRow][sCol];
     result[destination.droppableId] = dragDestClone[dRow][dCol];
-  } else if (droppableId === 'dumpzone') {
-    console.log('YAY YOU CAN DUMP');
+  // } else if (destination.droppableId === 'dumpzone') { // TODO: Logic to handle dump zone drop
+  //   console.log('YAY YOU CAN DUMP');
   } else {
     // NOTE Drag from game board to player tiles
     const dragDestClone = _.cloneDeep(dragDestination);

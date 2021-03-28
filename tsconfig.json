@@ -22,8 +22,9 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "contexts/BunchContext.jsx"  ],
+    "**/*.tsx",
+    "mocks/index.js"
+  ],
   "exclude": [
     "node_modules"
   ]
