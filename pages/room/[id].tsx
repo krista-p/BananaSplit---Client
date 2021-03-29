@@ -192,7 +192,7 @@ const Room = () => {
                 Ready?!
               </button>
               )}
-            { roomReady
+            { roomReady && playerHost
               && (
                 <button
                   type="button"
