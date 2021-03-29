@@ -4,7 +4,7 @@ import _ from 'lodash';
 import Grid from './Grid';
 import styles from '../../styles/Room.module.css';
 import PlayerTiles from './PlayerTiles';
-import { reorder, move } from '../lib/utils/dragDropHelpers';
+import { reorder, move } from '../lib/utils';
 import DumpZone from './DumpZone';
 
 const Board = ({ state, setState, gridSize, handleDump }) => {
@@ -71,10 +71,10 @@ const Board = ({ state, setState, gridSize, handleDump }) => {
       const stateClone = _.cloneDeep(state);
       if (sourceId !== 'playerTiles') {
         stateClone.matrix[sRow][sCol] = 0;
-        setState(stateClone);
       } else {
-        stateClone.playerTiles.splice(source.Index, 1);
-        console.log('CLONE:', stateClone);
+        console.log(sourceIndex);
+        stateClone.playerTiles.splice(sourceIndex, 1);
+        console.log(stateClone.playerTiles);
       }
       // const dragSource = sourceId !== 'playerTiles' ? state.matrix : state.playerTiles;
       handleDump(tileToPlace, stateClone);

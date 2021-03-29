@@ -27,8 +27,6 @@ const Room = () => {
   // THIS IS FOR END OF GAME POPUP
   const [endOpen, setEndOpen] = useState<boolean>(false);
 
-
-
   useEffect(() => {
     socket.on('playersInRoom', (players) => {
       setPlayersInRoom(players);
@@ -107,6 +105,7 @@ const Room = () => {
   };
 
   const handleDump = (tileToDump, stateClone) => {
+    setState(stateClone);
     try {
       socket.emit('dumpAction', { id, tileToDump });
 
