@@ -26,6 +26,7 @@ const Room = () => {
   const [endOpen, setEndOpen] = useState<boolean>(false);
 
 
+
   useEffect(() => {
     socket.on('playersInRoom', (players) => {
       setPlayersInRoom(players);
@@ -43,7 +44,7 @@ const Room = () => {
     socket.emit('enteredRoom', id);
 
     socket.on('receiveTiles', (tiles) => {
-      setState(prevState => ({
+      setState((prevState) => ({
         ...prevState,
         playerTiles: prevState.playerTiles.concat(tiles[socket.id]),
       }));
@@ -181,15 +182,15 @@ const Room = () => {
                 Ready?!
               </button>
               )}
-            { roomReady && playerHost
+            { roomReady
               && (
                 <button
-                type="button"
-                className="button-yellow"
-                onClick={handleStartGame}
+                  type="button"
+                  className="button-yellow"
+                  onClick={handleStartGame}
                 >
-                Start Game!
-              </button>
+                  Start Game!
+                </button>
               )}
           </div>
         </div>
