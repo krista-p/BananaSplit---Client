@@ -13,8 +13,10 @@ const dfsBoard = (grid: any[][], i: number, j: number) => {
 };
 
 // num islands problem (check how many boards there are)
-export const numBoards = (grid: any[][]): number => {
+export const numBoards = (matrix: any[][]): number => {
   // check if grid exists first
+  const grid = JSON.parse(JSON.stringify(matrix));
+  
   if (grid === null || grid.length === 0) return 0;
 
   // board counter

@@ -7,6 +7,7 @@ import { alertNotification } from '../../components/landingPage/popups/alertpopu
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
 import NavBar from '../../components/Navbar';
 import GameEndPopup from '../../components/gamePage/gameEndPopup/GameEndPopup';
+import { numBoards } from '../../components/lib/utils/wordChecker';
 
 const gridSize: number = 9;
 const initialState = {
@@ -84,21 +85,24 @@ const Room = () => {
   const handlePeel = (e) => {
     e.preventDefault();
     try {
-      if (state.playerTiles.length === 0) {
+      if (numBoards(state.matrix) > 1) {
+        alertNotification('Tiles must be connected!');
+      } else if (state.playerTiles.length !== 0) {
+        alertNotification('Tiles in your pile!');
+      } else if (state.playerTiles.length === 0 && numBoards(state.matrix) < 2) {
+        console.log(numBoards(state.matrix), 'peeling');
         socket.emit('peelAction', id);
-      } else {
-        alertNotification('Tiles still on board!');
-      }
+      };
     } catch (err) {
       console.error(err);
     }
   };
 
   const handleDump = (e) => {
-    e.preventDefault();
+    e.preventDefault();    
     // send tile back into server
     // then this:
-    console.log(state.playerTiles[0]);
+    // console.log(state.playerTiles[0]);
     console.log(state.playerTiles, 'current tiles');
     socket.emit('tileCheck', id);
   };

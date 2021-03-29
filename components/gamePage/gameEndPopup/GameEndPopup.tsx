@@ -2,8 +2,6 @@ import EndStats from './EndStats';
 import EndBoard from './EndBoard';
 
 const GameEndPopup = () => {
-const stuff;
-
   return (
     <div className="w-screen md:w-screen h-auto top-40 md:top-24 bottom-24 fixed border-secondary border-8 bg-primary shadow-lg rounded-lg overflow-y-scroll">
       <div className="flex flex-row m-2">
