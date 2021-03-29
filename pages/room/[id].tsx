@@ -18,6 +18,7 @@ const Room = () => {
   const router = useRouter();
   const { id } = router.query;
   const [playersInRoom, setPlayersInRoom] = useState([]);
+  const [actionMessages, setActionMessages] = useState([]);
   const [roomReady, setRoomReady] = useState(false);
   const [readyPressed, setReadyPressed] = useState(false);
   const [playerHost, setPlayerHost] = useState(false);
@@ -29,6 +30,9 @@ const Room = () => {
   useEffect(() => {
     socket.on('playersInRoom', (players) => {
       setPlayersInRoom(players);
+    });
+    socket.on('actionMessage', (res) => {
+      setActionMessages(prev => [...prev, res]);
     });
     socket.on('roomReadyResponse', (res) => {
       setRoomReady(res);
@@ -103,7 +107,6 @@ const Room = () => {
   const handleDump = (tileToDump, stateClone) => {
     setState(stateClone);
     try {
-      const incomingSocket = socket.id;
       socket.emit('dumpAction', { id, tileToDump });
 
       // stateClone.playerTiles = [...stateClone.playerTiles, ...newTiles];
@@ -134,12 +137,7 @@ const Room = () => {
 
       <div className="flex flex-col items-center">
         <div>
-          Game Room Code:
-          {id}
-        </div>
-        <div>
-          Socket ID:
-          {socket.id}
+          {`Game Room Code: ${id}`}
         </div>
       </div>
 
@@ -155,8 +153,14 @@ const Room = () => {
             </button>
           </div>
 
-          <div className="flex border-black border-2 h-1/4 rounded-md m-2">
-            <div>Actions Coming!</div>
+          <div className="flex flex-col border-black border-2 h-1/4 rounded-md m-2">
+            { actionMessages 
+              && actionMessages.map((message, index) => (
+                <div key={index.toString().concat(message)}>
+                  {message}
+                </div>
+              ))
+            }
           </div>
 
           {/* // TODO: Highlight players that are ready */}
@@ -165,10 +169,7 @@ const Room = () => {
               && playersInRoom.map((player, index) => (
                 // className={playerReady(player)}
                 <div key={index.toString().concat(player)}>
-                  Player
-                  {index + 1}
-                  :
-                  {player}
+                  {`Player ${index + 1}: ${player}`}
                 </div>
               ))}
           </div>
