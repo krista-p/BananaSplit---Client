@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../contexts/auth';
 
@@ -25,22 +26,37 @@ const ProfilePage = () => {
 
   return (
     <div className="flex flex-grow w-full justify-between bg-hero-pattern bg-center bg-contain bg-no-repeat">
-      <div className="mt-8 ml-8 h-1/3 w-1/4 bg-secondary rounded-lg shadow-lg">
-        <div className="text-primary font-bold text-xl">
-          <h1>{userName}</h1>
-          <h2>{userEmail}</h2>
+      <div>
+        <div className="self-start mt-8 ml-8 h-32 w-32 md:h-60 md:w-60 bg-primary border-4 md:border-8 border-secondary rounded-full shadow-lg">
+          <div className="ml-3 mb-4 w-3/4 h-3/4 md:w-full md:h-full">
+            <Image
+              src="/monkeycap.png"
+              alt="Monkey"
+              width="190"
+              height="250"
+            />
+          </div>
+        </div>
+
+        <div className="ml-8 mt-2 font-bold text-3xl md:text-5xl">
+          <h1 className="text-primary">{userName}</h1>
+          <h2 className="text-secondary">{userEmail}</h2>
         </div>
       </div>
 
-      <div className="self-end mb-8 mr-8 h-1/3 w-1/4 bg-secondary rounded-lg shadow-lg">
-        <div className="text-primary font-bold text-xl">
-          <h1>Wins</h1>
-          <h2>{userScore}</h2>
+      <div className="flex flex-col justify-between">
+        <div className="mt-4 mr-8 h-32 w-32 md:h-60 md:w-60 bg-secondary border-4 md:border-8 border-primary rounded-full shadow-lg">
+          <div className="flex flex-col text-3xl md:text-5xl flex items-center text-middle text-primary">
+            <h1 className="text-4xl md:text-6xl">wins</h1>
+            <h2>{userScore}</h2>
+          </div>
         </div>
 
-        <div className="text-primary font-bold text-xl">
-          <h1>Longest Word</h1>
-          <h2>{userLongestWord}</h2>
+        <div className="mb-4 r-12 h-32 w-32 md:h-60 md:w-60 bg-secondary border-4 md:border-8 border-primary rounded-full shadow-lg">
+          <div className="flex flex-col text-3xl md:text-5xl flex items-center text-middle text-primary">
+            <h1 className="text-2xl md:text-4xl">longest word</h1>
+            <h2>{userLongestWord}</h2>
+          </div>
         </div>
       </div>
 
