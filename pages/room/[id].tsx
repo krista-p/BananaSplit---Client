@@ -5,7 +5,7 @@ import { alertNotification } from '../../components/landingPage/popups/alertpopu
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
 import NavBar from '../../components/Navbar';
 
-const gridSize: number = 15;
+const gridSize: number = 9;
 const initialState = {
   playerTiles: [],
   matrix: Array.from({ length: gridSize }, () => Array(gridSize).fill(0)),
@@ -22,10 +22,14 @@ const Room = () => {
 
   let readyPressed = 0;
 
-  socket.emit('getPlayersInRoom', id);
-  useEffect(() => {
-    socket.on('playersInRoom', player => {
+  // useEffect(() => {
+  //   socket.emit('getPlayersInRoom', id);
+  // }, []);
 
+  useEffect(() => {
+    socket.on('playersInRoom', (players) => {
+      setPlayersInRoom(players);
+      console.log('players:', players);
     });
   }, []);
 
@@ -33,6 +37,8 @@ const Room = () => {
     socket.emit('hostSearch', id, (res) => {
       setPlayerHost(res);
     });
+
+    socket.emit('enteredRoom', id);
 
     socket.on('receiveTiles', (tiles) => {
       setState({
@@ -192,9 +198,9 @@ const Room = () => {
 
         <div
           className="flex justify-center items-center border-black border-2 w-3/5 h-3/4 rounded-lg"
-          style={{
-            overflow: 'auto',
-          }}
+          // style={{
+          //   overflow: 'auto',
+          // }}
         >
           <Board
             state={state}
