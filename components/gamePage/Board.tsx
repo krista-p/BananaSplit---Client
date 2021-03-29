@@ -4,7 +4,7 @@ import _ from 'lodash';
 import Grid from './Grid';
 import styles from '../../styles/Room.module.css';
 import PlayerTiles from './PlayerTiles';
-import { reorder, move } from '../lib/utils/dragDropHelpers';
+import { reorder, move } from '../lib/utils';
 import DumpZone from './DumpZone';
 
 const Board = ({ state, setState, gridSize, handleDump }) => {

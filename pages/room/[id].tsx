@@ -8,7 +8,7 @@ import NavBar from '../../components/Navbar';
 import GameEndPopup from '../../components/gamePage/gameEndPopup/GameEndPopup';
 import { numBoards } from '../../components/lib/utils/wordChecker';
 
-const gridSize: number = 19;
+const gridSize: number = 9;
 const initialState = {
   playerTiles: [],
   matrix: Array.from({ length: gridSize }, () => Array(gridSize).fill(0)),
@@ -201,9 +201,9 @@ const Room = () => {
 
         <div
           className="flex justify-center items-center border-black border-2 w-3/5 h-3/4 rounded-lg"
-          style={{
-            overflow: 'auto',
-          }}
+          // style={{
+          //   overflow: 'auto',
+          // }}
         >
           <Board
             state={state}
