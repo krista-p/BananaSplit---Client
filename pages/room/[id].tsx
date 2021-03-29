@@ -116,14 +116,17 @@ const Room = () => {
     }
   }, []);
 
-  const handleDump = (e) => {
-    e.preventDefault();
-    console.log(e);
+  const handleDump = (tileToDump, stateClone) => {
+    const mockDumpTiles = [{ letter: 'A', id: 'testA'}, { letter: 'B', id: 'testB'}, { letter: 'C', id: 'testC'}];
+    stateClone.playerTiles = [...stateClone.playerTiles, ...mockDumpTiles];
+    setState(stateClone);
+    // e.preventDefault();
+    // console.log(e);
     // send tile back into server
     // then this:
     // console.log(state.playerTiles[0]);
     // console.log(state.playerTiles, 'current tiles');
-    // socket.emit('tileCheck', id);
+    socket.emit('tileCheck', id);
     // getRandomTile(3);
   };
 
@@ -212,6 +215,7 @@ const Room = () => {
             state={state}
             setState={setState}
             gridSize={gridSize}
+            handleDump={handleDump}
           />
         </div>
 
