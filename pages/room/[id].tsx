@@ -28,7 +28,6 @@ const Room = () => {
       setPlayersInRoom(res);
     });
 
-
     socket.emit('hostSearch', id, (res) => {
       setPlayerHost(res);
     });
@@ -39,7 +38,6 @@ const Room = () => {
         playerTiles: tiles[socket.id]
       });
     });
-
   }, [socket]);
 
   socket.emit('getPlayersReady', id, useCallback((res) => {
