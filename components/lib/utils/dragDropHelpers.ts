@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { TileType } from '../../../types';
 
 export const reorder = (playerTiles: TileType[], startIndex: number, endIndex: number) => {
@@ -49,8 +50,6 @@ export const move = (state, dragSource, dragDestination, source, destination) =>
     result.state = stateClone;
     result[source.droppableId] = dragSourceClone[sRow][sCol];
     result[destination.droppableId] = dragDestClone[dRow][dCol];
-  // } else if (destination.droppableId === 'dumpzone') { // TODO: Logic to handle dump zone drop
-  //   console.log('YAY YOU CAN DUMP');
   } else {
     // NOTE Drag from game board to player tiles
     const dragDestClone = _.cloneDeep(dragDestination);

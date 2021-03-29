@@ -4,7 +4,7 @@ import _ from 'lodash';
 import Grid from './Grid';
 import styles from '../../styles/Room.module.css';
 import PlayerTiles from './PlayerTiles';
-import { reorder, move } from '../lib/utils/dragDropHelpers';
+import { reorder, move, dump } from '../lib/utils/dragDropHelpers';
 import DumpZone from './DumpZone';
 
 const Board = ({ state, setState, gridSize }) => {
@@ -84,7 +84,7 @@ const Board = ({ state, setState, gridSize }) => {
           setState={setState}
         />
         {/* TODO: Testing making a droppable zone for dumping tiles */}
-        {/* <DumpZone /> */}
+        <DumpZone />
       </DragDropContext>
     </div>
   );

@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
+import _ from 'lodash';
 import Board from '../../components/gamePage/Board';
 import { alertNotification } from '../../components/landingPage/popups/alertpopup/AlertPopup';
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
@@ -29,7 +30,7 @@ const Room = () => {
   useEffect(() => {
     socket.on('playersInRoom', (players) => {
       setPlayersInRoom(players);
-      console.log('players:', players);
+      // console.log('players:', players);
     });
   }, []);
 
@@ -51,7 +52,7 @@ const Room = () => {
   /* client - room/[id].tsx */
   useEffect(() => {
     socket.emit('getPlayersReady', id, (res) => {
-      console.log('playersReady:', res);
+      // console.log('playersReady:', res);
       if (!_.isEmpty(_.xor(playersInRoom, playersReady))) {
         setRoomReady(true);
       }
@@ -60,7 +61,7 @@ const Room = () => {
 
   useEffect(() => {
     socket.emit('roomReady', id, (res) => {
-      console.log('roomReady:', id, res);
+      // console.log('roomReady:', id, res);
     });
   }, [roomReady]);
 
@@ -78,7 +79,7 @@ const Room = () => {
   const handleReadyPlayer = (e) => {
     e.preventDefault();
     try {
-      console.log(playersReady);
+      // console.log(playersReady);
       readyPressed++;
       socket.emit('playerReady', id);
       setPlayersReady([...playersReady, id]);
@@ -115,8 +116,8 @@ const Room = () => {
     e.preventDefault();
     // send tile back into server
     // then this:
-    console.log(state.playerTiles[0]);
-    console.log(state.playerTiles, 'current tiles');
+    // console.log(state.playerTiles[0]);
+    // console.log(state.playerTiles, 'current tiles');
     socket.emit('tileCheck', id);
     // getRandomTile(3);
   };

@@ -32,7 +32,7 @@ const Register = ({ closeLogin }) => {
         displayName: userName,
       });
       const { uid } = user;
-      console.log(uid, 'user uid');
+      // console.log(uid, 'user uid');
       createUser(newEmail, userName, uid);
     } catch (err) {
       console.log({ errorInSignUp: err });
