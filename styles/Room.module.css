@@ -14,11 +14,9 @@
   border: solid 1px #000;
 } */
 
-/* .gameBoard {
-  width: 70vw;
-  height: 70vh;
-  background-color: white;
-} */
+.gameBoard {
+  overflow: auto;
+}
 
 .gameRow {
   height: 60px;
@@ -29,12 +27,15 @@
 .gameSquare {
   width: 62px;
   height: 62px;
-  border: 1px dotted lightgrey;
+}
+.gameSquare:hover {
+  background-color: whitesmoke;
 }
 
 .tile {
   width: 60px;
   height: 60px;
+  position: relative;
   border: solid 1px rgb(90, 65, 42);
   border-radius: 10px;
   color: white;
@@ -42,11 +43,14 @@
   font-size: 25px;
   margin: 0 0.25px 0 0.25px;
 }
+.tile:hover {
+  background-color: rgb(180, 112, 67);
+  transition: 0.15s ease-in-out;
+}
 
 .dragging {
-  user-select: none;
-  width: 10px;
-  height: 10px;
+  width: 100px;
+  height: 100px;
   border: solid 1px rgb(90, 65, 42);
   border-radius: 10px;
   color: rgb(255, 255, 255);
@@ -61,6 +65,7 @@
   bottom: 0;
   display: flex;
   justify-content: center;
+  align-items: flex-end;
 }
 
 /* .letters {

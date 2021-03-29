@@ -41,6 +41,8 @@ module.exports = {
     'no-shadow': 0,
     'no-underscore-dangle': 0,
     'no-plusplus': 0,
+    'import/prefer-default-export': 0,
+    'consistent-return': 0,
   },
   settings: {
     'import/resolver': {
