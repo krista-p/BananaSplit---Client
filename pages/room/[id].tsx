@@ -32,15 +32,16 @@ const Room = () => {
       setPlayersInRoom(players);
     });
     socket.on('roomReadyResponse', (res) => {
+      console.log(res, 'ready response');
       setRoomReady(res);
     });
+    socket.on('hostResponse', (res) => {
+      console.log(res, 'host?');
+      setPlayerHost(res);
+    })
   }, []);
 
   useEffect(() => {
-    socket.emit('hostSearch', id, (res) => {
-      setPlayerHost(res);
-    });
-
     socket.emit('enteredRoom', id);
 
     socket.on('receiveTiles', (tiles) => {
@@ -66,6 +67,7 @@ const Room = () => {
     e.preventDefault();
     try {
       setReadyPressed(true);
+      socket.emit('hostSearch', id);
       socket.emit('playerReady', id);
     } catch (err) {
       console.error(err);
@@ -100,9 +102,11 @@ const Room = () => {
 
   const handleDump = (e) => {
     e.preventDefault();    
-    // send tile back into server
-    // then this:
-    // console.log(state.playerTiles[0]);
+    try {
+      socket.emit('dumpAction', id);
+    } catch (err) {
+      console.error(err);
+    }
     console.log(state.playerTiles, 'current tiles');
     socket.emit('tileCheck', id);
   };
@@ -175,6 +179,8 @@ const Room = () => {
                 className="button-yellow"
                 onClick={handleReadyPlayer}
               >
+                {console.log(roomReady, 'room after ready')}
+                {console.log(playerHost, 'host after ready')}
                 Ready?!
               </button>
               )}
@@ -185,6 +191,8 @@ const Room = () => {
                 className="button-yellow"
                 onClick={handleStartGame}
                 >
+                  {console.log(roomReady, 'room ready?')}
+                  {console.log(playerHost, 'host?')}
                 Start Game!
               </button>
               )}
