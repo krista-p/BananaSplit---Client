@@ -21,6 +21,7 @@ const Room = () => {
   const [roomReady, setRoomReady] = useState(false);
   const [readyPressed, setReadyPressed] = useState(false);
   const [playerHost, setPlayerHost] = useState(false);
+  const [tilesRemaining, setTilesRemaining] = useState(0);
   const [state, setState] = useState(initialState);
   // THIS IS FOR END OF GAME POPUP
   const [endOpen, setEndOpen] = useState<boolean>(false);
@@ -30,13 +31,14 @@ const Room = () => {
       setPlayersInRoom(players);
     });
     socket.on('roomReadyResponse', (res) => {
-      console.log(res, 'ready response');
       setRoomReady(res);
     });
     socket.on('hostResponse', (res) => {
-      console.log(res, 'host?');
       setPlayerHost(res);
-    })
+    });
+    socket.on('tilesRemaining', (res) => {
+      setTilesRemaining(res);
+    });
   }, []);
 
   useEffect(() => {
@@ -45,7 +47,7 @@ const Room = () => {
     socket.on('receiveTiles', (tiles) => {
       setState((prevState) => ({
         ...prevState,
-        playerTiles: prevState.playerTiles.concat(tiles[socket.id]),
+        playerTiles: prevState.playerTiles.concat(tiles[socket?.id]),
       }));
     });
   }, []);
@@ -57,7 +59,7 @@ const Room = () => {
       socket.emit('leaveGame', id);
     } catch (err) {
       console.error(err);
-    }
+    };
   };
 
   // TODO: Logic to only be pressed once
@@ -69,7 +71,7 @@ const Room = () => {
       socket.emit('playerReady', id);
     } catch (err) {
       console.error(err);
-    }
+    };
   };
 
   // TODO: Hide button after game starts
@@ -79,7 +81,7 @@ const Room = () => {
       socket.emit('startGame', id);
     } catch (err) {
       console.error(err);
-    }
+    };
   };
 
   const handlePeel = (e) => {
@@ -95,22 +97,20 @@ const Room = () => {
       };
     } catch (err) {
       console.error(err);
-    }
+    };
   };
 
   const handleDump = (tileToDump, stateClone) => {
-    const mockDumpTiles = [{ letter: 'A', id: 'testA'}, { letter: 'B', id: 'testB'}, { letter: 'C', id: 'testC'}];
-    stateClone.playerTiles = [...stateClone.playerTiles, ...mockDumpTiles];
     setState(stateClone);
-    // e.preventDefault();
-    // console.log(e);
-    // send tile back into server
-    // then this:
-    // console.log(state.playerTiles[0]);
-    // console.log(state.playerTiles, 'current tiles');
-    // socket.emit('tileCheck', id);
-    socket.emit('tileCheck', id);
-    // getRandomTile(3);
+    try {
+      const incomingSocket = socket.id;
+      socket.emit('dumpAction', { id, tileToDump });
+
+      // stateClone.playerTiles = [...stateClone.playerTiles, ...newTiles];
+      // setState(stateClone);
+    } catch (err) {
+      console.error(err);
+    };
   };
 
   // TODO: Highlight player when ready
@@ -181,8 +181,6 @@ const Room = () => {
                 className="button-yellow"
                 onClick={handleReadyPlayer}
               >
-                {console.log(roomReady, 'room after ready')}
-                {console.log(playerHost, 'host after ready')}
                 Ready?!
               </button>
               )}
@@ -215,7 +213,7 @@ const Room = () => {
 
         <div className="flex flex-col flex-grow m-2">
           {/* NOTE: Dump will handle player giving one tile back and receiving three. */}
-          <button type="submit" className="button-yellow" onClick={handleDump}>Dump!</button>
+          <button type="submit" className="button-yellow">{tilesRemaining}</button>
 
           {/* NOTE: Peel will be handled automatically once player runs out of tiles. Button can still be used to test function though. */}
           <button type="submit" className="button-yellow" onClick={handlePeel}>Peel!</button>
