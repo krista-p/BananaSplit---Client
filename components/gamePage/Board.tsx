@@ -7,7 +7,7 @@ import PlayerTiles from './PlayerTiles';
 import { reorder, move } from '../lib/utils/dragDropHelpers';
 import DumpZone from './DumpZone';
 
-const Board = ({ state, setState, gridSize }) => {
+const Board = ({ state, setState, gridSize, handleDump }) => {
   const onDragStart = (start) => {
     if (start.source.droppableId !== 'playerTiles') {
       const id = document.getElementById(start.source.droppableId);
@@ -19,6 +19,7 @@ const Board = ({ state, setState, gridSize }) => {
     const { source, destination } = result;
     const sourceId: string = source.droppableId;
     if (!destination) {
+      console.log('TRY AGAIN');
       if (sourceId !== 'playerTiles') {
         const id = document.getElementById(sourceId);
         id.style.opacity = '100';
@@ -46,7 +47,7 @@ const Board = ({ state, setState, gridSize }) => {
         const matrixClone = _.cloneDeep(state.matrix);
         setState({ ...state, matrix: matrixClone });
       }
-    } else {
+    } else if (destId !== 'dumpzone') {
       const dragSource = sourceId !== 'playerTiles' ? state.matrix : state.playerTiles;
       const dragDest = destId !== 'playerTiles' ? state.matrix : state.playerTiles;
       const result = move(state, dragSource, dragDest, source, destination);
@@ -65,6 +66,18 @@ const Board = ({ state, setState, gridSize }) => {
           matrix: newMatrix,
         } : result.state;
       setState(newState);
+    } else {
+      console.log(tileToPlace);
+      const stateClone = _.cloneDeep(state);
+      if (sourceId !== 'playerTiles') {
+        stateClone.matrix[sRow][sCol] = 0;
+        setState(stateClone);
+      } else {
+        stateClone.playerTiles.splice(source.Index, 1);
+        console.log('CLONE:', stateClone);
+      }
+      // const dragSource = sourceId !== 'playerTiles' ? state.matrix : state.playerTiles;
+      handleDump(tileToPlace, stateClone);
     }
   };
 
@@ -84,7 +97,7 @@ const Board = ({ state, setState, gridSize }) => {
           setState={setState}
         />
         {/* TODO: Testing making a droppable zone for dumping tiles */}
-        {/* <DumpZone /> */}
+        <DumpZone />
       </DragDropContext>
     </div>
   );

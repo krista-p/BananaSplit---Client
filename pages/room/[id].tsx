@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import _ from 'lodash';
-
 import Board from '../../components/gamePage/Board';
 import { alertNotification } from '../../components/landingPage/popups/alertpopup/AlertPopup';
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
@@ -27,6 +26,7 @@ const Room = () => {
   const [endOpen, setEndOpen] = useState<boolean>(false);
 
 
+
   useEffect(() => {
     socket.on('playersInRoom', (players) => {
       setPlayersInRoom(players);
@@ -45,7 +45,7 @@ const Room = () => {
     socket.emit('enteredRoom', id);
 
     socket.on('receiveTiles', (tiles) => {
-      setState(prevState => ({
+      setState((prevState) => ({
         ...prevState,
         playerTiles: prevState.playerTiles.concat(tiles[socket.id]),
       }));
@@ -101,12 +101,20 @@ const Room = () => {
   };
 
   const handleDump = (e) => {
-    e.preventDefault();    
+    e.preventDefault();
+
+    
     try {
       socket.emit('dumpAction', id);
     } catch (err) {
       console.error(err);
     }
+    
+    
+    // const mockDumpTiles = [{ letter: 'A', id: 'testA'}, { letter: 'B', id: 'testB'}, { letter: 'C', id: 'testC'}];
+    // stateClone.playerTiles = [...stateClone.playerTiles, ...mockDumpTiles];
+    // setState(stateClone);
+    
     console.log(state.playerTiles, 'current tiles');
     socket.emit('tileCheck', id);
   };
@@ -184,17 +192,15 @@ const Room = () => {
                 Ready?!
               </button>
               )}
-            { roomReady && playerHost
+            { roomReady
               && (
                 <button
-                type="button"
-                className="button-yellow"
-                onClick={handleStartGame}
+                  type="button"
+                  className="button-yellow"
+                  onClick={handleStartGame}
                 >
-                  {console.log(roomReady, 'room ready?')}
-                  {console.log(playerHost, 'host?')}
-                Start Game!
-              </button>
+                  Start Game!
+                </button>
               )}
           </div>
         </div>
@@ -209,6 +215,7 @@ const Room = () => {
             state={state}
             setState={setState}
             gridSize={gridSize}
+            handleDump={handleDump}
           />
         </div>
 
