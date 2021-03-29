@@ -8,7 +8,7 @@ import NavBar from '../../components/Navbar';
 import GameEndPopup from '../../components/gamePage/gameEndPopup/GameEndPopup';
 import { numBoards } from '../../components/lib/utils/wordChecker';
 
-const gridSize: number = 9;
+const gridSize: number = 19;
 const initialState = {
   playerTiles: [],
   matrix: Array.from({ length: gridSize }, () => Array(gridSize).fill(0)),
@@ -24,8 +24,6 @@ const Room = () => {
   const [state, setState] = useState(initialState);
   // THIS IS FOR END OF GAME POPUP
   const [endOpen, setEndOpen] = useState<boolean>(false);
-
-
 
   useEffect(() => {
     socket.on('playersInRoom', (players) => {
@@ -100,23 +98,19 @@ const Room = () => {
     }
   };
 
-  const handleDump = (e) => {
-    e.preventDefault();
-
-    
-    try {
-      socket.emit('dumpAction', id);
-    } catch (err) {
-      console.error(err);
-    }
-    
-    
-    // const mockDumpTiles = [{ letter: 'A', id: 'testA'}, { letter: 'B', id: 'testB'}, { letter: 'C', id: 'testC'}];
-    // stateClone.playerTiles = [...stateClone.playerTiles, ...mockDumpTiles];
-    // setState(stateClone);
-    
-    console.log(state.playerTiles, 'current tiles');
+  const handleDump = (tileToDump, stateClone) => {
+    const mockDumpTiles = [{ letter: 'A', id: 'testA'}, { letter: 'B', id: 'testB'}, { letter: 'C', id: 'testC'}];
+    stateClone.playerTiles = [...stateClone.playerTiles, ...mockDumpTiles];
+    setState(stateClone);
+    // e.preventDefault();
+    // console.log(e);
+    // send tile back into server
+    // then this:
+    // console.log(state.playerTiles[0]);
+    // console.log(state.playerTiles, 'current tiles');
+    // socket.emit('tileCheck', id);
     socket.emit('tileCheck', id);
+    // getRandomTile(3);
   };
 
   // TODO: Highlight player when ready
@@ -207,9 +201,9 @@ const Room = () => {
 
         <div
           className="flex justify-center items-center border-black border-2 w-3/5 h-3/4 rounded-lg"
-          // style={{
-          //   overflow: 'auto',
-          // }}
+          style={{
+            overflow: 'auto',
+          }}
         >
           <Board
             state={state}
