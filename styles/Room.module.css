@@ -13,6 +13,13 @@
   grid-template-rows: repeat(auto-fit, minmax(100px, 1fr));
   border: solid 1px #000;
 } */
+<<<<<<< HEAD
+=======
+/* 
+.gameBoard {
+  overflow: auto;
+} */
+>>>>>>> f6f21d350651d5a8b96923bbf21d6dbd700dffdd
 
 .gameRow {
   height: 60px;
@@ -30,8 +37,8 @@
 }
 
 .tile {
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   position: relative;
   border: solid 1px rgb(90, 65, 42);
   border-radius: 10px;

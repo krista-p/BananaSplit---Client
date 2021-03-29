@@ -8,7 +8,7 @@ import NavBar from '../../components/Navbar';
 import GameEndPopup from '../../components/gamePage/gameEndPopup/GameEndPopup';
 import { numBoards } from '../../components/lib/utils/wordChecker';
 
-const gridSize: number = 9;
+const gridSize: number = 15;
 const initialState = {
   playerTiles: [],
   matrix: Array.from({ length: gridSize }, () => Array(gridSize).fill(0)),
@@ -136,9 +136,17 @@ const Room = () => {
     <div className="flex flex-col h-screen w-screen font-sans items-center">
       <NavBar />
 
-      <div className="flex flex-col items-center">
-        <div>
+
+      <div className="flex flex-row m-4">
+        <div className="flex flex-col items-center">
+          <div>
           {`Game Room Code: ${id}`}
+          </div>
+        </div>
+
+        <div className="flex flex-row items-center">
+          <h1 className="mr-2 text-3xl text-primary">tiles in bunch:</h1>
+          <div className="w-auto h-auto p-2 border-4 border-secondary bg-primary text-3xl">{tilesRemaining}</div>
         </div>
       </div>
 
@@ -154,7 +162,7 @@ const Room = () => {
             </button>
           </div>
 
-          <div className="flex flex-col border-black border-2 h-1/4 rounded-md m-2">
+          <div className="flex flex-col bg-secondary text-primary text-xl h-1/4 rounded-full m-2 justify-center">
             { actionMessages 
               && actionMessages.map((message, index) => (
                 <div key={index.toString().concat(message)}>
@@ -165,11 +173,11 @@ const Room = () => {
           </div>
 
           {/* // TODO: Highlight players that are ready */}
-          <div className="flex flex-col border-black border-2 h-1/4 rounded-md m-2">
+          <div className="flex flex-col bg-secondary text-primary text-xl h-1/4 rounded-full m-2 text-center">
             { playersInRoom
               && playersInRoom.map((player, index) => (
                 // className={playerReady(player)}
-                <div key={index.toString().concat(player)}>
+                <div className="mt-2" key={index.toString().concat(player)}>
                   {`Player ${index + 1}: ${player}`}
                 </div>
               ))}
@@ -199,23 +207,16 @@ const Room = () => {
           </div>
         </div>
 
-        <div
-          className="flex justify-center items-center border-black border-2 w-3/5 h-3/4 rounded-lg"
-          // style={{
-          //   overflow: 'auto',
-          // }}
-        >
-          <Board
-            state={state}
-            setState={setState}
-            gridSize={gridSize}
-            handleDump={handleDump}
-          />
-        </div>
+        <Board
+          state={state}
+          setState={setState}
+          gridSize={gridSize}
+          handleDump={handleDump}
+        />
 
         <div className="flex flex-col flex-grow m-2">
           {/* NOTE: Dump will handle player giving one tile back and receiving three. */}
-          <button type="submit" className="button-yellow">{tilesRemaining}</button>
+          {/* <button type="submit" className="button-yellow"></button> */}
 
           {/* NOTE: Peel will be handled automatically once player runs out of tiles. Button can still be used to test function though. */}
           <button type="submit" className="button-yellow" onClick={handlePeel}>Peel!</button>
@@ -223,7 +224,7 @@ const Room = () => {
       </div>
 
       {/* TESTING END OF GAME POPUP */}
-                <button type="button" onClick={toggleEndPopup} className="bg-pink-400 text-white p-2 mb-8">click here to get game popup</button>
+                <button type="button" onClick={toggleEndPopup} className="bg-pink-400 text-white fixed bottom-8 right-8">click here to get game popup</button>
                 {endOpen ? <GameEndPopup /> : null}
     </div>
   );

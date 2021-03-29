@@ -12,7 +12,7 @@ export default function Grid({ state, setState, gridSize }) {
 
   /* NOTE Start game board render functions */
   const renderSquare = (squareId: string) => (
-    <div className={styles.gameSquare} key={`square${squareId}`}>
+    <div className="w-16 h-16 hover:bg-gray-100 border-2 border-pink-600" key={`square${squareId}`}>
       <GridSquare
         state={state}
         squareId={squareId}
@@ -22,7 +22,7 @@ export default function Grid({ state, setState, gridSize }) {
   );
 
   const renderRow = (rowId: number) => (
-    <div className={styles.gameRow} key={`row${rowId}`}>
+    <div className="h-16 flex flex-row" key={`row${rowId}`}>
       {
         row.map((_, index: number) => renderSquare(`${rowId}-${index}`))
       }
@@ -30,7 +30,7 @@ export default function Grid({ state, setState, gridSize }) {
   );
 
   const renderBoard = () => (
-    <div className={styles.gameBoard}>
+    <div className="w-full h-full">
       {
         boardMatrix.map((_, index: number) => renderRow(index))
       }
@@ -54,10 +54,8 @@ export default function Grid({ state, setState, gridSize }) {
   /* NOTE End game board builder functions */
 
   return (
-    <div className={styles.gameBoard}>
-      <div>
-        {renderBoard()}
-      </div>
+    <div>
+      {renderBoard()}
     </div>
   );
 }
