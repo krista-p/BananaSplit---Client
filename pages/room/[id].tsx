@@ -42,8 +42,10 @@ const Room = () => {
     socket.emit('enteredRoom', id);
 
     socket.on('receiveTiles', (tiles) => {
+      const { matrix, playerTiles } = state;
+      console.log(matrix, playerTiles, tiles[socket.id]);
       setState({
-        ...state,
+        matrix,
         playerTiles: tiles[socket.id],
       });
     });
@@ -102,7 +104,9 @@ const Room = () => {
   const handlePeel = useCallback((e) => {
     e.preventDefault();
     try {
-      if (!state.playerTiles) {
+      const { playerTiles } = state;
+      console.log(playerTiles.length);
+      if (playerTiles.length === 0) {
         socket.emit('peelAction', id);
       } else {
         alertNotification('Tiles still on board!');

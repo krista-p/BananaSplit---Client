@@ -14,10 +14,6 @@
   border: solid 1px #000;
 } */
 
-.gameBoard {
-  overflow: auto;
-}
-
 .gameRow {
   height: 60px;
   display: flex;
@@ -27,6 +23,7 @@
 .gameSquare {
   width: 62px;
   height: 62px;
+  border: solid 0.5px whitesmoke;
 }
 .gameSquare:hover {
   background-color: whitesmoke;
