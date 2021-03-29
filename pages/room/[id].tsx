@@ -103,6 +103,7 @@ const Room = () => {
   };
 
   const handleDump = (tileToDump, stateClone) => {
+    setState(stateClone);
     try {
       const incomingSocket = socket.id;
       socket.emit('dumpAction', { id, tileToDump });
