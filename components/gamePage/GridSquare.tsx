@@ -38,14 +38,14 @@ const gridSquare = (props: SquarePropsType) => {
         <div
           className={
             snapshot.isDragging
-              ? styles.dragging
-              : styles.tile
+              ? 'dragging-tile'
+              : 'tile'
           }
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          {placeholderTile?.letter}
+          {matrix[rowIndex][colIndex] ? placeholderTile.letter : null}
         </div>
       )}
     >
@@ -58,8 +58,8 @@ const gridSquare = (props: SquarePropsType) => {
             id={squareId}
             className={
               !squareContents()
-                ? styles.gameSquare
-                : styles.tile
+                ? 'w-16 h-16 hover:bg-gray-100'
+                : 'w-16 h-16'
             }
           >
             {squareContents()}

@@ -18,7 +18,7 @@ export default function Tile(props: TileProps) {
     >
       {(provided, snapshot) => (
         <div
-          className={snapshot.isDragging ? styles.dragging : styles.tile}
+          className={snapshot.isDragging ? 'tile' : 'dragging-tile'}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
