@@ -1,10 +1,13 @@
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
+import _ from 'lodash';
+
 import Board from '../../components/gamePage/Board';
 import { alertNotification } from '../../components/landingPage/popups/alertpopup/AlertPopup';
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
 import NavBar from '../../components/Navbar';
 import GameEndPopup from '../../components/gamePage/gameEndPopup/GameEndPopup';
+import { numBoards } from '../../components/lib/utils/wordChecker';
 
 const gridSize: number = 9;
 const initialState = {
@@ -16,23 +19,20 @@ const Room = () => {
   const router = useRouter();
   const { id } = router.query;
   const [playersInRoom, setPlayersInRoom] = useState([]);
-  const [playersReady, setPlayersReady] = useState([]);
   const [roomReady, setRoomReady] = useState(false);
+  const [readyPressed, setReadyPressed] = useState(false);
   const [playerHost, setPlayerHost] = useState(false);
   const [state, setState] = useState(initialState);
   // THIS IS FOR END OF GAME POPUP
   const [endOpen, setEndOpen] = useState<boolean>(false);
 
-  let readyPressed = 0;
-
-  // useEffect(() => {
-  //   socket.emit('getPlayersInRoom', id);
-  // }, []);
 
   useEffect(() => {
     socket.on('playersInRoom', (players) => {
       setPlayersInRoom(players);
-      console.log('players:', players);
+    });
+    socket.on('roomReadyResponse', (res) => {
+      setRoomReady(res);
     });
   }, []);
 
@@ -44,28 +44,12 @@ const Room = () => {
     socket.emit('enteredRoom', id);
 
     socket.on('receiveTiles', (tiles) => {
-      setState({
-        ...state,
-        playerTiles: tiles[socket.id],
-      });
+      setState(prevState => ({
+        ...prevState,
+        playerTiles: prevState.playerTiles.concat(tiles[socket.id]),
+      }));
     });
   }, []);
-
-  /* client - room/[id].tsx */
-  useEffect(() => {
-    socket.emit('getPlayersReady', id, (res) => {
-      console.log('playersReady:', res);
-      if (!_.isEmpty(_.xor(playersInRoom, playersReady))) {
-        setRoomReady(true);
-      }
-    });
-  }, [playersReady]);
-
-  useEffect(() => {
-    socket.emit('roomReady', id, (res) => {
-      console.log('roomReady:', id, res);
-    });
-  }, [roomReady]);
 
   const handleLeaveGame = (e) => {
     e.preventDefault();
@@ -81,54 +65,57 @@ const Room = () => {
   const handleReadyPlayer = (e) => {
     e.preventDefault();
     try {
-      console.log(playersReady);
-      readyPressed++;
+      setReadyPressed(true);
       socket.emit('playerReady', id);
-      setPlayersReady([...playersReady, id]);
     } catch (err) {
       console.error(err);
     }
   };
 
   // TODO: Hide button after game starts
-  const handleStartGame = useCallback((e) => {
+  const handleStartGame = (e) => {
     e.preventDefault();
     try {
       socket.emit('startGame', id);
-      socket.emit('createBunch', id);
     } catch (err) {
       console.error(err);
     }
-  }, []);
+  };
 
-  const handlePeel = useCallback((e) => {
+  const handlePeel = (e) => {
     e.preventDefault();
     try {
-      if (state.playerTiles.length === 0) {
+      if (numBoards(state.matrix) > 1) {
+        alertNotification('Tiles must be connected!');
+      } else if (state.playerTiles.length !== 0) {
+        alertNotification('Tiles in your pile!');
+      } else if (state.playerTiles.length === 0 && numBoards(state.matrix) < 2) {
+        console.log(numBoards(state.matrix), 'peeling');
         socket.emit('peelAction', id);
-      } else {
-        alertNotification('Tiles still on board!');
-      }
+      };
     } catch (err) {
       console.error(err);
     }
-  }, []);
+  };
 
   const handleDump = (e) => {
-    e.preventDefault();
+    e.preventDefault();    
     // send tile back into server
     // then this:
-    console.log(state.playerTiles[0]);
+    // console.log(state.playerTiles[0]);
     console.log(state.playerTiles, 'current tiles');
     socket.emit('tileCheck', id);
-    // getRandomTile(3);
   };
 
-  const playerReady = (player) => {
-    if (playersReady.indexOf(player) !== -1) {
-      return 'text-primary';
-    }
-  };
+  // TODO: Highlight player when ready
+  // playersReady is no longer used with socket events..
+  // const playerReady = (player) => {
+  //   console.log(player);
+  //   console.log('checking highligh', playersReady);
+  //   if (playersReady.indexOf(player) !== -1) {
+  //     return 'text-primary';
+  //   }
+  // };
 
   // TESTING END OF GAME POPUP!!!!!
   const toggleEndPopup = () => {
@@ -170,8 +157,8 @@ const Room = () => {
           <div className="flex flex-col border-black border-2 h-1/4 rounded-md m-2">
             { playersInRoom
               && playersInRoom.map((player, index) => (
-                //
-                <div className={playerReady(player)} key={index.toString().concat(player)}>
+                // className={playerReady(player)}
+                <div key={index.toString().concat(player)}>
                   Player
                   {index + 1}
                   :
@@ -181,7 +168,7 @@ const Room = () => {
           </div>
 
           <div className="flex justify-center">
-            { !roomReady && readyPressed < 1
+            { !readyPressed
               && (
               <button
                 type="button"
@@ -193,11 +180,11 @@ const Room = () => {
               )}
             { roomReady && playerHost
               && (
-              <button
+                <button
                 type="button"
                 className="button-yellow"
                 onClick={handleStartGame}
-              >
+                >
                 Start Game!
               </button>
               )}
