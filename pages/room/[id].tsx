@@ -4,6 +4,7 @@ import Board from '../../components/gamePage/Board';
 import { alertNotification } from '../../components/landingPage/popups/alertpopup/AlertPopup';
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
 import NavBar from '../../components/Navbar';
+import GameEndPopup from '../../components/gamePage/gameEndPopup/GameEndPopup';
 
 const gridSize: number = 9;
 const initialState = {
@@ -19,6 +20,8 @@ const Room = () => {
   const [roomReady, setRoomReady] = useState(false);
   const [playerHost, setPlayerHost] = useState(false);
   const [state, setState] = useState(initialState);
+  // THIS IS FOR END OF GAME POPUP
+  const [endOpen, setEndOpen] = useState<boolean>(false);
 
   let readyPressed = 0;
 
@@ -127,6 +130,11 @@ const Room = () => {
     }
   };
 
+  // TESTING END OF GAME POPUP!!!!!
+  const toggleEndPopup = () => {
+    setEndOpen(!endOpen);
+  };
+
   return (
     <div className="flex flex-col h-screen w-screen font-sans items-center">
       <NavBar />
@@ -147,7 +155,7 @@ const Room = () => {
           <div className="flex justify-center">
             <button
               type="button"
-              className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center"
+              className="button-yellow"
               onClick={handleLeaveGame}
             >
               Leave Game
@@ -177,7 +185,7 @@ const Room = () => {
               && (
               <button
                 type="button"
-                className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center"
+                className="button-yellow"
                 onClick={handleReadyPlayer}
               >
                 Ready?!
@@ -187,7 +195,7 @@ const Room = () => {
               && (
               <button
                 type="button"
-                className="flex flex-grow bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md justify-center"
+                className="button-yellow"
                 onClick={handleStartGame}
               >
                 Start Game!
@@ -211,13 +219,16 @@ const Room = () => {
 
         <div className="flex flex-col flex-grow m-2">
           {/* NOTE: Dump will handle player giving one tile back and receiving three. */}
-          <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md" onClick={handleDump}>Dump!</button>
+          <button type="submit" className="button-yellow" onClick={handleDump}>Dump!</button>
 
           {/* NOTE: Peel will be handled automatically once player runs out of tiles. Button can still be used to test function though. */}
-          <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md" onClick={handlePeel}>Peel!</button>
+          <button type="submit" className="button-yellow" onClick={handlePeel}>Peel!</button>
         </div>
       </div>
 
+      {/* TESTING END OF GAME POPUP */}
+                <button type="button" onClick={toggleEndPopup} className="bg-pink-400 text-white p-2 mb-8">click here to get game popup</button>
+                {endOpen ? <GameEndPopup /> : null}
     </div>
   );
 };

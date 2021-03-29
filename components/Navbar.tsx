@@ -25,7 +25,17 @@ const NavBar = () => {
         </Link>
       </div>
       { currentUser
-        ? <button type="button" onClick={toggleProfilePopup} className="profile-button">O</button>
+        ? <div onClick={toggleProfilePopup} className="profile-button">
+          <div className="w-full h-full cursor-pointer ml-1">
+            <Image
+            onClick={toggleProfilePopup}
+            src="/monkeycap.png"
+            alt="Monkey"
+            width="40"
+            height="50"
+            />
+          </div>
+        </div>
         : null }
       { currentUser && profileOpen
         && (
