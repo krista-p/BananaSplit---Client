@@ -102,7 +102,7 @@ const Room = () => {
   const handlePeel = useCallback((e) => {
     e.preventDefault();
     try {
-      if (state.playerTiles.length === 0) {
+      if (!state.playerTiles) {
         socket.emit('peelAction', id);
       } else {
         alertNotification('Tiles still on board!');
@@ -114,11 +114,12 @@ const Room = () => {
 
   const handleDump = (e) => {
     e.preventDefault();
+    console.log(e);
     // send tile back into server
     // then this:
     // console.log(state.playerTiles[0]);
     // console.log(state.playerTiles, 'current tiles');
-    socket.emit('tileCheck', id);
+    // socket.emit('tileCheck', id);
     // getRandomTile(3);
   };
 
@@ -212,10 +213,22 @@ const Room = () => {
 
         <div className="flex flex-col flex-grow m-2">
           {/* NOTE: Dump will handle player giving one tile back and receiving three. */}
-          <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md" onClick={handleDump}>Dump!</button>
+          <button
+            type="submit"
+            className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md"
+            onClick={handleDump}
+          >
+            Dump!
+          </button>
 
           {/* NOTE: Peel will be handled automatically once player runs out of tiles. Button can still be used to test function though. */}
-          <button type="submit" className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md" onClick={handlePeel}>Peel!</button>
+          <button
+            type="submit"
+            className="bg-primary hover:bg-primary_hover text-secondary font-bold text-2xl rounded-full py-2 px-5 m-2 shadow-md"
+            onClick={handlePeel}
+          >
+            Peel!
+          </button>
         </div>
       </div>
 
