@@ -7,7 +7,7 @@ import Board from '../../components/gamePage/Board';
 import GameEndPopup from '../../components/gamePage/gameEndPopup/GameEndPopup';
 import { alertNotification } from '../../components/landingPage/popups/alertpopup/AlertPopup';
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
-import { numBoards } from '../../components/lib/utils/wordChecker';
+import { numBoards, wordFinder } from '../../components/lib/utils/wordChecker';
 
 const gridSize: number = 15;
 const initialState = {
@@ -125,19 +125,23 @@ const Room = () => {
   const handleReset = (e) => {
     e.preventDefault();
     try {
+      // Take out tiles from board and send back to playerTiles
       console.log(state.matrix);
     } catch (err) {
       console.error(err);
     }
   };
 
-  const handleSplit = (e) => {
+  const handleBanana = (e) => {
     e.preventDefault();
     try {
       if (state.playerTiles.length > 0 || tilesRemaining > 0) {
         alertNotification('Play all tiles!');
       } else if (state.playerTiles.length === 0 && tilesRemaining === 0) {
         console.log('Ready to Split!');
+        // Check if all words are valid
+        // Send tiles if rotten
+        socket.emit('rottenBanana', { id, rottenTiles });
       };
     } catch (err) {
       console.error(err);
@@ -231,12 +235,14 @@ const Room = () => {
           </div>
         </div>
 
-        <Board
-          state={state}
-          setState={setState}
-          gridSize={gridSize}
-          handleDump={handleDump}
-        />
+        <div className="w-3/4">
+          <Board
+            state={state}
+            setState={setState}
+            gridSize={gridSize}
+            handleDump={handleDump}
+          />
+        </div>
 
         <div className="flex flex-col flex-grow m-2">
           <button type="submit" className="button-yellow" onClick={handleReset}>Reset</button>
@@ -245,16 +251,15 @@ const Room = () => {
           
           <div>
             { tilesRemaining < 1 && state.playerTiles.length < 1 &&
-              <button type="submit" className="button-yellow" onClick={handleSplit}>Split!</button>
+              <button type="submit" className="button-yellow" onClick={handleBanana}>Banana!</button>
             }
           </div>
         </div>
 
-      </div>
-
       {/* TESTING END OF GAME POPUP */}
                 <button type="button" onClick={toggleEndPopup} className="bg-pink-400 text-white fixed bottom-8 right-8">click here to get game popup</button>
                 {endOpen ? <GameEndPopup /> : null}
+      </div>
     </div>
   );
 };
