@@ -230,15 +230,6 @@ const Room = () => {
               )}
           </div>
         </div>
-<<<<<<< HEAD
-        <div className="w-3/4">
-          <Board
-            state={state}
-            setState={setState}
-            gridSize={gridSize}
-            handleDump={handleDump}
-          />
-=======
 
         <Board
           state={state}
@@ -257,7 +248,6 @@ const Room = () => {
               <button type="submit" className="button-yellow" onClick={handleSplit}>Split!</button>
             }
           </div>
->>>>>>> feat/socket-rooms
         </div>
 
       </div>
