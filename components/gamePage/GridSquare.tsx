@@ -38,7 +38,7 @@ const gridSquare = (props: SquarePropsType) => {
           className={
             snapshot.isDragging
               ? 'while-dragging'
-              : 'dragging-tile'
+              : 'tile'
           }
           ref={provided.innerRef}
           {...provided.draggableProps}
@@ -57,8 +57,8 @@ const gridSquare = (props: SquarePropsType) => {
             id={squareId}
             className={
               !squareContents()
-                ? 'w-16 h-16 min-w-16 hover:bg-gray-100 border-2 border-gray-300'
-                : 'w-16 h-16 min-w-16 border-2 border-gray-300'
+                ? 'w-14 h-14 hover:bg-gray-100 border-2 border-gray-100'
+                : 'w-14 h-14'
             }
           >
             {squareContents()}
