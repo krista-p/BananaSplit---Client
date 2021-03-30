@@ -127,6 +127,18 @@ const Room = () => {
     try {
       // Take out tiles from board and send back to playerTiles
       console.log(state.matrix);
+      const { matrix, playerTiles } = state;
+      const matrixClone = _.cloneDeep(matrix);
+      const playerTilesClone = _.cloneDeep(playerTiles);
+      for (let row = 0; row < gridSize; row++) {
+        for (let col = 0; col < gridSize; col++) {
+          if (matrixClone[row][col] !== 0) {
+            playerTilesClone.push(matrixClone[row][col]);
+            matrixClone[row][col] = 0;
+          }
+        }
+      }
+      setState({ matrix: matrixClone, playerTiles: playerTilesClone });
     } catch (err) {
       console.error(err);
     }
