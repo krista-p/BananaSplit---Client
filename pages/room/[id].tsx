@@ -166,11 +166,13 @@ const Room = () => {
               }
             }
           }
-
           socket.emit('rottenBanana', { id, rottenTiles });
           setState(initialState);
         }
-      }
+        else {
+          console.log('board is good');
+        }
+      };
     } catch (err) {
       console.error(err);
     }
