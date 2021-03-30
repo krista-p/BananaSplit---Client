@@ -1,12 +1,13 @@
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import _ from 'lodash';
+
+import NavBar from '../../components/Navbar';
 import Board from '../../components/gamePage/Board';
+import GameEndPopup from '../../components/gamePage/gameEndPopup/GameEndPopup';
 import { alertNotification } from '../../components/landingPage/popups/alertpopup/AlertPopup';
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
-import NavBar from '../../components/Navbar';
-import GameEndPopup from '../../components/gamePage/gameEndPopup/GameEndPopup';
-import { numBoards } from '../../components/lib/utils/wordChecker';
+import { numBoards, wordFinder } from '../../components/lib/utils/wordChecker';
 
 const gridSize: number = 15;
 const initialState = {
@@ -22,7 +23,7 @@ const Room = () => {
   const [readyPlayers, setReadyPlayers] = useState([]);
   const [roomReady, setRoomReady] = useState(false);
   const [readyPressed, setReadyPressed] = useState(false);
-  const [startPressed, setStartPressed] = useState(false);
+  const [roomActive, setRoomActive] = useState(false);
   const [playerHost, setPlayerHost] = useState(false);
   const [tilesRemaining, setTilesRemaining] = useState(0);
   const [state, setState] = useState(initialState);
@@ -44,6 +45,9 @@ const Room = () => {
     });
     socket.on('hostResponse', (res) => {
       setPlayerHost(res);
+    });
+    socket.on('roomActive', (res) => {
+      setRoomActive(res);
     });
     socket.on('tilesRemaining', (res) => {
       setTilesRemaining(res);
@@ -86,7 +90,6 @@ const Room = () => {
   const handleStartGame = (e) => {
     e.preventDefault();
     try {
-      setStartPressed(true);
       socket.emit('startGame', id);
     } catch (err) {
       console.error(err);
@@ -119,6 +122,57 @@ const Room = () => {
     };
   };
 
+  const handleReset = (e) => {
+    e.preventDefault();
+    try {
+      // Take out tiles from board and send back to playerTiles
+      console.log(state.matrix);
+      const { matrix, playerTiles } = state;
+      const matrixClone = _.cloneDeep(matrix);
+      const playerTilesClone = _.cloneDeep(playerTiles);
+      for (let row = 0; row < gridSize; row++) {
+        for (let col = 0; col < gridSize; col++) {
+          if (matrixClone[row][col] !== 0) {
+            playerTilesClone.push(matrixClone[row][col]);
+            matrixClone[row][col] = 0;
+          }
+        }
+      }
+      setState({ matrix: matrixClone, playerTiles: playerTilesClone });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleBanana = (e) => {
+    e.preventDefault();
+    try {
+      if (state.playerTiles.length > 0 || tilesRemaining > 0) {
+        alertNotification('Play all tiles!');
+      } else if (state.playerTiles.length === 0 && tilesRemaining === 0) {
+        // Check if all words are valid
+        if (true) { // TODO (CHANGE THIS 'TRUE'): result of word check. should be boolean
+          const matrixClone = _.cloneDeep(state.matrix);
+          const rottenTiles = _.cloneDeep(state.playerTiles);
+          
+          for (let row = 0; row < gridSize; row++) {
+            for (let col = 0; col < gridSize; col++) {
+              if (matrixClone[row][col] !== 0) {
+                rottenTiles.push(matrixClone[row][col]);
+                matrixClone[row][col] = 0;
+              }
+            }
+          }
+          
+          socket.emit('rottenBanana', { id, rottenTiles });
+          setState(initialState);
+        }
+      };
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   const playerReady = (player) => {
     if (readyPlayers.indexOf(player) !== -1) {
       return 'bg-primary text-secondary w-auto rounded-full m-2';
@@ -141,7 +195,7 @@ const Room = () => {
           <h1 className="mr-2 text-xl md:text-3xl text-primary">game room code:</h1>
           <div className="w-auto h-16 p-2 bg-primary text-xl md:text-3xl rounded-full flex items-center text-center">{id}</div>
         </div>
-        <button type="submit" className="button-yellow" onClick={handlePeel}>Peel!</button>
+        {/* <button type="submit" className="button-yellow" onClick={handlePeel}>Peel!</button> */}
         <div className="flex flex-row items-center mr-8 bg-secondary p-2 rounded-full">
           <h1 className="mr-2 text-xl md:text-3xl text-primary">tiles in bunch:</h1>
           <div className="w-16 h-16 p-2 bg-primary text-xl md:text-3xl rounded-full flex items-center text-center">{tilesRemaining}</div>
@@ -193,7 +247,7 @@ const Room = () => {
                 Ready?!
               </button>
               )}
-            { roomReady && playerHost && !startPressed
+            { roomReady && playerHost && !roomActive
               && (
                 <button
                   type="button"
@@ -205,6 +259,7 @@ const Room = () => {
               )}
           </div>
         </div>
+
         <div className="w-3/4">
           <Board
             state={state}
@@ -214,11 +269,22 @@ const Room = () => {
           />
         </div>
 
-      </div>
+        <div className="flex flex-col flex-grow m-2">
+          <button type="submit" className="button-yellow" onClick={handleReset}>Reset</button>
+
+          <button type="submit" className="button-yellow" onClick={handlePeel}>Peel!</button>
+          
+          <div>
+            <button type="submit" className="button-yellow" onClick={handleBanana}>Banana!</button>
+            {/* { tilesRemaining < 1 && state.playerTiles.length < 1 &&
+            } */}
+          </div>
+        </div>
 
       {/* TESTING END OF GAME POPUP */}
                 <button type="button" onClick={toggleEndPopup} className="bg-pink-400 text-white fixed bottom-8 right-8">click here to get game popup</button>
                 {endOpen ? <GameEndPopup /> : null}
+      </div>
     </div>
   );
 };
