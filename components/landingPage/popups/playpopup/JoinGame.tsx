@@ -28,11 +28,14 @@ const JoinGame = () => {
     setGameRoomCode(e.target.value);
   }
 
+  // if (!gameRoomCode) return alertNotification('Enter Room Code!');
+
   // User or Guest can Join Game (Only Private Currently)
   const handleSumbitJoinPrivateGame = (e) => {
     e.preventDefault();
     try {
       if (userName) {
+        if (!gameRoomCode) return alertNotification('Enter Room Code!');
         socket.emit('joinGame', { gameRoomCode, userName }, (res) => {
           if (res === 'Game Active') {
             alertNotification('Game in Progress!');
@@ -45,6 +48,7 @@ const JoinGame = () => {
           }
         });
       } else {
+        if (!gameRoomCode && !guestPrivateUserName) return alertNotification('Enter Name and Room Code');
         userName = guestPrivateUserName;
         socket.emit('joinGame', { gameRoomCode, userName }, (res) => {
           if (res === 'Game Active') {

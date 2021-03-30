@@ -86,7 +86,6 @@ const Room = () => {
     };
   };
 
-  // TODO: Hide button after game starts
   const handleStartGame = (e) => {
     e.preventDefault();
     try {
@@ -105,7 +104,6 @@ const Room = () => {
       } else if (state.playerTiles.length !== 0) {
         alertNotification('Tiles in your pile!');
       } else if (state.playerTiles.length === 0 && numBoards(state.matrix) < 2) {
-        console.log(numBoards(state.matrix), 'peeling');
         socket.emit('peelAction', id);
       };
     } catch (err) {
@@ -125,7 +123,6 @@ const Room = () => {
   const handleReset = (e) => {
     e.preventDefault();
     try {
-      // Take out tiles from board and send back to playerTiles
       console.log(state.matrix);
       const { matrix, playerTiles } = state;
       const matrixClone = _.cloneDeep(matrix);
@@ -152,7 +149,9 @@ const Room = () => {
       } else if (state.playerTiles.length === 0 && tilesRemaining === 0) {
         console.log('Ready to Split!');
         // Check if all words are valid
+        socket.emit('endGame', id);
         // Send tiles if rotten
+        // if check fails
         socket.emit('rottenBanana', { id, rottenTiles });
       };
     } catch (err) {
@@ -182,7 +181,12 @@ const Room = () => {
           <h1 className="mr-2 text-xl md:text-3xl text-primary">game room code:</h1>
           <div className="w-auto h-16 p-2 bg-primary text-xl md:text-3xl rounded-full flex items-center text-center">{id}</div>
         </div>
-        <button type="submit" className="button-yellow" onClick={handlePeel}>Peel!</button>
+        { roomActive &&
+          <div>
+            <button type="submit" className="button-yellow" onClick={handleReset}>Reset</button>
+            <button type="submit" className="button-yellow" onClick={handlePeel}>Peel!</button>
+          </div>
+        }
         <div className="flex flex-row items-center mr-8 bg-secondary p-2 rounded-full">
           <h1 className="mr-2 text-xl md:text-3xl text-primary">tiles in bunch:</h1>
           <div className="w-16 h-16 p-2 bg-primary text-xl md:text-3xl rounded-full flex items-center text-center">{tilesRemaining}</div>
@@ -257,9 +261,9 @@ const Room = () => {
         </div>
 
         <div className="flex flex-col flex-grow m-2">
-          <button type="submit" className="button-yellow" onClick={handleReset}>Reset</button>
 
-          <button type="submit" className="button-yellow" onClick={handlePeel}>Peel!</button>
+          {/* <button type="submit" className="button-yellow" onClick={handleReset}>Reset</button>
+          <button type="submit" className="button-yellow" onClick={handlePeel}>Peel!</button> */}
           
           <div>
             { tilesRemaining < 1 && state.playerTiles.length < 1 &&
