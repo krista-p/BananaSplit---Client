@@ -1,11 +1,12 @@
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import _ from 'lodash';
+
+import NavBar from '../../components/Navbar';
 import Board from '../../components/gamePage/Board';
+import GameEndPopup from '../../components/gamePage/gameEndPopup/GameEndPopup';
 import { alertNotification } from '../../components/landingPage/popups/alertpopup/AlertPopup';
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
-import NavBar from '../../components/Navbar';
-import GameEndPopup from '../../components/gamePage/gameEndPopup/GameEndPopup';
 import { numBoards } from '../../components/lib/utils/wordChecker';
 
 const gridSize: number = 15;
@@ -22,7 +23,7 @@ const Room = () => {
   const [readyPlayers, setReadyPlayers] = useState([]);
   const [roomReady, setRoomReady] = useState(false);
   const [readyPressed, setReadyPressed] = useState(false);
-  const [startPressed, setStartPressed] = useState(false);
+  const [roomActive, setRoomActive] = useState(false);
   const [playerHost, setPlayerHost] = useState(false);
   const [tilesRemaining, setTilesRemaining] = useState(0);
   const [state, setState] = useState(initialState);
@@ -44,6 +45,9 @@ const Room = () => {
     });
     socket.on('hostResponse', (res) => {
       setPlayerHost(res);
+    });
+    socket.on('roomActive', (res) => {
+      setRoomActive(res);
     });
     socket.on('tilesRemaining', (res) => {
       setTilesRemaining(res);
@@ -86,7 +90,6 @@ const Room = () => {
   const handleStartGame = (e) => {
     e.preventDefault();
     try {
-      setStartPressed(true);
       socket.emit('startGame', id);
     } catch (err) {
       console.error(err);
@@ -118,6 +121,28 @@ const Room = () => {
       console.error(err);
     };
   };
+
+  const handleReset = (e) => {
+    e.preventDefault();
+    try {
+      console.log(state.matrix);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleSplit = (e) => {
+    e.preventDefault();
+    try {
+      if (state.playerTiles.length > 0 || tilesRemaining > 0) {
+        alertNotification('Play all tiles!');
+      } else if (state.playerTiles.length === 0 && tilesRemaining === 0) {
+        console.log('Ready to Split!');
+      };
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   const playerReady = (player) => {
     if (readyPlayers.indexOf(player) !== -1) {
@@ -191,7 +216,7 @@ const Room = () => {
                 Ready?!
               </button>
               )}
-            { roomReady && playerHost && !startPressed
+            { roomReady && playerHost && !roomActive
               && (
                 <button
                   type="button"
@@ -212,11 +237,15 @@ const Room = () => {
         />
 
         <div className="flex flex-col flex-grow m-2">
-          {/* NOTE: Dump will handle player giving one tile back and receiving three. */}
-          {/* <button type="submit" className="button-yellow"></button> */}
+          <button type="submit" className="button-yellow" onClick={handleReset}>Reset</button>
 
-          {/* NOTE: Peel will be handled automatically once player runs out of tiles. Button can still be used to test function though. */}
           <button type="submit" className="button-yellow" onClick={handlePeel}>Peel!</button>
+          
+          <div>
+            { tilesRemaining < 1 && state.playerTiles.length < 1 &&
+              <button type="submit" className="button-yellow" onClick={handleSplit}>Split!</button>
+            }
+          </div>
         </div>
       </div>
 
