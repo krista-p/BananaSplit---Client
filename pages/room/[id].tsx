@@ -150,10 +150,23 @@ const Room = () => {
       if (state.playerTiles.length > 0 || tilesRemaining > 0) {
         alertNotification('Play all tiles!');
       } else if (state.playerTiles.length === 0 && tilesRemaining === 0) {
-        console.log('Ready to Split!');
         // Check if all words are valid
-        // Send tiles if rotten
-        socket.emit('rottenBanana', { id, rottenTiles });
+        if (true) { // TODO (CHANGE THIS 'TRUE'): result of word check. should be boolean
+          const matrixClone = _.cloneDeep(state.matrix);
+          const rottenTiles = _.cloneDeep(state.playerTiles);
+          
+          for (let row = 0; row < gridSize; row++) {
+            for (let col = 0; col < gridSize; col++) {
+              if (matrixClone[row][col] !== 0) {
+                rottenTiles.push(matrixClone[row][col]);
+                matrixClone[row][col] = 0;
+              }
+            }
+          }
+          
+          socket.emit('rottenBanana', { id, rottenTiles });
+          setState(initialState);
+        }
       };
     } catch (err) {
       console.error(err);
@@ -182,7 +195,7 @@ const Room = () => {
           <h1 className="mr-2 text-xl md:text-3xl text-primary">game room code:</h1>
           <div className="w-auto h-16 p-2 bg-primary text-xl md:text-3xl rounded-full flex items-center text-center">{id}</div>
         </div>
-        <button type="submit" className="button-yellow" onClick={handlePeel}>Peel!</button>
+        {/* <button type="submit" className="button-yellow" onClick={handlePeel}>Peel!</button> */}
         <div className="flex flex-row items-center mr-8 bg-secondary p-2 rounded-full">
           <h1 className="mr-2 text-xl md:text-3xl text-primary">tiles in bunch:</h1>
           <div className="w-16 h-16 p-2 bg-primary text-xl md:text-3xl rounded-full flex items-center text-center">{tilesRemaining}</div>
@@ -262,9 +275,9 @@ const Room = () => {
           <button type="submit" className="button-yellow" onClick={handlePeel}>Peel!</button>
           
           <div>
-            { tilesRemaining < 1 && state.playerTiles.length < 1 &&
-              <button type="submit" className="button-yellow" onClick={handleBanana}>Banana!</button>
-            }
+            <button type="submit" className="button-yellow" onClick={handleBanana}>Banana!</button>
+            {/* { tilesRemaining < 1 && state.playerTiles.length < 1 &&
+            } */}
           </div>
         </div>
 
