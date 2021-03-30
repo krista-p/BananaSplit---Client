@@ -121,8 +121,9 @@ const Room = () => {
 
   const playerReady = (player) => {
     if (readyPlayers.indexOf(player) !== -1) {
-      return 'text-green-400';
+      return 'bg-primary text-secondary w-auto rounded-full m-2';
     }
+    return 'm-2';
   };
 
   // TESTING END OF GAME POPUP!!!!!
@@ -131,25 +132,24 @@ const Room = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen w-screen font-sans items-center">
+    <div className="flex flex-col h-screen w-screen">
       <NavBar />
 
 
-      <div className="flex flex-row m-4">
-        <div className="flex flex-col items-center">
-          <div>
-          {`Game Room Code: ${id}`}
-          </div>
+      <div className="flex flex-row m-4 justify-between">
+        <div className="flex flex-row items-center ml-8 bg-secondary p-2 rounded-full">
+          <h1 className="mr-2 text-xl md:text-3xl text-primary">game room code:</h1>
+          <div className="w-auto h-16 p-2 bg-primary text-xl md:text-3xl rounded-full flex items-center text-center">{id}</div>
         </div>
-
-        <div className="flex flex-row items-center">
-          <h1 className="mr-2 text-3xl text-primary">tiles in bunch:</h1>
-          <div className="w-auto h-auto p-2 border-4 border-secondary bg-primary text-3xl">{tilesRemaining}</div>
+        <button type="submit" className="button-yellow" onClick={handlePeel}>Peel!</button>
+        <div className="flex flex-row items-center mr-8 bg-secondary p-2 rounded-full">
+          <h1 className="mr-2 text-xl md:text-3xl text-primary">tiles in bunch:</h1>
+          <div className="w-16 h-16 p-2 bg-primary text-xl md:text-3xl rounded-full flex items-center text-center">{tilesRemaining}</div>
         </div>
       </div>
 
       <div className="flex w-screen h-3/4 justify-center">
-        <div className="flex flex-col h-full flex-grow content-center">
+        <div className="flex flex-col w-1/4 h-full flex-grow content-center">
           <div className="flex justify-center">
             <button
               type="button"
@@ -160,7 +160,7 @@ const Room = () => {
             </button>
           </div>
 
-          <div className="flex flex-col bg-secondary text-primary text-xl h-1/4 rounded-full m-2 justify-center">
+          <div className="flex flex-col bg-secondary text-primary text-base md:text-xl h-1/4 rounded-2xl m-2 text-center overflow-y-scroll">
             { actionMessages 
               && actionMessages.map((message, index) => (
                 <div key={index.toString().concat(message)}>
@@ -170,14 +170,16 @@ const Room = () => {
             }
           </div>
 
-          <div className="flex flex-col bg-secondary text-primary text-xl h-1/4 rounded-full m-2 text-center">
-            { playersInRoom
-              && playersInRoom.map((player, index) => (
-                // mt-2
-                <div className={playerReady(player)} key={index.toString().concat(player)}>
-                  {`Player ${index + 1}: ${player}`}
-                </div>
-              ))}
+          <div className="flex flex-col bg-secondary text-primary text-base md:text-xl h-1/4 rounded-2xl m-2 text-center">
+            <div className="mt-2 width-full">
+              { playersInRoom
+                && playersInRoom.map((player, index) => (
+                  // mt-2
+                  <div className={playerReady(player)} key={index.toString().concat(player)}>
+                    {`Player ${index + 1}: ${player}`}
+                  </div>
+                ))}
+            </div>
           </div>
 
           <div className="flex justify-center">
@@ -203,21 +205,15 @@ const Room = () => {
               )}
           </div>
         </div>
-
-        <Board
-          state={state}
-          setState={setState}
-          gridSize={gridSize}
-          handleDump={handleDump}
-        />
-
-        <div className="flex flex-col flex-grow m-2">
-          {/* NOTE: Dump will handle player giving one tile back and receiving three. */}
-          {/* <button type="submit" className="button-yellow"></button> */}
-
-          {/* NOTE: Peel will be handled automatically once player runs out of tiles. Button can still be used to test function though. */}
-          <button type="submit" className="button-yellow" onClick={handlePeel}>Peel!</button>
+        <div className="w-3/4">
+          <Board
+            state={state}
+            setState={setState}
+            gridSize={gridSize}
+            handleDump={handleDump}
+          />
         </div>
+
       </div>
 
       {/* TESTING END OF GAME POPUP */}

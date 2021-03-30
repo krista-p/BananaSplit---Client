@@ -82,25 +82,34 @@ const Board = ({ state, setState, gridSize, handleDump }) => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center w-3/5 h-full">
+    <div className="flex flex-row h-full w-full">
       <DragDropContext
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
       >
-        <div className="h-full w-full border-4 border-secondary rounded-xl overflow-scroll">
-          <Grid
-            state={state}
-            setState={setState}
-            gridSize={gridSize}
-          />
+        <div className="flex flex-row w-full h-full">
+          <div className="flex flex-col w-3/4 justify-center items-center h-full">
+            <div className="h-full w-full border-8 border-secondary rounded-2xl overflow-scroll">
+              <Grid
+                state={state}
+                setState={setState}
+                gridSize={gridSize}
+              />
+
+            </div>
+            <div className="h-1/4 mb-4 w-full">
+              <PlayerTiles
+                state={state}
+                setState={setState}
+              />
+
+            </div>
+
+          </div>
+          {/* TODO: Testing making a droppable zone for dumping tiles */}
+          <DumpZone />
 
         </div>
-        <PlayerTiles
-          state={state}
-          setState={setState}
-        />
-        {/* TODO: Testing making a droppable zone for dumping tiles */}
-        <DumpZone />
       </DragDropContext>
     </div>
   );
