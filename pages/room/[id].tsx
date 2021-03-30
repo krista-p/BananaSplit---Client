@@ -19,8 +19,10 @@ const Room = () => {
   const { id } = router.query;
   const [playersInRoom, setPlayersInRoom] = useState([]);
   const [actionMessages, setActionMessages] = useState([]);
+  const [readyPlayers, setReadyPlayers] = useState([]);
   const [roomReady, setRoomReady] = useState(false);
   const [readyPressed, setReadyPressed] = useState(false);
+  const [startPressed, setStartPressed] = useState(false);
   const [playerHost, setPlayerHost] = useState(false);
   const [tilesRemaining, setTilesRemaining] = useState(0);
   const [state, setState] = useState(initialState);
@@ -36,6 +38,9 @@ const Room = () => {
     });
     socket.on('roomReadyResponse', (res) => {
       setRoomReady(res);
+    });
+    socket.on('playerReadyResponse', (res) => {
+      setReadyPlayers(res);
     });
     socket.on('hostResponse', (res) => {
       setPlayerHost(res);
@@ -66,7 +71,6 @@ const Room = () => {
     };
   };
 
-  // TODO: Logic to only be pressed once
   const handleReadyPlayer = (e) => {
     e.preventDefault();
     try {
@@ -82,12 +86,14 @@ const Room = () => {
   const handleStartGame = (e) => {
     e.preventDefault();
     try {
+      setStartPressed(true);
       socket.emit('startGame', id);
     } catch (err) {
       console.error(err);
     };
   };
 
+  // TODO: End game, check if bunch has any tiles
   const handlePeel = (e) => {
     e.preventDefault();
     try {
@@ -105,26 +111,19 @@ const Room = () => {
   };
 
   const handleDump = (tileToDump, stateClone) => {
-    setState(stateClone);
     try {
+      setState(stateClone);
       socket.emit('dumpAction', { id, tileToDump });
-
-      // stateClone.playerTiles = [...stateClone.playerTiles, ...newTiles];
-      // setState(stateClone);
     } catch (err) {
       console.error(err);
     };
   };
 
-  // TODO: Highlight player when ready
-  // playersReady is no longer used with socket events..
-  // const playerReady = (player) => {
-  //   console.log(player);
-  //   console.log('checking highligh', playersReady);
-  //   if (playersReady.indexOf(player) !== -1) {
-  //     return 'text-primary';
-  //   }
-  // };
+  const playerReady = (player) => {
+    if (readyPlayers.indexOf(player) !== -1) {
+      return 'text-green-400';
+    }
+  };
 
   // TESTING END OF GAME POPUP!!!!!
   const toggleEndPopup = () => {
@@ -171,12 +170,11 @@ const Room = () => {
             }
           </div>
 
-          {/* // TODO: Highlight players that are ready */}
           <div className="flex flex-col bg-secondary text-primary text-xl h-1/4 rounded-full m-2 text-center">
             { playersInRoom
               && playersInRoom.map((player, index) => (
-                // className={playerReady(player)}
-                <div className="mt-2" key={index.toString().concat(player)}>
+                // mt-2
+                <div className={playerReady(player)} key={index.toString().concat(player)}>
                   {`Player ${index + 1}: ${player}`}
                 </div>
               ))}
@@ -193,7 +191,7 @@ const Room = () => {
                 Ready?!
               </button>
               )}
-            { roomReady && playerHost
+            { roomReady && playerHost && !startPressed
               && (
                 <button
                   type="button"
