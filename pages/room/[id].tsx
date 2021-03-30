@@ -159,7 +159,10 @@ const Room = () => {
     <div className="flex flex-col h-screen w-screen font-sans items-center">
       <NavBar />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 194e2f28fe3e4893bc0ef35f94a63239aa7f3bad
       <div className="flex flex-row m-4">
         <div className="flex flex-col items-center">
           <div>
@@ -169,7 +172,11 @@ const Room = () => {
 
         <div className="flex flex-row items-center">
           <h1 className="mr-2 text-3xl text-primary">tiles in bunch:</h1>
+<<<<<<< HEAD
           <div className="w-auto h-auto p-2 border-4 border-secondary bg-primary text-3xl">{tilesRemaining}</div>
+=======
+          <div className="w-auto h-auto p-2 border-4 border-secondary bg-primary text-3xl">NUMBER</div>
+>>>>>>> 194e2f28fe3e4893bc0ef35f94a63239aa7f3bad
         </div>
       </div>
 
@@ -185,6 +192,7 @@ const Room = () => {
             </button>
           </div>
 
+<<<<<<< HEAD
           <div className="flex flex-col bg-secondary text-primary text-xl h-1/4 rounded-full m-2 justify-center">
             { actionMessages 
               && actionMessages.map((message, index) => (
@@ -193,14 +201,27 @@ const Room = () => {
                 </div>
               ))
             }
+=======
+          <div className="flex bg-secondary text-primary text-xl h-1/4 rounded-full m-2 justify-center">
+            <div>Actions Coming!</div>
+>>>>>>> 194e2f28fe3e4893bc0ef35f94a63239aa7f3bad
           </div>
 
           <div className="flex flex-col bg-secondary text-primary text-xl h-1/4 rounded-full m-2 text-center">
             { playersInRoom
               && playersInRoom.map((player, index) => (
+<<<<<<< HEAD
                 // mt-2
                 <div className={playerReady(player)} key={index.toString().concat(player)}>
                   {`Player ${index + 1}: ${player}`}
+=======
+                // className={playerReady(player)}
+                <div className="mt-2" key={index.toString().concat(player)}>
+                  Player
+                  {index + 1}
+                  :
+                  {player}
+>>>>>>> 194e2f28fe3e4893bc0ef35f94a63239aa7f3bad
                 </div>
               ))}
           </div>
