@@ -7,9 +7,11 @@ import Board from '../../components/gamePage/Board';
 import GameEndPopup from '../../components/gamePage/gameEndPopup/GameEndPopup';
 import { alertNotification } from '../../components/landingPage/popups/alertpopup/AlertPopup';
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
-import { numBoards, wordFinder } from '../../components/lib/utils/wordChecker';
+import { numBoards, wordFinder, dictCheck } from '../../components/lib/utils/wordChecker';
+import * as dictionary from '../../components/lib/utils/dictionary.json';
 
 const gridSize: number = 15;
+
 const initialState = {
   playerTiles: [],
   matrix: Array.from({ length: gridSize }, () => Array(gridSize).fill(0)),
@@ -35,7 +37,7 @@ const Room = () => {
       setPlayersInRoom(players);
     });
     socket.on('actionMessage', (res) => {
-      setActionMessages(prev => [...prev, res]);
+      setActionMessages((prev) => [...prev, res]);
     });
     socket.on('roomReadyResponse', (res) => {
       setRoomReady(res);
@@ -72,7 +74,7 @@ const Room = () => {
       socket.emit('leaveGame', id);
     } catch (err) {
       console.error(err);
-    };
+    }
   };
 
   const handleReadyPlayer = (e) => {
@@ -83,7 +85,7 @@ const Room = () => {
       socket.emit('playerReady', id);
     } catch (err) {
       console.error(err);
-    };
+    }
   };
 
   // TODO: Hide button after game starts
@@ -93,7 +95,7 @@ const Room = () => {
       socket.emit('startGame', id);
     } catch (err) {
       console.error(err);
-    };
+    }
   };
 
   // TODO: End game, check if bunch has any tiles
@@ -107,10 +109,10 @@ const Room = () => {
       } else if (state.playerTiles.length === 0 && numBoards(state.matrix) < 2) {
         console.log(numBoards(state.matrix), 'peeling');
         socket.emit('peelAction', id);
-      };
+      }
     } catch (err) {
       console.error(err);
-    };
+    }
   };
 
   const handleDump = (tileToDump, stateClone) => {
@@ -119,7 +121,7 @@ const Room = () => {
       socket.emit('dumpAction', { id, tileToDump });
     } catch (err) {
       console.error(err);
-    };
+    }
   };
 
   const handleReset = (e) => {
@@ -146,15 +148,16 @@ const Room = () => {
 
   const handleBanana = (e) => {
     e.preventDefault();
+    const gridWords = wordFinder(state.matrix);
     try {
       if (state.playerTiles.length > 0 || tilesRemaining > 0) {
         alertNotification('Play all tiles!');
       } else if (state.playerTiles.length === 0 && tilesRemaining === 0) {
         // Check if all words are valid
-        if (true) { // TODO (CHANGE THIS 'TRUE'): result of word check. should be boolean
+        if (dictCheck(gridWords, dictionary).length) {
           const matrixClone = _.cloneDeep(state.matrix);
           const rottenTiles = _.cloneDeep(state.playerTiles);
-          
+
           for (let row = 0; row < gridSize; row++) {
             for (let col = 0; col < gridSize; col++) {
               if (matrixClone[row][col] !== 0) {
@@ -163,15 +166,15 @@ const Room = () => {
               }
             }
           }
-          
+
           socket.emit('rottenBanana', { id, rottenTiles });
           setState(initialState);
         }
-      };
+      }
     } catch (err) {
       console.error(err);
     }
-  }
+  };
 
   const playerReady = (player) => {
     if (readyPlayers.indexOf(player) !== -1) {
@@ -188,7 +191,6 @@ const Room = () => {
   return (
     <div className="flex flex-col h-screen w-screen">
       <NavBar />
-
 
       <div className="flex flex-row m-4 justify-between">
         <div className="flex flex-row items-center ml-8 bg-secondary p-2 rounded-full">
@@ -273,7 +275,7 @@ const Room = () => {
           <button type="submit" className="button-yellow" onClick={handleReset}>Reset</button>
 
           <button type="submit" className="button-yellow" onClick={handlePeel}>Peel!</button>
-          
+
           <div>
             <button type="submit" className="button-yellow" onClick={handleBanana}>Banana!</button>
             {/* { tilesRemaining < 1 && state.playerTiles.length < 1 &&

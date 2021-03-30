@@ -100,8 +100,6 @@ export const wordFinder = (check: (number | Igrid)[][]): string[] => {
   return [...wordSet].sort();
 };
 
-// const answer = wordFinder(grid7);
-
 export const dictCheck = (words: string[], dict: string[]): string[] => {
   const valid: string[] = [];
   const incorrect: string[] = [];

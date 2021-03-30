@@ -96,6 +96,6 @@ a {
   }
 
   .while-dragging {
-    @apply w-16 h-16 min-w-16 border-4 border-purple-500 rounded-lg bg-primary_hover text-secondary text-5xl text-center items-center;
+    @apply w-14 h-14  border-4 border-purple-500 rounded-lg bg-primary_hover text-secondary text-5xl text-center items-center;
   }
 }

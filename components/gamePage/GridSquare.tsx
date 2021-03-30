@@ -58,8 +58,8 @@ const gridSquare = (props: SquarePropsType) => {
             id={squareId}
             className={
               !squareContents()
-                ? 'w-16 h-16 min-w-16 hover:bg-gray-100 border-2 border-gray-100'
-                : 'w-16 h-14 min-w-16 border-2 border-gray-100'
+                ? 'w-16 h-16 min-w-16 hover:bg-gray-100 border-2 border-gray-300'
+                : 'w-16 h-16 min-w-16 border-2 border-gray-300'
             }
           >
             {squareContents()}
