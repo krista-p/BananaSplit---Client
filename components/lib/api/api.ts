@@ -13,5 +13,5 @@ export const createUser = (email, userName, uid) => {
     .then((data) => {
       // NOTE: User model from backend is returned here
       console.log(data);
-    })
-}
+    });
+};

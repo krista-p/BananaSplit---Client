@@ -7,10 +7,12 @@ import Board from '../../components/gamePage/Board';
 import GameEndPopup from '../../components/gamePage/gameEndPopup/GameEndPopup';
 import { alertNotification } from '../../components/landingPage/popups/alertpopup/AlertPopup';
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
-import { numBoards, wordFinder } from '../../components/lib/utils/wordChecker';
+import { numBoards, wordFinder, dictCheck } from '../../components/lib/utils/wordChecker';
+import * as dictionary from '../../components/lib/utils/dictionary.json';
 import { GameStateInterface, TileInterface } from '../../interfaces';
 
 const gridSize: number = 15;
+
 const initialState: GameStateInterface = {
   playerTiles: [],
   matrix: Array.from({ length: gridSize }, () => Array(gridSize).fill(0)),
@@ -35,7 +37,7 @@ const Room = () => {
     socket.on('playersInRoom', (players: string[]) => {
       setPlayersInRoom(players);
     });
-    socket.on('actionMessage', (res: string) => {
+    socket.on('actionMessage', (res) => {
       setActionMessages((prev: string[]) => [...prev, res]);
     });
     socket.on('roomReadyResponse', (res: boolean) => {
@@ -73,7 +75,7 @@ const Room = () => {
       socket.emit('leaveGame', id);
     } catch (err) {
       console.error(err);
-    };
+    }
   };
 
   const handleReadyPlayer = (e) => {
@@ -84,7 +86,7 @@ const Room = () => {
       socket.emit('playerReady', id);
     } catch (err) {
       console.error(err);
-    };
+    }
   };
 
   // TODO: Hide button after game starts
@@ -94,7 +96,7 @@ const Room = () => {
       socket.emit('startGame', id);
     } catch (err) {
       console.error(err);
-    };
+    }
   };
 
   // TODO: End game, check if bunch has any tiles
@@ -108,10 +110,10 @@ const Room = () => {
       } else if (state.playerTiles.length === 0 && numBoards(state.matrix) < 2) {
         console.log(numBoards(state.matrix), 'peeling');
         socket.emit('peelAction', id);
-      };
+      }
     } catch (err) {
       console.error(err);
-    };
+    }
   };
 
   const handleDump = (tileToDump: TileInterface, stateClone: GameStateInterface) => {
@@ -120,7 +122,7 @@ const Room = () => {
       socket.emit('dumpAction', { id, tileToDump });
     } catch (err) {
       console.error(err);
-    };
+    }
   };
 
   const handleReset = (e) => {
@@ -147,12 +149,13 @@ const Room = () => {
 
   const handleBanana = (e) => {
     e.preventDefault();
+    const gridWords = wordFinder(state.matrix);
     try {
       if (state.playerTiles.length > 0 || tilesRemaining > 0) {
         alertNotification('Play all tiles!');
       } else if (state.playerTiles.length === 0 && tilesRemaining === 0) {
         // Check if all words are valid
-        if (true) { // TODO (CHANGE THIS 'TRUE'): result of word check. should be boolean
+        if (dictCheck(gridWords, dictionary).length) {
           const matrixClone: any[][] = _.cloneDeep(state.matrix);
           const rottenTiles: TileInterface[] = _.cloneDeep(state.playerTiles);
 
@@ -174,7 +177,7 @@ const Room = () => {
     } catch (err) {
       console.error(err);
     }
-  }
+  };
 
   const playerReady = (player: string) => {
     if (readyPlayers.indexOf(player) !== -1) {
@@ -191,7 +194,6 @@ const Room = () => {
   return (
     <div className="flex flex-col h-screen w-screen">
       <NavBar />
-
 
       <div className="flex flex-row m-4 justify-between">
         <div className="flex flex-row items-center ml-8 bg-secondary p-2 rounded-full">
@@ -217,8 +219,8 @@ const Room = () => {
             </button>
           </div>
 
-          <div className="flex flex-col bg-secondary text-primary text-base md:text-xl h-1/4 rounded-2xl m-2 text-center overflow-y-scroll">
-            { actionMessages 
+          <div className="flex flex-col bg-secondary text-primary text-base md:text-xl h-1/4 rounded-2xl m-2 text-center overflow-y-scroll scroll-bar-light">
+            { actionMessages
               && actionMessages.map((message: string, index: number) => (
                 <div key={index.toString().concat(message)}>
                   {message}
@@ -227,7 +229,7 @@ const Room = () => {
             }
           </div>
 
-          <div className="flex flex-col bg-secondary text-primary text-base md:text-xl h-1/4 rounded-2xl m-2 text-center">
+          <div className="flex flex-col bg-secondary text-primary text-base md:text-xl h-1/4 rounded-2xl m-2 text-center overflow-y-scroll scroll-bar-light">
             <div className="mt-2 width-full">
               { playersInRoom
                 && playersInRoom.map((player: string, index: number) => (
@@ -276,7 +278,7 @@ const Room = () => {
           <button type="submit" className="button-yellow" onClick={handleReset}>Reset</button>
 
           <button type="submit" className="button-yellow" onClick={handlePeel}>Peel!</button>
-          
+
           <div>
             <button type="submit" className="button-yellow" onClick={handleBanana}>Banana!</button>
             {/* { tilesRemaining < 1 && state.playerTiles.length < 1 &&

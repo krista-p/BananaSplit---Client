@@ -5,6 +5,6 @@ export const createGameRoomCode: Function = (len: number) => {
 
   for (let i = 0; i < len; i++) {
     gameCode += allowableCharacters.charAt(Math.floor(Math.random() * charLen));
-  };
+  }
   return gameCode;
 };

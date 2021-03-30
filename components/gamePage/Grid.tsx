@@ -4,7 +4,7 @@ import GridSquare from './GridSquare';
 
 export default function Grid({ state, setState, gridSize }) {
   const row: any[] = [];
-  const boardMatrix: any[] = [];
+  const boardMatrix: any[][] = [];
 
   useEffect(() => {
     setState({ ...state, gridTiles: boardMatrix });
@@ -12,7 +12,7 @@ export default function Grid({ state, setState, gridSize }) {
 
   /* NOTE Start game board render functions */
   const renderSquare = (squareId: string) => (
-    <div className="w-16 h-14" key={`square${squareId}`}>
+    <div className="w-14 h-14" key={`square${squareId}`}>
       <GridSquare
         state={state}
         squareId={squareId}
@@ -22,7 +22,7 @@ export default function Grid({ state, setState, gridSize }) {
   );
 
   const renderRow = (rowId: number) => (
-    <div className="h-16 flex flex-row" key={`row${rowId}`}>
+    <div className="h-14 flex flex-row" key={`row${rowId}`}>
       {
         row.map((_, index: number) => renderSquare(`${rowId}-${index}`))
       }

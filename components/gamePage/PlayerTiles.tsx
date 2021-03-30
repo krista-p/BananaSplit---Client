@@ -6,14 +6,14 @@ import Tile from './Tile';
 
 export default function PlayerTiles({ state }) {
   return (
-    <div className="w-full h-full flex justify-center bg-secondary rounded-full mt-4">
+    <div className="w-full h-full flex justify-center bg-secondary rounded-full mt-4 px-8 overflow-x-scroll scroll-bar-light">
       <Droppable
         droppableId="playerTiles"
         direction="horizontal"
       >
         {(provided) => (
           <div
-            className="w-full m-4 flex justify-center items-center overflow-x-scroll"
+            className="w-full min-w-max flex items-center"
             {...provided.droppableProps}
             ref={provided.innerRef}
           >

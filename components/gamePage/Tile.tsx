@@ -18,7 +18,7 @@ export default function Tile(props: TileProps) {
       {(provided, snapshot) => (
         <div
           id={currentTile?.id}
-          className={snapshot.isDragging ? 'dragging-tile' : 'tile'}
+          className={snapshot.isDragging ? 'while-dragging' : 'tile'}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}

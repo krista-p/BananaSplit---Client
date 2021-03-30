@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const defaultTheme = require('tailwindcss/defaultTheme');
+const scrollbar = require('tailwind-scrollbar');
 
 module.exports = {
   purge: ['./components/**/*.{js,ts,jsx,tsx}", "./pages/**/*.{js,ts,jsx,tsx}'],
@@ -18,10 +19,15 @@ module.exports = {
       backgroundImage: {
         'hero-pattern': "url('/AWbanana.png')",
       },
+      minWidth: {
+        '16': '16',
+      },
     },
   },
+  plugins: [
+    scrollbar,
+  ],
   variants: {
-    extend: {},
+    scrollbar: ['rounded'],
   },
-  plugins: [],
 };

@@ -1,5 +1,10 @@
+interface Igrid {
+  letter: string;
+  id: string;
+}
+
 // depth first search to find boards recursively
-const dfsBoard = (grid: any[][], i: number, j: number) => {
+const dfsBoard = (grid: (number | Igrid)[][], i: number, j: number): number => {
   if (i < 0 || i >= grid.length || j < 0 || j >= grid[i].length || grid[i][j] === 0) {
     return 0;
   }
@@ -13,10 +18,10 @@ const dfsBoard = (grid: any[][], i: number, j: number) => {
 };
 
 // num islands problem (check how many boards there are)
-export const numBoards = (matrix: any[][]): number => {
+export const numBoards = (matrix: (number | Igrid)[][]): number => {
   // check if grid exists first
-  const grid = JSON.parse(JSON.stringify(matrix));
-  
+  const grid: (number | Igrid)[][] = JSON.parse(JSON.stringify(matrix));
+
   if (grid === null || grid.length === 0) return 0;
 
   // board counter
@@ -32,7 +37,7 @@ export const numBoards = (matrix: any[][]): number => {
 };
 
 // searching for the horizontal words
-const dfsHorizontal = (grid, i, j, start) => {
+const dfsHorizontal = (grid: (number | Igrid)[][], i: number, j: number, start): string => {
   if (i < 0
     || i >= grid.length
     || j < 0
@@ -43,12 +48,12 @@ const dfsHorizontal = (grid, i, j, start) => {
   }
   grid[i][j] = 0;
 
-  const right = dfsHorizontal(grid, i, j + 1, grid[i][j+1]);
+  const right = dfsHorizontal(grid, i, j + 1, grid[i][j + 1]);
   return (start.letter + right);
 };
 
 // searching for the vertical words
-const dfsVertical = (grid, i, j, start) => {
+const dfsVertical = (grid: (number | Igrid)[][], i: number, j: number, start): string => {
   if (i < 0
     || i >= grid.length
     || j < 0
@@ -67,31 +72,44 @@ const dfsVertical = (grid, i, j, start) => {
 };
 
 // unique islands (record all of the unique islands) OBJECT FORM
-export const wordFinder = (check) => {
-  const grid = JSON.parse(JSON.stringify(check));
+export const wordFinder = (check: (number | Igrid)[][]): string[] => {
+  const grid: (number | Igrid)[][] = JSON.parse(JSON.stringify(check));
   // check if grid exists first
-  if (grid === null || grid.length === 0) return {};
+  if (grid === null || grid.length === 0) return [];
 
   // store words in set
-  let wordSet = new Set([]);
+  const wordSet: Set<string> = new Set([]);
 
   // not sure if this is okay??
   // but need a copy of grid in order to get vertical words
-  const newGrid = JSON.parse(JSON.stringify(grid));
+  const newGrid: (number | Igrid)[][] = JSON.parse(JSON.stringify(grid));
 
   // iterate thru grid
   for (let i = 0; i < grid.length; i++) {
     for (let j = 0; j < grid[i].length; j++) {
-      console.log(grid[i][j])
       if (grid[i][j] !== 0) {
-        let horizontalWord = dfsHorizontal(grid, i, j, grid[i][j]);
+        const horizontalWord = dfsHorizontal(grid, i, j, grid[i][j]);
         if (horizontalWord.length > 1) wordSet.add(horizontalWord);
       }
       if (newGrid[i][j] !== 0) {
-        let verticalWord = dfsVertical(newGrid, i, j, newGrid[i][j]);
+        const verticalWord = dfsVertical(newGrid, i, j, newGrid[i][j]);
         if (verticalWord.length > 1) wordSet.add(verticalWord);
       }
     }
   }
-  return wordSet;
-}
+  return [...wordSet].sort();
+};
+
+export const dictCheck = (words: string[], dict: string[]): string[] => {
+  const valid: string[] = [];
+  const incorrect: string[] = [];
+  for (let i = 0; i < words.length; i++) {
+    for (let j = 0; j < dict.length; j++) {
+      if (words[i] === dict[j]) {
+        valid.push(words[i]);
+      }
+    }
+    if (!valid.includes(words[i])) incorrect.push(words[i]);
+  }
+  return incorrect;
+};
