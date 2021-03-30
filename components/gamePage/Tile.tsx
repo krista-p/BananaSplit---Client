@@ -1,12 +1,11 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import styles from '../../styles/Room.module.css';
-import { TileType } from '../../types';
+import { TileInterface } from '../../interfaces';
 
-type TileProps = {
-  currentTile: TileType,
+interface TileProps {
+  currentTile: TileInterface,
   index: number,
-};
+}
 
 export default function Tile(props: TileProps) {
   const { currentTile, index } = props;

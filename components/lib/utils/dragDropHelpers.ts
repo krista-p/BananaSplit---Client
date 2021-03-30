@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { TileType } from '../../../types';
+import { TileType } from '../../../interfaces';
 
 export const reorder = (playerTiles: TileType[], startIndex: number, endIndex: number) => {
   const result: TileType[] = _.cloneDeep(playerTiles);

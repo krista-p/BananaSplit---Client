@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
-import { TileType } from '../../types';
+import { TileInterface } from '../../interfaces';
 import Tile from './Tile';
 
 export default function PlayerTiles({ state }) {
@@ -18,7 +18,7 @@ export default function PlayerTiles({ state }) {
             ref={provided.innerRef}
           >
             {
-              state.playerTiles.map((currentTile: TileType, index: number) => (
+              state.playerTiles.map((currentTile: TileInterface, index: number) => (
                 <Tile
                   key={currentTile.id}
                   currentTile={currentTile}

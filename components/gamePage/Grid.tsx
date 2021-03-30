@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import GridSquare from './GridSquare';
 
+
 export default function Grid({ state, setState, gridSize }) {
-  const boardMatrix: any[] = [];
   const row: any[] = [];
+  const boardMatrix: any[] = [];
 
   useEffect(() => {
     setState({ ...state, gridTiles: boardMatrix });

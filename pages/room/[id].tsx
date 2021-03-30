@@ -8,9 +8,10 @@ import GameEndPopup from '../../components/gamePage/gameEndPopup/GameEndPopup';
 import { alertNotification } from '../../components/landingPage/popups/alertpopup/AlertPopup';
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
 import { numBoards, wordFinder } from '../../components/lib/utils/wordChecker';
+import { GameStateInterface, TileInterface } from '../../interfaces';
 
 const gridSize: number = 15;
-const initialState = {
+const initialState: GameStateInterface = {
   playerTiles: [],
   matrix: Array.from({ length: gridSize }, () => Array(gridSize).fill(0)),
 };
@@ -31,25 +32,25 @@ const Room = () => {
   const [endOpen, setEndOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    socket.on('playersInRoom', (players) => {
+    socket.on('playersInRoom', (players: string[]) => {
       setPlayersInRoom(players);
     });
-    socket.on('actionMessage', (res) => {
-      setActionMessages(prev => [...prev, res]);
+    socket.on('actionMessage', (res: string) => {
+      setActionMessages((prev: string[]) => [...prev, res]);
     });
-    socket.on('roomReadyResponse', (res) => {
+    socket.on('roomReadyResponse', (res: boolean) => {
       setRoomReady(res);
     });
-    socket.on('playerReadyResponse', (res) => {
+    socket.on('playerReadyResponse', (res: string[]) => {
       setReadyPlayers(res);
     });
-    socket.on('hostResponse', (res) => {
+    socket.on('hostResponse', (res: boolean) => {
       setPlayerHost(res);
     });
-    socket.on('roomActive', (res) => {
+    socket.on('roomActive', (res: boolean) => {
       setRoomActive(res);
     });
-    socket.on('tilesRemaining', (res) => {
+    socket.on('tilesRemaining', (res: number) => {
       setTilesRemaining(res);
     });
   }, []);
@@ -57,8 +58,8 @@ const Room = () => {
   useEffect(() => {
     socket.emit('enteredRoom', id);
 
-    socket.on('receiveTiles', (tiles) => {
-      setState((prevState) => ({
+    socket.on('receiveTiles', (tiles: TileInterface[]) => {
+      setState((prevState: GameStateInterface) => ({
         ...prevState,
         playerTiles: prevState.playerTiles.concat(tiles[socket?.id]),
       }));
@@ -113,7 +114,7 @@ const Room = () => {
     };
   };
 
-  const handleDump = (tileToDump, stateClone) => {
+  const handleDump = (tileToDump: TileInterface, stateClone: GameStateInterface) => {
     try {
       setState(stateClone);
       socket.emit('dumpAction', { id, tileToDump });
@@ -128,8 +129,8 @@ const Room = () => {
       // Take out tiles from board and send back to playerTiles
       console.log(state.matrix);
       const { matrix, playerTiles } = state;
-      const matrixClone = _.cloneDeep(matrix);
-      const playerTilesClone = _.cloneDeep(playerTiles);
+      const matrixClone: any[][] = _.cloneDeep(matrix);
+      const playerTilesClone: TileInterface[] = _.cloneDeep(playerTiles);
       for (let row = 0; row < gridSize; row++) {
         for (let col = 0; col < gridSize; col++) {
           if (matrixClone[row][col] !== 0) {
@@ -152,8 +153,8 @@ const Room = () => {
       } else if (state.playerTiles.length === 0 && tilesRemaining === 0) {
         // Check if all words are valid
         if (true) { // TODO (CHANGE THIS 'TRUE'): result of word check. should be boolean
-          const matrixClone = _.cloneDeep(state.matrix);
-          const rottenTiles = _.cloneDeep(state.playerTiles);
+          const matrixClone: any[][] = _.cloneDeep(state.matrix);
+          const rottenTiles: TileInterface[] = _.cloneDeep(state.playerTiles);
 
           for (let row = 0; row < gridSize; row++) {
             for (let col = 0; col < gridSize; col++) {
@@ -175,7 +176,7 @@ const Room = () => {
     }
   }
 
-  const playerReady = (player) => {
+  const playerReady = (player: string) => {
     if (readyPlayers.indexOf(player) !== -1) {
       return 'bg-primary text-secondary w-auto rounded-full m-2';
     }
@@ -218,7 +219,7 @@ const Room = () => {
 
           <div className="flex flex-col bg-secondary text-primary text-base md:text-xl h-1/4 rounded-2xl m-2 text-center overflow-y-scroll">
             { actionMessages 
-              && actionMessages.map((message, index) => (
+              && actionMessages.map((message: string, index: number) => (
                 <div key={index.toString().concat(message)}>
                   {message}
                 </div>
@@ -229,7 +230,7 @@ const Room = () => {
           <div className="flex flex-col bg-secondary text-primary text-base md:text-xl h-1/4 rounded-2xl m-2 text-center">
             <div className="mt-2 width-full">
               { playersInRoom
-                && playersInRoom.map((player, index) => (
+                && playersInRoom.map((player: string, index: number) => (
                   // mt-2
                   <div className={playerReady(player)} key={index.toString().concat(player)}>
                     {`Player ${index + 1}: ${player}`}
