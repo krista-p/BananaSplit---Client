@@ -6,7 +6,7 @@ toast.configure();
 // Can add more configuration if needed, real basic right now
 // Toast options
 export const alertNotification = (message) => {
-  toast.warn(message, { 
+  toast.warn(message, {
     position: toast.POSITION.TOP_CENTER,
     autoClose: 3000,
     // autoClose: false,
@@ -15,4 +15,4 @@ export const alertNotification = (message) => {
   // toast.info
   // toast.warn
   // toast.error
-}
+};

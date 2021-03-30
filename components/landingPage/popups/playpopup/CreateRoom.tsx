@@ -25,12 +25,13 @@ const CreateRoom = () => {
     e.preventDefault();
 
     try {
-      if (currentUser) { 
-        const gameRoomCode = createGameRoomCode(6);
+      if (currentUser) {
+        const ALLOWABLE_CHARACTERS = 6;
+        const gameRoomCode = createGameRoomCode(ALLOWABLE_CHARACTERS);
         socket.emit('privateGame', { gameRoomCode, userName }, (res) => {
-          if (res) {  
+          if (res) {
             router.push(`/room/${gameRoomCode}`);
-          } else {  
+          } else {
             console.log('Player already has game!');
             alertNotification('User attached to game');
           }
@@ -52,15 +53,6 @@ const CreateRoom = () => {
       <form>
         <div className="m-4 flex flex-col items-center">
           <h2 className="m-2 font-bold text-2xl text-primary">Igor Recommended No Size Selection</h2>
-          {/* <select name="players" className="focus:outline-none focus:ring-4 focus:ring-primary bg-secondary text-primary rounded-full py-3 px-6" onChange={handleSelection}>
-            <option value="8">8</option>
-            <option value="7">7</option>
-            <option value="6">6</option>
-            <option value="5">5</option>
-            <option value="4">4</option>
-            <option value="3">3</option>
-            <option value="2">2</option>
-          </select> */}
         </div>
 
         <div className="m-4 flex flex-col items-center">

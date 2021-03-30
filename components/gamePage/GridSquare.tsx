@@ -1,10 +1,9 @@
 import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
-import styles from '../../styles/Room.module.css';
-import { GameStateType, TileType } from '../../types';
+import { GameStateType, TileType } from '../../interfaces';
 import Tile from './Tile';
 
-type SquarePropsType = {
+interface SquarePropsType {
   state: GameStateType,
   squareId: string,
   gridSize: number,
@@ -14,7 +13,7 @@ const gridSquare = (props: SquarePropsType) => {
   const { state, squareId, gridSize } = props;
   const { matrix } = state;
   const [rowIndex, colIndex] = squareId.split('-');
-  const placeholderTile = matrix[rowIndex][colIndex];
+  const placeholderTile: TileType = matrix[rowIndex][colIndex];
 
   const squareContents = () => {
     if (!matrix[rowIndex][colIndex]) {
@@ -38,7 +37,7 @@ const gridSquare = (props: SquarePropsType) => {
         <div
           className={
             snapshot.isDragging
-              ? 'dragging-tile'
+              ? 'while-dragging'
               : 'tile'
           }
           ref={provided.innerRef}
@@ -58,8 +57,8 @@ const gridSquare = (props: SquarePropsType) => {
             id={squareId}
             className={
               !squareContents()
-                ? 'w-16 h-16 hover:bg-gray-100 border-2 border-gray-100'
-                : 'w-16 h-16'
+                ? 'w-14 h-14 hover:bg-gray-100 border-2 border-gray-100'
+                : 'w-14 h-14'
             }
           >
             {squareContents()}

@@ -10,7 +10,7 @@ const JoinGame = () => {
   const [gameRoomCode, setGameRoomCode] = useState('');
   const [guestPrivateUserName, setGuestPrivateUserName] = useState('');
   const [guestRandomUserName, setGuestRandomUserName] = useState('');
-  
+
   let userName;
   if (currentUser) {
     userName = currentUser.displayName;
@@ -18,15 +18,15 @@ const JoinGame = () => {
 
   const handlePrivateUserName = (e) => {
     setGuestPrivateUserName(e.target.value);
-  }
+  };
 
   const handleRandomUserName = (e) => {
     setGuestRandomUserName(e.target.value);
-  }
+  };
 
   const handleGameCode = (e) => {
     setGameRoomCode(e.target.value);
-  }
+  };
 
   // if (!gameRoomCode) return alertNotification('Enter Room Code!');
 
@@ -71,7 +71,6 @@ const JoinGame = () => {
     e.preventDefault();
     alertNotification('Function not Ready');
   };
-
 
   return (
     <div className="flex flex-col items-center">

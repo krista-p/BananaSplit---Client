@@ -7,10 +7,13 @@ import Board from '../../components/gamePage/Board';
 import GameEndPopup from '../../components/gamePage/gameEndPopup/GameEndPopup';
 import { alertNotification } from '../../components/landingPage/popups/alertpopup/AlertPopup';
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
-import { numBoards, wordFinder } from '../../components/lib/utils/wordChecker';
+import { numBoards, wordFinder, dictCheck } from '../../components/lib/utils/wordChecker';
+import * as dictionary from '../../components/lib/utils/dictionary.json';
+import { GameStateInterface, TileInterface } from '../../interfaces';
 
 const gridSize: number = 15;
-const initialState = {
+
+const initialState: GameStateInterface = {
   playerTiles: [],
   matrix: Array.from({ length: gridSize }, () => Array(gridSize).fill(0)),
 };
@@ -31,25 +34,25 @@ const Room = () => {
   const [endOpen, setEndOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    socket.on('playersInRoom', (players) => {
+    socket.on('playersInRoom', (players: string[]) => {
       setPlayersInRoom(players);
     });
     socket.on('actionMessage', (res) => {
-      setActionMessages(prev => [...prev, res]);
+      setActionMessages((prev: string[]) => [...prev, res]);
     });
-    socket.on('roomReadyResponse', (res) => {
+    socket.on('roomReadyResponse', (res: boolean) => {
       setRoomReady(res);
     });
-    socket.on('playerReadyResponse', (res) => {
+    socket.on('playerReadyResponse', (res: string[]) => {
       setReadyPlayers(res);
     });
-    socket.on('hostResponse', (res) => {
+    socket.on('hostResponse', (res: boolean) => {
       setPlayerHost(res);
     });
-    socket.on('roomActive', (res) => {
+    socket.on('roomActive', (res: boolean) => {
       setRoomActive(res);
     });
-    socket.on('tilesRemaining', (res) => {
+    socket.on('tilesRemaining', (res: number) => {
       setTilesRemaining(res);
     });
   }, []);
@@ -57,8 +60,8 @@ const Room = () => {
   useEffect(() => {
     socket.emit('enteredRoom', id);
 
-    socket.on('receiveTiles', (tiles) => {
-      setState((prevState) => ({
+    socket.on('receiveTiles', (tiles: TileInterface[]) => {
+      setState((prevState: GameStateInterface) => ({
         ...prevState,
         playerTiles: prevState.playerTiles.concat(tiles[socket?.id]),
       }));
@@ -72,7 +75,7 @@ const Room = () => {
       socket.emit('leaveGame', id);
     } catch (err) {
       console.error(err);
-    };
+    }
   };
 
   const handleReadyPlayer = (e) => {
@@ -83,7 +86,7 @@ const Room = () => {
       socket.emit('playerReady', id);
     } catch (err) {
       console.error(err);
-    };
+    }
   };
 
   const handleStartGame = (e) => {
@@ -92,7 +95,7 @@ const Room = () => {
       socket.emit('startGame', id);
     } catch (err) {
       console.error(err);
-    };
+    }
   };
 
   // TODO: End game, check if bunch has any tiles
@@ -105,19 +108,19 @@ const Room = () => {
         alertNotification('Tiles in your pile!');
       } else if (state.playerTiles.length === 0 && numBoards(state.matrix) < 2) {
         socket.emit('peelAction', id);
-      };
+      }
     } catch (err) {
       console.error(err);
-    };
+    }
   };
 
-  const handleDump = (tileToDump, stateClone) => {
+  const handleDump = (tileToDump: TileInterface, stateClone: GameStateInterface) => {
     try {
       setState(stateClone);
       socket.emit('dumpAction', { id, tileToDump });
     } catch (err) {
       console.error(err);
-    };
+    }
   };
 
   const handleReset = (e) => {
@@ -125,8 +128,8 @@ const Room = () => {
     try {
       console.log(state.matrix);
       const { matrix, playerTiles } = state;
-      const matrixClone = _.cloneDeep(matrix);
-      const playerTilesClone = _.cloneDeep(playerTiles);
+      const matrixClone: any[][] = _.cloneDeep(matrix);
+      const playerTilesClone: TileInterface[] = _.cloneDeep(playerTiles);
       for (let row = 0; row < gridSize; row++) {
         for (let col = 0; col < gridSize; col++) {
           if (matrixClone[row][col] !== 0) {
@@ -143,23 +146,37 @@ const Room = () => {
 
   const handleBanana = (e) => {
     e.preventDefault();
+    const gridWords = wordFinder(state.matrix);
     try {
       if (state.playerTiles.length > 0 || tilesRemaining > 0) {
         alertNotification('Play all tiles!');
       } else if (state.playerTiles.length === 0 && tilesRemaining === 0) {
-        console.log('Ready to Split!');
         // Check if all words are valid
-        socket.emit('endGame', id);
-        // Send tiles if rotten
-        // if check fails
-        socket.emit('rottenBanana', { id, rottenTiles });
+        if (dictCheck(gridWords, dictionary).length) {
+          const matrixClone: any[][] = _.cloneDeep(state.matrix);
+          const rottenTiles: TileInterface[] = _.cloneDeep(state.playerTiles);
+
+          for (let row = 0; row < gridSize; row++) {
+            for (let col = 0; col < gridSize; col++) {
+              if (matrixClone[row][col] !== 0) {
+                rottenTiles.push(matrixClone[row][col]);
+                matrixClone[row][col] = 0;
+              }
+            }
+          }
+          socket.emit('rottenBanana', { id, rottenTiles });
+          setState(initialState);
+        }
+        else {
+          console.log('board is good');
+        }
       };
     } catch (err) {
       console.error(err);
     }
-  }
+  };
 
-  const playerReady = (player) => {
+  const playerReady = (player: string) => {
     if (readyPlayers.indexOf(player) !== -1) {
       return 'bg-primary text-secondary w-auto rounded-full m-2';
     }
@@ -174,7 +191,6 @@ const Room = () => {
   return (
     <div className="flex flex-col h-screen w-screen">
       <NavBar />
-
 
       <div className="flex flex-row m-4 justify-between">
         <div className="flex flex-row items-center ml-8 bg-secondary p-2 rounded-full">
@@ -205,9 +221,9 @@ const Room = () => {
             </button>
           </div>
 
-          <div className="flex flex-col bg-secondary text-primary text-base md:text-xl h-1/4 rounded-2xl m-2 text-center overflow-y-scroll">
-            { actionMessages 
-              && actionMessages.map((message, index) => (
+          <div className="flex flex-col bg-secondary text-primary text-base md:text-xl h-1/4 rounded-2xl m-2 text-center overflow-y-scroll scroll-bar-light">
+            { actionMessages
+              && actionMessages.map((message: string, index: number) => (
                 <div key={index.toString().concat(message)}>
                   {message}
                 </div>
@@ -215,10 +231,10 @@ const Room = () => {
             }
           </div>
 
-          <div className="flex flex-col bg-secondary text-primary text-base md:text-xl h-1/4 rounded-2xl m-2 text-center">
+          <div className="flex flex-col bg-secondary text-primary text-base md:text-xl h-1/4 rounded-2xl m-2 text-center overflow-y-scroll scroll-bar-light">
             <div className="mt-2 width-full">
               { playersInRoom
-                && playersInRoom.map((player, index) => (
+                && playersInRoom.map((player: string, index: number) => (
                   // mt-2
                   <div className={playerReady(player)} key={index.toString().concat(player)}>
                     {`Player ${index + 1}: ${player}`}
@@ -262,13 +278,10 @@ const Room = () => {
 
         <div className="flex flex-col flex-grow m-2">
 
-          {/* <button type="submit" className="button-yellow" onClick={handleReset}>Reset</button>
-          <button type="submit" className="button-yellow" onClick={handlePeel}>Peel!</button> */}
-          
+          <button type="submit" className="button-yellow" onClick={handlePeel}>Peel!</button>
+
           <div>
-            { tilesRemaining < 1 && state.playerTiles.length < 1 &&
-              <button type="submit" className="button-yellow" onClick={handleBanana}>Banana!</button>
-            }
+            <button type="submit" className="button-yellow" onClick={handleBanana}>Banana!</button>
           </div>
         </div>
 
