@@ -82,6 +82,30 @@ const Board = ({ state, setState, gridSize, handleDump }) => {
       handleDump(tileToPlace, stateClone);
     }
   };
+  let scrollTimer;
+  const up = () => {
+    const gridWindow = document.getElementById('grid-window');
+    scrollTimer = setInterval(() => {gridWindow.scrollTop -= 10}, 50);
+  };
+
+  const left = () => {
+    const gridWindow = document.getElementById('grid-window');
+    scrollTimer = setInterval(() => {gridWindow.scrollLeft -= 10}, 50);
+  };
+
+  const down = () => {
+    const gridWindow = document.getElementById('grid-window');
+    scrollTimer = setInterval(() => {gridWindow.scrollTop += 10}, 50);
+  };
+
+  const right = () => {
+    const gridWindow = document.getElementById('grid-window');
+    scrollTimer = setInterval(() => {gridWindow.scrollLeft += 10}, 50);
+  };
+
+  const timerClear = () => {
+    clearInterval(scrollTimer);
+  };
 
   return (
     <div className="flex flex-row h-full w-full">
@@ -92,21 +116,22 @@ const Board = ({ state, setState, gridSize, handleDump }) => {
       >
         <div className="flex flex-row w-full h-full">
           <div className="flex flex-col w-3/4 justify-center items-center h-full">
-            <div className="h-full w-full border-8 border-secondary rounded-2xl overflow-scroll">
+            <div id="grid-window" className="h-full w-full border-8 border-secondary rounded-2xl overflow-hidden">
+              <button type="button" onMouseDown={up} onMouseUp={timerClear} style={{ height: '50px', width: '100px', position: 'absolute', right: '100px', bottom: '300px', background: 'green' }}>UP</button>
+              <button type="button" onMouseDown={left} onMouseUp={timerClear} style={{ height: '50px', width: '100px', position: 'absolute', right: '150px', bottom: '250px', background: 'green' }}>LEFT</button>
+              <button type="button" onMouseDown={down} onMouseUp={timerClear} style={{ height: '50px', width: '100px', position: 'absolute', right: '100px', bottom: '200px', background: 'green' }}>DOWN</button>
+              <button type="button" onMouseDown={right} onMouseUp={timerClear} style={{ height: '50px', width: '100px', position: 'absolute', right: '50px', bottom: '250px', background: 'green' }}>RIGHT</button>
               <Grid
                 state={state}
                 setState={setState}
                 gridSize={gridSize}
               />
-
             </div>
             <div className="h-1/4 mb-4 w-full">
               <PlayerTiles
                 state={state}
               />
-
             </div>
-
           </div>
           {/* TODO: Testing making a droppable zone for dumping tiles */}
           <DumpZone />
