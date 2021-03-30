@@ -1,26 +1,34 @@
 import _ from 'lodash';
-import { TileType } from '../../../interfaces';
+import { DestinationInterface, GameStateInterface, SourceInterface, TileInterface } from '../../../interfaces';
 
-export const reorder = (playerTiles: TileType[], startIndex: number, endIndex: number) => {
-  const result: TileType[] = _.cloneDeep(playerTiles);
+export const reorder = (playerTiles: TileInterface[], startIndex: number, endIndex: number) => {
+  const result: TileInterface[] = _.cloneDeep(playerTiles);
   const [removedTile] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removedTile);
 
   return result;
 };
 
-export const move = (state, dragSource, dragDestination, source, destination) => {
-  const stateClone = _.cloneDeep(state);
+export const move = (
+  state: GameStateInterface,
+  dragSource: any,
+  dragDestination: any,
+  source: SourceInterface,
+  destination: DestinationInterface,
+) => {
+  console.log(dragSource);
+  console.log(dragDestination);
+  const stateClone: GameStateInterface = _.cloneDeep(state);
   const [sRow, sCol] = source.droppableId.split('-');
   const [dRow, dCol] = destination.droppableId.split('-');
 
-  const dragSourceClone = _.cloneDeep(dragSource);
+  const dragSourceClone: any = _.cloneDeep(dragSource);
   const result: any = {};
   if (source.droppableId === 'playerTiles') {
     // NOTE Drag from player tiles to game board
-    const dragDestClone = _.cloneDeep(dragDestination);
-    const tileToSwap = dragDestClone[dRow][dCol];
-    let removedTile = [];
+    const dragDestClone: any = _.cloneDeep(dragDestination);
+    const tileToSwap: TileInterface = dragDestClone[dRow][dCol];
+    let removedTile: TileInterface[] = [];
     if (tileToSwap) {
       [removedTile] = dragSourceClone.splice(source.index, 1, tileToSwap);
     } else {
@@ -37,8 +45,8 @@ export const move = (state, dragSource, dragDestination, source, destination) =>
     result[destination.droppableId] = dragDestClone[dRow][dCol];
   } else if (destination.droppableId !== 'playerTiles') {
     // NOTE Drag from game board to game board
-    const dragDestClone = _.cloneDeep(dragDestination);
-    const removedTile = dragSourceClone[sRow][sCol];
+    const dragDestClone: any = _.cloneDeep(dragDestination);
+    const removedTile: TileInterface = dragSourceClone[sRow][sCol];
 
     dragSourceClone[sRow][sCol] = dragDestination[dRow][dCol];
     dragDestClone[sRow][sCol] = dragDestClone[dRow][dCol];
@@ -52,8 +60,8 @@ export const move = (state, dragSource, dragDestination, source, destination) =>
     result[destination.droppableId] = dragDestClone[dRow][dCol];
   } else {
     // NOTE Drag from game board to player tiles
-    const dragDestClone = _.cloneDeep(dragDestination);
-    const removedTile = dragSourceClone[sRow][sCol];
+    const dragDestClone: any = _.cloneDeep(dragDestination);
+    const removedTile: TileInterface = dragSourceClone[sRow][sCol];
 
     dragDestClone.splice(destination.index, 0, removedTile);
 
