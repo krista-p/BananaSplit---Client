@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import GridSquare from './GridSquare';
-import styles from '../../styles/Room.module.css';
 
 export default function Grid({ state, setState, gridSize }) {
   const boardMatrix: any[] = [];

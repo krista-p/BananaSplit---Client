@@ -8,6 +8,12 @@ import { reorder, move } from '../lib/utils';
 import DumpZone from './DumpZone';
 
 const Board = ({ state, setState, gridSize, handleDump }) => {
+  const onBeforeCapture = ({ draggableId }) => {
+    const tile = document.getElementById(draggableId);
+    tile.classList.add('dragging-tile');
+    console.log(tile);
+  };
+
   const onDragStart = (start) => {
     if (start.source.droppableId !== 'playerTiles') {
       const id = document.getElementById(start.source.droppableId);
@@ -84,6 +90,7 @@ const Board = ({ state, setState, gridSize, handleDump }) => {
   return (
     <div className="flex flex-row h-full w-full">
       <DragDropContext
+        onBeforeCapture={onBeforeCapture}
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
       >

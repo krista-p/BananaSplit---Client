@@ -84,6 +84,6 @@ a {
   }
 
   .dragging-tile {
-    @apply w-14 h-14 border-2 border-secondary rounded-lg bg-primary text-secondary text-5xl text-center items-center;
+    @apply w-10 h-10 border-4 border-purple-500 border-secondary rounded-lg bg-primary text-secondary text-5xl text-center items-center;
   }
 }

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
-import styles from '../../styles/Room.module.css';
 import { GameStateType, TileType } from '../../types';
 import Tile from './Tile';
 
@@ -14,7 +13,7 @@ const gridSquare = (props: SquarePropsType) => {
   const { state, squareId, gridSize } = props;
   const { matrix } = state;
   const [rowIndex, colIndex] = squareId.split('-');
-  const placeholderTile = matrix[rowIndex][colIndex];
+  const placeholderTile: TileType = matrix[rowIndex][colIndex];
 
   const squareContents = () => {
     if (!matrix[rowIndex][colIndex]) {

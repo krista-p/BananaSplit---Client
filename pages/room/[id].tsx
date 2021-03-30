@@ -154,7 +154,7 @@ const Room = () => {
         if (true) { // TODO (CHANGE THIS 'TRUE'): result of word check. should be boolean
           const matrixClone = _.cloneDeep(state.matrix);
           const rottenTiles = _.cloneDeep(state.playerTiles);
-          
+
           for (let row = 0; row < gridSize; row++) {
             for (let col = 0; col < gridSize; col++) {
               if (matrixClone[row][col] !== 0) {
@@ -163,9 +163,11 @@ const Room = () => {
               }
             }
           }
-          
           socket.emit('rottenBanana', { id, rottenTiles });
           setState(initialState);
+        }
+        else {
+          console.log('board is good');
         }
       };
     } catch (err) {
