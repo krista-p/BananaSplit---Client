@@ -29,7 +29,7 @@ export const numBoards = (matrix: any[][]): number => {
     }
   }
   return boards;
-}
+};
 
 // searching for the horizontal words
 const dfsHorizontal = (grid, i, j, start) => {
@@ -39,13 +39,13 @@ const dfsHorizontal = (grid, i, j, start) => {
     || j >= grid[i].length
     || grid[i][j] === 0
   ) {
-      return '';
-    }
+    return '';
+  }
   grid[i][j] = 0;
-  
+
   const right = dfsHorizontal(grid, i, j + 1, grid[i][j+1]);
   return (start.letter + right);
-}
+};
 
 // searching for the vertical words
 const dfsVertical = (grid, i, j, start) => {
@@ -54,24 +54,24 @@ const dfsVertical = (grid, i, j, start) => {
     || j < 0
     || j >= grid[i].length
     || grid[i][j] === 0
-    ) {
-      return '';
+  ) {
+    return '';
   }
-  
+
   grid[i][j] = 0;
-  if (grid[i+1]) {
+  if (grid[i + 1]) {
     const down = dfsVertical(grid, i + 1, j, grid[i + 1][j]);
     return (start.letter + down);
   }
   return start.letter;
-}
+};
 
 // unique islands (record all of the unique islands) OBJECT FORM
 export const wordFinder = (check) => {
-  const grid = [...check];
+  const grid = JSON.parse(JSON.stringify(check));
   // check if grid exists first
-  if (grid === null || grid.length === 0 ) return {};
-  
+  if (grid === null || grid.length === 0) return {};
+
   // store words in set
   let wordSet = new Set([]);
 
@@ -89,7 +89,6 @@ export const wordFinder = (check) => {
       }
       if (newGrid[i][j] !== 0) {
         let verticalWord = dfsVertical(newGrid, i, j, newGrid[i][j]);
-        console.log(verticalWord)
         if (verticalWord.length > 1) wordSet.add(verticalWord);
       }
     }

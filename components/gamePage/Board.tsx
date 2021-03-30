@@ -82,16 +82,19 @@ const Board = ({ state, setState, gridSize, handleDump }) => {
   };
 
   return (
-    <div className={styles.room}>
+    <div className="flex flex-col justify-center items-center w-3/5 h-full">
       <DragDropContext
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
       >
-        <Grid
-          state={state}
-          setState={setState}
-          gridSize={gridSize}
-        />
+        <div className="h-full w-full border-4 border-secondary rounded-xl overflow-scroll">
+          <Grid
+            state={state}
+            setState={setState}
+            gridSize={gridSize}
+          />
+
+        </div>
         <PlayerTiles
           state={state}
           setState={setState}
