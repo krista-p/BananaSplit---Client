@@ -37,14 +37,14 @@ export default function PlayerTiles({ state, setState }) {
   // }, []);
 
   return (
-    <div className="w-full h-1/4 flex justify-center bg-secondary rounded-full mt-4">
+    <div className="w-full h-full flex justify-center bg-secondary rounded-full mt-4">
       <Droppable
         droppableId="playerTiles"
         direction="horizontal"
       >
         {(provided) => (
           <div
-            className="w-3/4 flex justify-center items-center"
+            className="w-full m-4 flex justify-center items-center overflow-x-scroll"
             {...provided.droppableProps}
             ref={provided.innerRef}
           >

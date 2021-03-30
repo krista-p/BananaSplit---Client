@@ -12,7 +12,7 @@ export default function Grid({ state, setState, gridSize }) {
 
   /* NOTE Start game board render functions */
   const renderSquare = (squareId: string) => (
-    <div className="w-16 h-16 hover:bg-gray-100 border-2 border-pink-600" key={`square${squareId}`}>
+    <div className="w-16 h-14" key={`square${squareId}`}>
       <GridSquare
         state={state}
         squareId={squareId}

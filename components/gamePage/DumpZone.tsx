@@ -8,17 +8,13 @@ export default function DumpZone() {
     >
       {(provided) => (
         <div
-          style={{
-            height: '200px',
-            width: '200px',
-            border: 'solid 1px black',
-            position: 'absolute',
-            right: 0,
-            bottom: '50%',
-          }}
+          className="w-1/4 h-1/4 mx-2 mt-8 bg-secondary rounded-2xl text-primary text-xl md:text-3xl"
           {...provided.droppableProps}
           ref={provided.innerRef}
         >
+          <div className="m-2 text-2xl text-center">
+            DUMP ZONE
+          </div>
           {provided.placeholder}
         </div>
       )}
