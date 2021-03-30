@@ -160,8 +160,8 @@ const Room = () => {
             </button>
           </div>
 
-          <div className="flex flex-col bg-secondary text-primary text-base md:text-xl h-1/4 rounded-2xl m-2 text-center overflow-y-scroll">
-            { actionMessages 
+          <div className="flex flex-col bg-secondary text-primary text-base md:text-xl h-1/4 rounded-2xl m-2 text-center overflow-y-scroll scroll-bar-light">
+            { actionMessages
               && actionMessages.map((message, index) => (
                 <div key={index.toString().concat(message)}>
                   {message}
@@ -170,7 +170,7 @@ const Room = () => {
             }
           </div>
 
-          <div className="flex flex-col bg-secondary text-primary text-base md:text-xl h-1/4 rounded-2xl m-2 text-center">
+          <div className="flex flex-col bg-secondary text-primary text-base md:text-xl h-1/4 rounded-2xl m-2 text-center overflow-y-scroll scroll-bar-light">
             <div className="mt-2 width-full">
               { playersInRoom
                 && playersInRoom.map((player, index) => (

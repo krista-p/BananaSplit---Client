@@ -19,11 +19,8 @@ const Register = ({ closeLogin }) => {
     setUserName(event.target.value);
   };
 
-  // NOTE: Don't think state is needed for email/password
-  // NOTE: Can grab {email, password} = e.target.elements in handleSignUp;
   const handleSignUp = async (e) => {
     e.preventDefault();
-    // const { user, email, password } = e.target.elements;
     closeLogin();
     try {
       await auth.createUserWithEmailAndPassword(newEmail, newPassword);
@@ -32,7 +29,6 @@ const Register = ({ closeLogin }) => {
         displayName: userName,
       });
       const { uid } = user;
-      // console.log(uid, 'user uid');
       createUser(newEmail, userName, uid);
     } catch (err) {
       console.log({ errorInSignUp: err });
