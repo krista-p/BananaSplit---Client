@@ -2,7 +2,7 @@ import EndStats from './EndStats';
 import EndBoard from './EndBoard';
 import Link from 'next/link';
 
-const GameEndPopup = ({ winner }) => {
+const GameEndPopup = ({ winner, rottenBanana }) => {
   return (
     <div className="w-screen md:w-screen h-auto top-0 bottom-24 fixed border-secondary border-8 bg-primary shadow-lg overflow-y-auto scroll-bar-dark">
       <div className="flex flex-row m-4">

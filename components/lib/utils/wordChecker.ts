@@ -94,6 +94,7 @@ export const wordFinder = (check: (number | Igrid)[][]): string[] => {
       }
     }
   }
+  console.log([...wordSet].sort(), 'word finder');
   return [...wordSet].sort();
 };
 
@@ -109,8 +110,6 @@ export const dictCheckInvalid = (words: string[], dict): string[] => {
     }
     if (!valid.includes(words[i])) incorrect.push(words[i]);
   }
-  console.log(valid, 'valid');
-  console.log(incorrect, 'incorrect');
   return incorrect;
 };
 
@@ -127,4 +126,12 @@ export const dictCheckValid = (words: string[], dict): string[] => {
     if (!valid.includes(words[i])) incorrect.push(words[i]);
   }
   return valid;
+};
+
+export const longestWord = (array) => {
+  array.sort((a: string, b: string) => {
+    return b.length - a.length;
+  });
+  console.log(array, 'longest word check');
+  return array[0];
 };

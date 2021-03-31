@@ -7,7 +7,7 @@ import GameEndPopup from '../../components/gamePage/gameEndPopup/GameEndPopup';
 import RottenBananaPopup from '../../components/gamePage/rottenBananaPopup/RottenBananaPopup';
 import { alertNotification } from '../../components/landingPage/popups/alertpopup/AlertPopup';
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
-import { numBoards, wordFinder, dictCheckInvalid, dictCheckValid } from '../../components/lib/utils/wordChecker';
+import { numBoards, wordFinder, dictCheckInvalid, dictCheckValid, longestWord } from '../../components/lib/utils/wordChecker';
 import * as dictionary from '../../components/lib/utils/dictionary.json';
 import { GameStateInterface, TileInterface } from '../../interfaces';
 
@@ -30,6 +30,7 @@ const Room = () => {
   const [playerHost, setPlayerHost] = useState(false);
   const [tilesRemaining, setTilesRemaining] = useState(0);
   const [gameWinner, setGameWinner] = useState('');
+  const [rottenBanana, setRottenBanana] = useState('');
   const [state, setState] = useState(initialState);
   // THIS IS FOR END OF GAME POPUP
   const [endOpen, setEndOpen] = useState<boolean>(false);
@@ -57,6 +58,29 @@ const Room = () => {
     socket.on('tilesRemaining', (res: number) => {
       setTilesRemaining(res);
     });
+    
+    socket.on('roomWordCheck', (id: string) => {
+      setState((prev) => {
+        console.log(prev);
+        const gridWords = wordFinder(prev.matrix);
+        const validWords = dictCheckValid(gridWords, dictionary.default);
+        
+        const playerWordObject: any = {};
+        
+        playerWordObject[socket.id] = {
+          longestWord: longestWord(validWords),
+          amountOfWords: validWords.length,
+        }
+        
+        socket.emit('roomWordCheckResponse', playerWordObject);
+        return prev;
+      });
+    });
+
+    socket.on('rottenBananaResponse', (res: string) => {
+      setRottenBanana(res);
+    });
+
     socket.on('endGameResponse', (res: string) => {
       setGameWinner(res);
       setEndOpen(true);
@@ -73,6 +97,11 @@ const Room = () => {
       }));
     });
   }, []);
+
+  function getState (id) {
+    console.log('in get state', state, id);
+    return state;
+  }
 
   const handleLeaveGame = (e) => {
     e.preventDefault();
@@ -177,16 +206,19 @@ const Room = () => {
           }
           socket.emit('rottenBanana', id);
           console.log(validWords, 'valid incoming');
-          console.log(invalidWords, 'valid incoming');
+          console.log(invalidWords, 'invalid incoming');
           setState(initialState);
         } else {
-          const matrixObject: any = {};
+          const playerWordObject: any = {};
           console.log(validWords, 'valid incoming');
-          console.log(invalidWords, 'valid incoming');
 
-          // TODO: store count of words -> server can sort between clients
+          playerWordObject[socket.id] = {
+            longestWord: longestWord(validWords),
+            amountOfWords: validWords.length,
+          }
 
-          socket.emit('endGame', id);
+          // console.log('id in banana', id);
+          socket.emit('endGame', { id, playerWordObject });
         }
       };
     } catch (err) {
@@ -325,11 +357,10 @@ const Room = () => {
 
           </div>
 
-        {/* TESTING END OF GAME POPUP */}
-                  <button type="button" onClick={toggleEndPopup} className="bg-pink-400 text-white fixed bottom-8 right-8">click here to get game popup</button>
-                  {endOpen ? <GameEndPopup winner={gameWinner} /> : null}
-                  <button type="button" onClick={toggleRottenPopup} className="bg-pink-400 text-white fixed bottom-2 right-8">click here to get rotten popup</button>
-                  {rottenOpen ? <RottenBananaPopup winner={gameWinner} /> : null}
+          <button type="button" onClick={toggleEndPopup} className="bg-pink-400 text-white fixed bottom-8 right-8">click here to get game popup</button>
+          {endOpen ? <GameEndPopup winner={gameWinner} rottenBanana={rottenBanana} /> : null}
+          <button type="button" onClick={toggleRottenPopup} className="bg-pink-400 text-white fixed bottom-2 right-8">click here to get rotten popup</button>
+          {rottenOpen ? <RottenBananaPopup rottenBanana={rottenBanana} /> : null}
         </div>
 
       </div>
