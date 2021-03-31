@@ -8,7 +8,6 @@ import { alertNotification } from '../alertpopup/AlertPopup';
 
 const { publicRuntimeConfig } = getConfig();
 
-// publicRuntimeConfig.serverUrl
 export const socket = io(publicRuntimeConfig.serverUrl, {
   withCredentials: true,
   forceNew: true,

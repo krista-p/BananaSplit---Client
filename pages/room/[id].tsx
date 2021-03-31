@@ -6,7 +6,7 @@ import Board from '../../components/gamePage/Board';
 import GameEndPopup from '../../components/gamePage/gameEndPopup/GameEndPopup';
 import { alertNotification } from '../../components/landingPage/popups/alertpopup/AlertPopup';
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
-import { numBoards, wordFinder, dictCheck } from '../../components/lib/utils/wordChecker';
+import { numBoards, wordFinder, dictCheckInvalid, dictCheckValid } from '../../components/lib/utils/wordChecker';
 import * as dictionary from '../../components/lib/utils/dictionary.json';
 import { GameStateInterface, TileInterface } from '../../interfaces';
 
@@ -152,13 +152,16 @@ const Room = () => {
   const handleBanana = (e) => {
     e.preventDefault();
     const gridWords = wordFinder(state.matrix);
-console.log((dictionary))
+    const invalidWords = dictCheckInvalid(gridWords, dictionary.default);
+    const validWords = dictCheckValid(gridWords, dictionary.default);
+
     try {
       if (state.playerTiles.length > 0 || tilesRemaining >= playersInRoom.length) {
         alertNotification('Play all tiles!');
       } else if (state.playerTiles.length === 0 && tilesRemaining < playersInRoom.length) {
         // Check if all words are valid
-        if (dictCheck(gridWords, dictionary).length) {
+
+        if (invalidWords.length) {
           const matrixClone: any[][] = _.cloneDeep(state.matrix);
           const rottenTiles: TileInterface[] = _.cloneDeep(state.playerTiles);
 
@@ -170,11 +173,17 @@ console.log((dictionary))
               }
             }
           }
-          socket.emit('rottenBanana', { id, rottenTiles });
+          socket.emit('rottenBanana', id);
+          console.log(validWords, 'valid incoming');
+          console.log(invalidWords, 'valid incoming');
           setState(initialState);
-        }
-        else {
+        } else {
           const matrixObject: any = {};
+          console.log(validWords, 'valid incoming');
+          console.log(invalidWords, 'valid incoming');
+
+          // TODO: store count of words -> server can sort between clients
+
           socket.emit('endGame', id);
         }
       };

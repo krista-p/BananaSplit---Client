@@ -97,7 +97,8 @@ export const wordFinder = (check: (number | Igrid)[][]): string[] => {
   return [...wordSet].sort();
 };
 
-export const dictCheck = (words: string[], dict:any): string[] => {
+export const dictCheckInvalid = (words: string[], dict): string[] => {
+  // const parse = JSON.parse(dict);
   const valid: string[] = [];
   const incorrect: string[] = [];
   for (let i = 0; i < words.length; i++) {
@@ -108,5 +109,22 @@ export const dictCheck = (words: string[], dict:any): string[] => {
     }
     if (!valid.includes(words[i])) incorrect.push(words[i]);
   }
+  console.log(valid, 'valid');
+  console.log(incorrect, 'incorrect');
   return incorrect;
+};
+
+export const dictCheckValid = (words: string[], dict): string[] => {
+  // const parse = JSON.parse(dict);
+  const valid: string[] = [];
+  const incorrect: string[] = [];
+  for (let i = 0; i < words.length; i++) {
+    for (let j = 0; j < dict.length; j++) {
+      if (words[i] === dict[j]) {
+        valid.push(words[i]);
+      }
+    }
+    if (!valid.includes(words[i])) incorrect.push(words[i]);
+  }
+  return valid;
 };
