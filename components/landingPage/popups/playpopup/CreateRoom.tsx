@@ -45,18 +45,15 @@ const CreateRoom = () => {
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="mt-2 md:mt-4 font-bold text-3xl md:text-5xl text-secondary">
-        <h1>Create a room!</h1>
+    <div className="flex flex-col items-center w-1/2 text-center">
+      <div className="mt-2 md:mt-4 font-bold text-3xl md:text-4xl text-secondary">
+        <h1>create a room!</h1>
       </div>
 
       <form>
-        <div className="m-4 flex flex-col items-center">
-          <h2 className="m-2 font-bold text-2xl text-primary">Igor Recommended No Size Selection</h2>
-        </div>
 
         <div className="m-4 flex flex-col items-center">
-          <button type="submit" className="button-yellow" onClick={handleCreateGame}>Go bananas!</button>
+          <button type="submit" className="button-yellow" onClick={handleCreateGame}>go bananas!</button>
         </div>
       </form>
 

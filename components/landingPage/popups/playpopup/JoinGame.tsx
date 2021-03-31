@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../../../contexts/auth";
 import { alertNotification } from "../alertpopup/AlertPopup";
 import { socket } from "./CreateRoom";
+import CreateRoom from './CreateRoom';
 
 const JoinGame = () => {
   const router = useRouter();
@@ -69,16 +70,16 @@ const JoinGame = () => {
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="mx-4 flex flex-col items-center">
 
-      <div className="mt-2 md:mt-4 font-bold text-3xl md:text-5xl text-secondary">
-        <h1>Join A Room</h1>
+      <div className="font-bold text-3xl md:text-5xl text-secondary bg-primary p-4 rounded-lg">
+        <h1>let's play!</h1>
       </div>
 
-      <div className="m-2 flex flex-row">
+      <div className="flex flex-row">
         <form onSubmit={handleSumbitJoinPrivateGame}>
-          <div className="m-2 md:m-4 flex flex-col items-center">
-            <h2 className="popup-title-small">private</h2>
+          <div className="m-2 md:m-4 flex flex-col items-center text-center">
+            <h1 className="font-bold text-3xl md:text-4xl text-secondary">join a room!</h1>
             {
               !currentUser &&
               <input type="text" placeholder="username..." className="my-4 w-full input-field" value={guestPrivateUserName} onChange={handlePrivateUserName} />
@@ -90,7 +91,7 @@ const JoinGame = () => {
           </div>
         </form>
 
-        <form onSubmit={handleRandomGame}>
+        {/* <form onSubmit={handleRandomGame}>
           <div className="m-2 md:m-4 flex flex-col items-center">
             <h2 className="popup-title-small">random</h2>
             {
@@ -99,7 +100,9 @@ const JoinGame = () => {
             }
             <button type="submit" className="w-full button-yellow">go bananas!</button>
           </div>
-        </form>
+          </form> */}
+        <CreateRoom />
+
       </div>
 
     </div>
