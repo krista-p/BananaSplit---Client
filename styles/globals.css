@@ -91,6 +91,10 @@ a {
     @apply h-full scrollbar-thin scrollbar-thumb-primary scrollbar-track-white m-4 scrollbar-thumb-rounded;
   }
 
+  .scroll-bar-rules {
+    @apply h-full scrollbar-thin scrollbar-thumb-primary_hover scrollbar-track-primary scrollbar-thumb-rounded;
+  }
+
   .tile {
     @apply w-14 h-14 p-1 border-4 border-secondary rounded-lg bg-primary hover:bg-primary_hover text-secondary text-5xl flex justify-center align-middle;
   }

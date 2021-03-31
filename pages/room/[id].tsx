@@ -58,20 +58,19 @@ const Room = () => {
     socket.on('tilesRemaining', (res: number) => {
       setTilesRemaining(res);
     });
-    
+
     socket.on('roomWordCheck', (id: string) => {
       setState((prev) => {
-        console.log(prev);
         const gridWords = wordFinder(prev.matrix);
         const validWords = dictCheckValid(gridWords, dictionary);
-        
+
         const playerWordObject: any = {};
-        
+
         playerWordObject[socket.id] = {
           longestWord: longestWord(validWords),
           amountOfWords: validWords.length,
-        }
-        
+        };
+
         socket.emit('roomWordCheckResponse', playerWordObject);
         return prev;
       });
@@ -82,11 +81,11 @@ const Room = () => {
     });
 
     socket.on('rottenUserName', (res: string) => {
-      console.log(res);
       setRottenBanana(res);
     });
 
     socket.on('endGameResponse', (res: string) => {
+      console.log(res)
       setGameWinner(res);
       setEndOpen(true);
     });
@@ -102,11 +101,6 @@ const Room = () => {
       }));
     });
   }, []);
-
-  function getState (id) {
-    console.log('in get state', state, id);
-    return state;
-  }
 
   const handleLeaveGame = (e) => {
     e.preventDefault();
@@ -195,8 +189,6 @@ const Room = () => {
       if (state.playerTiles.length > 0 || tilesRemaining >= playersInRoom.length) {
         alertNotification('Play all tiles!');
       } else if (state.playerTiles.length === 0 && tilesRemaining < playersInRoom.length) {
-        // Check if all words are valid
-
         if (invalidWords.length) {
           const matrixClone: any[][] = _.cloneDeep(state.matrix);
           const rottenTiles: TileInterface[] = _.cloneDeep(state.playerTiles);
@@ -210,22 +202,17 @@ const Room = () => {
             }
           }
           socket.emit('rottenBanana', id);
-          console.log(validWords, 'valid incoming');
-          console.log(invalidWords, 'invalid incoming');
           setState(initialState);
         } else {
           const playerWordObject: any = {};
-          console.log(validWords, 'valid incoming');
 
           playerWordObject[socket.id] = {
             longestWord: longestWord(validWords),
             amountOfWords: validWords.length,
-          }
-
-          // console.log('id in banana', id);
+          };
           socket.emit('endGame', { id, playerWordObject });
         }
-      };
+      }
     } catch (err) {
       console.error(err);
     }
@@ -249,7 +236,6 @@ const Room = () => {
 
   return (
     <div className="flex flex-col h-screen w-screen">
-      {/* <NavBar /> */}
 
       <div className="flex flex-col flex-grow h-3/4 w-full">
         <div className="flex flex-row m-4 justify-between">
@@ -260,11 +246,11 @@ const Room = () => {
 
           <div className="flex flex-row items-center bg-secondary px-8 border-4 border-primary rounded-full">
             <Image
-                src="/bananasplitlogo.png"
-                alt="banana split logo"
-                width="320"
-                height="100"
-              />
+              src="/bananasplitlogo.png"
+              alt="banana split logo"
+              width="320"
+              height="100"
+            />
           </div>
 
           <div className="flex flex-row items-center mr-8 bg-secondary p-2 border-4 border-primary rounded-full">
@@ -351,20 +337,18 @@ const Room = () => {
             />
           </div>
 
-          <div className="fixed flex flex-col bottom-9 ml-28">
+          <div className="fixed flex flex-col bottom-24 right-4">
             { state.playerTiles.length < 1 && tilesRemaining > 0 && roomActive &&
-              <button type="submit" className="button-yellow text-7xl" onClick={handlePeel}>peel!</button>
+              <button type="submit" className="button-yellow text-5xl" onClick={handlePeel}>peel!</button>
             }
 
             { tilesRemaining < playersInRoom.length && !state.playerTiles.length &&
-              <button type="submit" className="button-yellow text-5xl" onClick={handleBanana}>BANANA!!</button>
+              <button type="submit" className="button-yellow text-4xl" onClick={handleBanana}>BANANA!!</button>
             }
 
           </div>
 
-          <button type="button" onClick={toggleEndPopup} className="bg-pink-400 text-white fixed bottom-8 right-8">click here to get game popup</button>
           {endOpen ? <GameEndPopup winner={gameWinner} rottenBanana={rottenBanana} /> : null}
-          <button type="button" onClick={toggleRottenPopup} className="bg-pink-400 text-white fixed bottom-2 right-8">click here to get rotten popup</button>
           {rottenOpen ? <RottenBananaPopup rottenBanana={rottenBanana} /> : null}
         </div>
 
