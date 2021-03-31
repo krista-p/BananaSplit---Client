@@ -89,11 +89,11 @@ export const wordFinder = (check: (number | Igrid)[][]): string[] => {
     for (let j = 0; j < grid[i].length; j++) {
       if (grid[i][j] !== 0) {
         const horizontalWord = dfsHorizontal(grid, i, j, grid[i][j]);
-        if (horizontalWord.length > 1) wordSet.add(horizontalWord);
+        if (horizontalWord.length > 1) wordSet.add(horizontalWord.toLowerCase());
       }
       if (newGrid[i][j] !== 0) {
         const verticalWord = dfsVertical(newGrid, i, j, newGrid[i][j]);
-        if (verticalWord.length > 1) wordSet.add(verticalWord);
+        if (verticalWord.length > 1) wordSet.add(verticalWord.toLowerCase());
       }
     }
   }
