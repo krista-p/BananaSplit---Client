@@ -36,7 +36,10 @@ const Room = () => {
   const [endOpen, setEndOpen] = useState<boolean>(false);
   const [rottenOpen, setRottenOpen] = useState<boolean>(false);
 
-  const [endGameStats, setEndGameStats] = useState([]);
+  const [endGameLongestWord, setEndGameLongestWord] = useState('');
+  const [endGameLongestWordUser, setEndGameLongestWordUser] = useState('');
+  const [endGameMostWords, setEndGameMostWords] = useState('');
+  const [endGameMostWordUsers, setEndGameMostWordUsers] = useState('');
 
   useEffect(() => {
     socket.on('playersInRoom', (players: string[]) => {
@@ -75,8 +78,16 @@ const Room = () => {
       });
     });
 
-    socket.on('statCheck', (res) => {
-      setEndGameStats(res);
+    socket.on('statCheck', ({ endLongestWord, endMostWords }) => {
+      setEndGameLongestWord(endLongestWord.getEndLongestWord);
+      endLongestWord.getEndUserName.map((user) => {
+        if (user) setEndGameLongestWordUser(user);
+      });
+
+      setEndGameMostWords(endMostWords.getEndMostWords);
+      endMostWords.getEndMostUserName.map((user) => {
+        if (user) setEndGameMostWordUsers(user);
+      });
     });
 
     socket.on('rottenBananaResponse', (res: string) => {
@@ -361,7 +372,7 @@ const Room = () => {
           </div>
 
           <button type="button" onClick={toggleEndPopup} className="bg-pink-400 text-white fixed bottom-8 right-8">click here to get game popup</button>
-          {endOpen ? <GameEndPopup winner={gameWinner} rottenBanana={rottenBanana} /> : null}
+          {endOpen ? <GameEndPopup winner={gameWinner} rottenBanana={rottenBanana} endGameLongestWord={endGameLongestWord} endGameLongestWordUser={endGameLongestWordUser} endGameMostWords={endGameMostWords} endGameMostWordUsers={endGameMostWordUsers} /> : null}
           <button type="button" onClick={toggleRottenPopup} className="bg-pink-400 text-white fixed bottom-2 right-8">click here to get rotten popup</button>
           {rottenOpen ? <RottenBananaPopup rottenBanana={rottenBanana} /> : null}
         </div>
