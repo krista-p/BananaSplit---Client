@@ -175,8 +175,6 @@ const Room = () => {
         }
         else {
           const matrixObject: any = {};
-
-
           socket.emit('endGame', id);
         }
       };
