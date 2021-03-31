@@ -6,7 +6,7 @@ import Board from '../../components/gamePage/Board';
 import GameEndPopup from '../../components/gamePage/gameEndPopup/GameEndPopup';
 import { alertNotification } from '../../components/landingPage/popups/alertpopup/AlertPopup';
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
-import { numBoards, wordFinder, dictCheckInvalid, dictCheckValid, longestWord } from '../../components/lib/utils/wordChecker';
+import { numBoards, wordFinder, dictCheckInvalid, dictCheckValid, longestWordCheck } from '../../components/lib/utils/wordChecker';
 import * as dictionary from '../../components/lib/utils/dictionary.json';
 import { GameStateInterface, TileInterface } from '../../interfaces';
 
@@ -34,6 +34,8 @@ const Room = () => {
   // THIS IS FOR END OF GAME POPUP
   const [endOpen, setEndOpen] = useState<boolean>(false);
 
+  const [endGameStats, setEndGameStats] = useState([]);
+
   useEffect(() => {
     socket.on('playersInRoom', (players: string[]) => {
       setPlayersInRoom(players);
@@ -57,22 +59,22 @@ const Room = () => {
       setTilesRemaining(res);
     });
     
-    socket.on('roomWordCheck', (id: string) => {
+    socket.on('roomWordCheck', (winnerObject: any) => {
       setState((prev) => {
         console.log(prev);
         const gridWords = wordFinder(prev.matrix);
         const validWords = dictCheckValid(gridWords, dictionary.default);
         
-        const playerWordObject: any = {};
-        
-        playerWordObject[socket.id] = {
-          longestWord: longestWord(validWords),
-          amountOfWords: validWords.length,
-        }
-        
-        socket.emit('roomWordCheckResponse', playerWordObject);
+        const longestWord = longestWordCheck(validWords);
+        const amountOfWords = validWords.length;
+
+        socket.emit('roomWordCheckResponse', { id, longestWord, amountOfWords });
         return prev;
       });
+    });
+
+    socket.on('statCheck', (res) => {
+      setEndGameStats(res);
     });
 
     socket.on('rottenBananaResponse', (res: string) => {
@@ -207,16 +209,12 @@ const Room = () => {
           console.log(invalidWords, 'invalid incoming');
           setState(initialState);
         } else {
-          const playerWordObject: any = {};
           console.log(validWords, 'valid incoming');
 
-          playerWordObject[socket.id] = {
-            longestWord: longestWord(validWords),
-            amountOfWords: validWords.length,
-          }
+          const longestWord = longestWordCheck(validWords);
+          const amountOfWords = validWords.length;
 
-          // console.log('id in banana', id);
-          socket.emit('endGame', { id, playerWordObject });
+          socket.emit('endGame', { id, longestWord, amountOfWords });
         }
       };
     } catch (err) {
