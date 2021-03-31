@@ -4,10 +4,11 @@ import _ from 'lodash';
 import Image from 'next/image';
 import Board from '../../components/gamePage/Board';
 import GameEndPopup from '../../components/gamePage/gameEndPopup/GameEndPopup';
+import RottenBananaPopup from '../../components/gamePage/rottenBananaPopup/RottenBananaPopup';
 import { alertNotification } from '../../components/landingPage/popups/alertpopup/AlertPopup';
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
 import { numBoards, wordFinder, dictCheckInvalid, dictCheckValid, longestWordCheck } from '../../components/lib/utils/wordChecker';
-import * as dictionary from '../../components/lib/utils/dictionary.json';
+import dictionary from '../../components/lib/utils/dictionary.json';
 import { GameStateInterface, TileInterface } from '../../interfaces';
 
 const gridSize: number = 15;
@@ -33,6 +34,7 @@ const Room = () => {
   const [state, setState] = useState(initialState);
   // THIS IS FOR END OF GAME POPUP
   const [endOpen, setEndOpen] = useState<boolean>(false);
+  const [rottenOpen, setRottenOpen] = useState<boolean>(false);
 
   const [endGameStats, setEndGameStats] = useState([]);
 
@@ -63,7 +65,7 @@ const Room = () => {
       setState((prev) => {
         console.log(prev);
         const gridWords = wordFinder(prev.matrix);
-        const validWords = dictCheckValid(gridWords, dictionary.default);
+        const validWords = dictCheckValid(gridWords, dictionary);
         
         const longestWord = longestWordCheck(validWords);
         const amountOfWords = validWords.length;
@@ -78,6 +80,11 @@ const Room = () => {
     });
 
     socket.on('rottenBananaResponse', (res: string) => {
+      setRottenOpen(true);
+    });
+
+    socket.on('rottenUserName', (res: string) => {
+      console.log(res);
       setRottenBanana(res);
     });
 
@@ -183,8 +190,8 @@ const Room = () => {
   const handleBanana = (e) => {
     e.preventDefault();
     const gridWords = wordFinder(state.matrix);
-    const invalidWords = dictCheckInvalid(gridWords, dictionary.default);
-    const validWords = dictCheckValid(gridWords, dictionary.default);
+    const invalidWords = dictCheckInvalid(gridWords, dictionary);
+    const validWords = dictCheckValid(gridWords, dictionary);
 
     try {
       if (state.playerTiles.length > 0 || tilesRemaining >= playersInRoom.length) {
@@ -232,6 +239,10 @@ const Room = () => {
   // TESTING END OF GAME POPUP!!!!!
   const toggleEndPopup = () => {
     setEndOpen(!endOpen);
+  };
+
+  const toggleRottenPopup = () => {
+    setRottenOpen(!rottenOpen);
   };
 
   return (
@@ -310,12 +321,22 @@ const Room = () => {
                 && (
                   <button
                     type="button"
-                    className="button-yellow"
+                    className="button-yellow text-4xl"
                     onClick={handleStartGame}
                   >
                     start game!
                   </button>
                 )}
+              { roomActive
+              && (
+                <button
+                  type="submit"
+                  className="button-yellow text-4xl"
+                  onClick={handleReset}
+                >
+                  reset
+                </button>
+              )}
             </div>
           </div>
 
@@ -328,24 +349,21 @@ const Room = () => {
             />
           </div>
 
-          <div className="fixed flex flex-col bottom-32 right-2">
+          <div className="fixed flex flex-col bottom-9 ml-28">
             { state.playerTiles.length < 1 && tilesRemaining > 0 && roomActive &&
-              <button type="submit" className="button-yellow" onClick={handlePeel}>peel!</button>
+              <button type="submit" className="button-yellow text-7xl" onClick={handlePeel}>peel!</button>
             }
 
-            { tilesRemaining < playersInRoom.length &&
-              <button type="submit" className="button-yellow" onClick={handleBanana}>BANANA!</button>
+            { tilesRemaining < playersInRoom.length && !state.playerTiles.length &&
+              <button type="submit" className="button-yellow text-5xl" onClick={handleBanana}>BANANA!!</button>
             }
 
-            { roomActive &&
-              <button type="submit" className="button-yellow" onClick={handleReset}>reset</button>
-            }
           </div>
 
-        {/* TESTING END OF GAME POPUP */}
-                  <button type="button" onClick={toggleEndPopup} className="bg-pink-400 text-white fixed bottom-8 right-8">
-                    click here to get game popup</button>
-                  {endOpen ? <GameEndPopup winner={gameWinner} rottenBanana={rottenBanana} /> : null}
+          <button type="button" onClick={toggleEndPopup} className="bg-pink-400 text-white fixed bottom-8 right-8">click here to get game popup</button>
+          {endOpen ? <GameEndPopup winner={gameWinner} rottenBanana={rottenBanana} /> : null}
+          <button type="button" onClick={toggleRottenPopup} className="bg-pink-400 text-white fixed bottom-2 right-8">click here to get rotten popup</button>
+          {rottenOpen ? <RottenBananaPopup rottenBanana={rottenBanana} /> : null}
         </div>
 
       </div>
