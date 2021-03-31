@@ -9,10 +9,11 @@ import { alertNotification } from '../../components/landingPage/popups/alertpopu
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
 import { numBoards, wordFinder, dictCheck } from '../../components/lib/utils/wordChecker';
 import * as dictionary from '../../components/lib/utils/dictionary.json';
+import { GameStateInterface, TileInterface } from '../../interfaces';
 
 const gridSize: number = 15;
 
-const initialState = {
+const initialState: GameStateInterface = {
   playerTiles: [],
   matrix: Array.from({ length: gridSize }, () => Array(gridSize).fill(0)),
 };
@@ -28,31 +29,36 @@ const Room = () => {
   const [roomActive, setRoomActive] = useState(false);
   const [playerHost, setPlayerHost] = useState(false);
   const [tilesRemaining, setTilesRemaining] = useState(0);
+  const [gameWinner, setGameWinner] = useState('');
   const [state, setState] = useState(initialState);
   // THIS IS FOR END OF GAME POPUP
   const [endOpen, setEndOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    socket.on('playersInRoom', (players) => {
+    socket.on('playersInRoom', (players: string[]) => {
       setPlayersInRoom(players);
     });
     socket.on('actionMessage', (res) => {
-      setActionMessages((prev) => [...prev, res]);
+      setActionMessages((prev: string[]) => [...prev, res]);
     });
-    socket.on('roomReadyResponse', (res) => {
+    socket.on('roomReadyResponse', (res: boolean) => {
       setRoomReady(res);
     });
-    socket.on('playerReadyResponse', (res) => {
+    socket.on('playerReadyResponse', (res: string[]) => {
       setReadyPlayers(res);
     });
-    socket.on('hostResponse', (res) => {
+    socket.on('hostResponse', (res: boolean) => {
       setPlayerHost(res);
     });
-    socket.on('roomActive', (res) => {
+    socket.on('roomActive', (res: boolean) => {
       setRoomActive(res);
     });
-    socket.on('tilesRemaining', (res) => {
+    socket.on('tilesRemaining', (res: number) => {
       setTilesRemaining(res);
+    });
+    socket.on('endGameResponse', (res: string) => {
+      setGameWinner(res);
+      setEndOpen(true);
     });
   }, []);
 
@@ -88,7 +94,6 @@ const Room = () => {
     }
   };
 
-  // TODO: Hide button after game starts
   const handleStartGame = (e) => {
     e.preventDefault();
     try {
@@ -106,8 +111,7 @@ const Room = () => {
         alertNotification('Tiles must be connected!');
       } else if (state.playerTiles.length !== 0) {
         alertNotification('Tiles in your pile!');
-      } else if (state.playerTiles.length === 0 && numBoards(state.matrix) < 2) {
-        console.log(numBoards(state.matrix), 'peeling');
+      } else if (state.playerTiles.length === 0 && numBoards(state.matrix) < 2 && tilesRemaining > 0) {
         socket.emit('peelAction', id);
       }
     } catch (err) {
@@ -115,7 +119,8 @@ const Room = () => {
     }
   };
 
-  const handleDump = (tileToDump, stateClone) => {
+  // TODO: Dump only if bunch tiles is > 0
+  const handleDump = (tileToDump: TileInterface, stateClone: GameStateInterface) => {
     try {
       setState(stateClone);
       socket.emit('dumpAction', { id, tileToDump });
@@ -127,11 +132,10 @@ const Room = () => {
   const handleReset = (e) => {
     e.preventDefault();
     try {
-      // Take out tiles from board and send back to playerTiles
       console.log(state.matrix);
       const { matrix, playerTiles } = state;
-      const matrixClone = _.cloneDeep(matrix);
-      const playerTilesClone = _.cloneDeep(playerTiles);
+      const matrixClone: any[][] = _.cloneDeep(matrix);
+      const playerTilesClone: TileInterface[] = _.cloneDeep(playerTiles);
       for (let row = 0; row < gridSize; row++) {
         for (let col = 0; col < gridSize; col++) {
           if (matrixClone[row][col] !== 0) {
@@ -150,13 +154,14 @@ const Room = () => {
     e.preventDefault();
     const gridWords = wordFinder(state.matrix);
     try {
-      if (state.playerTiles.length > 0 || tilesRemaining > 0) {
+      if (state.playerTiles.length > 0 || tilesRemaining >= playersInRoom.length) {
         alertNotification('Play all tiles!');
-      } else if (state.playerTiles.length === 0 && tilesRemaining === 0) {
+      } else if (state.playerTiles.length === 0 && tilesRemaining < playersInRoom.length) {
         // Check if all words are valid
+        console.log(dictCheck(gridWords, dictionary));
         if (dictCheck(gridWords, dictionary).length) {
-          const matrixClone = _.cloneDeep(state.matrix);
-          const rottenTiles = _.cloneDeep(state.playerTiles);
+          const matrixClone: any[][] = _.cloneDeep(state.matrix);
+          const rottenTiles: TileInterface[] = _.cloneDeep(state.playerTiles);
 
           for (let row = 0; row < gridSize; row++) {
             for (let col = 0; col < gridSize; col++) {
@@ -170,7 +175,7 @@ const Room = () => {
           setState(initialState);
         }
         else {
-          console.log('board is good');
+          socket.emit('endGame', id);
         }
       };
     } catch (err) {
@@ -178,7 +183,7 @@ const Room = () => {
     }
   };
 
-  const playerReady = (player) => {
+  const playerReady = (player: string) => {
     if (readyPlayers.indexOf(player) !== -1) {
       return 'bg-primary text-secondary w-auto rounded-full m-2';
     }
@@ -275,21 +280,22 @@ const Room = () => {
           </div>
 
           <div className="fixed flex flex-col bottom-32 right-2">
-            <button type="submit" className="button-yellow" onClick={handleReset}>reset</button>
+            { state.playerTiles.length < 1 && tilesRemaining > 0 && roomActive &&
+              <button type="submit" className="button-yellow" onClick={handlePeel}>peel!</button>
+            }
 
-            {state.playerTiles.length < 1
-              ? <button type="submit" className="button-yellow" onClick={handlePeel}>peel!</button> : null }
-
-            <div>
+            { tilesRemaining < playersInRoom.length && 
               <button type="submit" className="button-yellow" onClick={handleBanana}>BANANA!</button>
-              {/* { tilesRemaining < 1 && state.playerTiles.length < 1 &&
-              } */}
-            </div>
+            }
+
+            { roomActive &&
+              <button type="submit" className="button-yellow" onClick={handleReset}>reset</button>
+            }
           </div>
 
         {/* TESTING END OF GAME POPUP */}
                   <button type="button" onClick={toggleEndPopup} className="bg-pink-400 text-white fixed bottom-8 right-8">click here to get game popup</button>
-                  {endOpen ? <GameEndPopup /> : null}
+                  {endOpen ? <GameEndPopup winner={gameWinner} /> : null}
         </div>
 
       </div>

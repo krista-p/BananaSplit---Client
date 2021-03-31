@@ -1,9 +1,9 @@
 import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
-import { GameStateType, TileType } from '../../types';
+import { GameStateType, TileType } from '../../interfaces';
 import Tile from './Tile';
 
-type SquarePropsType = {
+interface SquarePropsType {
   state: GameStateType,
   squareId: string,
   gridSize: number,

@@ -2,10 +2,10 @@ import React from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import _ from 'lodash';
 import Grid from './Grid';
-import styles from '../../styles/Room.module.css';
 import PlayerTiles from './PlayerTiles';
 import { reorder, move } from '../lib/utils';
 import DumpZone from './DumpZone';
+import { StartInterface, ResultInterface } from '../../interfaces';
 
 const Board = ({ state, setState, gridSize, handleDump }) => {
   const onBeforeCapture = ({ draggableId }) => {
@@ -14,18 +14,17 @@ const Board = ({ state, setState, gridSize, handleDump }) => {
     console.log(tile);
   };
 
-  const onDragStart = (start) => {
+  const onDragStart = (start: StartInterface) => {
     if (start.source.droppableId !== 'playerTiles') {
       const id = document.getElementById(start.source.droppableId);
       id.style.opacity = '0';
     }
   };
 
-  const onDragEnd = (result) => {
+  const onDragEnd = (result: ResultInterface) => {
     const { source, destination } = result;
     const sourceId: string = source.droppableId;
     if (!destination) {
-      console.log('TRY AGAIN');
       if (sourceId !== 'playerTiles') {
         const id = document.getElementById(sourceId);
         id.style.opacity = '100';
@@ -73,18 +72,39 @@ const Board = ({ state, setState, gridSize, handleDump }) => {
         } : result.state;
       setState(newState);
     } else {
-      console.log(tileToPlace);
       const stateClone = _.cloneDeep(state);
       if (sourceId !== 'playerTiles') {
         stateClone.matrix[sRow][sCol] = 0;
       } else {
-        console.log(sourceIndex);
         stateClone.playerTiles.splice(sourceIndex, 1);
-        console.log(stateClone.playerTiles);
       }
       // const dragSource = sourceId !== 'playerTiles' ? state.matrix : state.playerTiles;
       handleDump(tileToPlace, stateClone);
     }
+  };
+  let scrollTimer;
+  const up = () => {
+    const gridWindow = document.getElementById('grid-window');
+    scrollTimer = setInterval(() => {gridWindow.scrollTop -= 10}, 50);
+  };
+
+  const left = () => {
+    const gridWindow = document.getElementById('grid-window');
+    scrollTimer = setInterval(() => {gridWindow.scrollLeft -= 10}, 50);
+  };
+
+  const down = () => {
+    const gridWindow = document.getElementById('grid-window');
+    scrollTimer = setInterval(() => {gridWindow.scrollTop += 10}, 50);
+  };
+
+  const right = () => {
+    const gridWindow = document.getElementById('grid-window');
+    scrollTimer = setInterval(() => {gridWindow.scrollLeft += 10}, 50);
+  };
+
+  const timerClear = () => {
+    clearInterval(scrollTimer);
   };
 
   return (
@@ -96,22 +116,22 @@ const Board = ({ state, setState, gridSize, handleDump }) => {
       >
         <div className="flex flex-row w-full h-full">
           <div className="flex flex-col w-3/4 justify-center items-center h-full">
-            <div className="h-full w-full border-8 border-secondary rounded-2xl overflow-scroll">
+            <div id="grid-window" className="h-full w-full border-8 border-secondary rounded-2xl overflow-hidden">
+              <button type="button" onMouseDown={up} onMouseUp={timerClear} style={{ height: '50px', width: '100px', position: 'absolute', right: '100px', bottom: '300px', background: 'green' }}>UP</button>
+              <button type="button" onMouseDown={left} onMouseUp={timerClear} style={{ height: '50px', width: '100px', position: 'absolute', right: '150px', bottom: '250px', background: 'green' }}>LEFT</button>
+              <button type="button" onMouseDown={down} onMouseUp={timerClear} style={{ height: '50px', width: '100px', position: 'absolute', right: '100px', bottom: '200px', background: 'green' }}>DOWN</button>
+              <button type="button" onMouseDown={right} onMouseUp={timerClear} style={{ height: '50px', width: '100px', position: 'absolute', right: '50px', bottom: '250px', background: 'green' }}>RIGHT</button>
               <Grid
                 state={state}
                 setState={setState}
                 gridSize={gridSize}
               />
-
             </div>
             <div className="h-1/4 mb-4 w-full">
               <PlayerTiles
                 state={state}
-                setState={setState}
               />
-
             </div>
-
           </div>
           {/* TODO: Testing making a droppable zone for dumping tiles */}
           <DumpZone />
