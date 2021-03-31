@@ -29,6 +29,7 @@ const Room = () => {
   const [roomActive, setRoomActive] = useState(false);
   const [playerHost, setPlayerHost] = useState(false);
   const [tilesRemaining, setTilesRemaining] = useState(0);
+  const [gameWinner, setGameWinner] = useState('');
   const [state, setState] = useState(initialState);
   // THIS IS FOR END OF GAME POPUP
   const [endOpen, setEndOpen] = useState<boolean>(false);
@@ -39,7 +40,6 @@ const Room = () => {
     });
     socket.on('actionMessage', (res) => {
       setActionMessages((prev: string[]) => [...prev, res]);
-      console.log(res, 'message incoming');
     });
     socket.on('roomReadyResponse', (res: boolean) => {
       setRoomReady(res);
@@ -56,8 +56,8 @@ const Room = () => {
     socket.on('tilesRemaining', (res: number) => {
       setTilesRemaining(res);
     });
-    socket.on('endGameResponse', () => {
-      console.log('should open popup');
+    socket.on('endGameResponse', (res: string) => {
+      setGameWinner(res);
       setEndOpen(true);
     });
   }, []);
@@ -280,21 +280,20 @@ const Room = () => {
           </div>
 
           <div className="fixed flex flex-col bottom-32 right-2">
-            <button type="submit" className="button-yellow" onClick={handleReset}>reset</button>
+            { state.playerTiles.length < 1 && tilesRemaining > 0 &&
+              <button type="submit" className="button-yellow" onClick={handlePeel}>peel!</button>
+            }
 
-            {state.playerTiles.length < 1
-              ? <button type="submit" className="button-yellow" onClick={handlePeel}>peel!</button> : null }
-
-            <div>
+            { tilesRemaining < playersInRoom.length &&
               <button type="submit" className="button-yellow" onClick={handleBanana}>BANANA!</button>
-              {/* { tilesRemaining < 1 && state.playerTiles.length < 1 &&
-              } */}
-            </div>
+            }
+
+            <button type="submit" className="button-yellow" onClick={handleReset}>reset</button>
           </div>
 
         {/* TESTING END OF GAME POPUP */}
                   <button type="button" onClick={toggleEndPopup} className="bg-pink-400 text-white fixed bottom-8 right-8">click here to get game popup</button>
-                  {endOpen ? <GameEndPopup /> : null}
+                  {endOpen ? <GameEndPopup winner={gameWinner} /> : null}
         </div>
 
       </div>
