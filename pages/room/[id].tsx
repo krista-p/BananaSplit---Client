@@ -371,9 +371,8 @@ const Room = () => {
 
           </div>
 
-          <button type="button" onClick={toggleEndPopup} className="bg-pink-400 text-white fixed bottom-8 right-8">click here to get game popup</button>
           {endOpen ? <GameEndPopup winner={gameWinner} rottenBanana={rottenBanana} endGameLongestWord={endGameLongestWord} endGameLongestWordUser={endGameLongestWordUser} endGameMostWords={endGameMostWords} endGameMostWordUsers={endGameMostWordUsers} /> : null}
-          <button type="button" onClick={toggleRottenPopup} className="bg-pink-400 text-white fixed bottom-2 right-8">click here to get rotten popup</button>
+
           {rottenOpen ? <RottenBananaPopup rottenBanana={rottenBanana} /> : null}
         </div>
 
