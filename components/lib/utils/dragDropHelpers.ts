@@ -16,8 +16,6 @@ export const move = (
   source: SourceInterface,
   destination: DestinationInterface,
 ) => {
-  console.log(dragSource);
-  console.log(dragDestination);
   const stateClone: GameStateInterface = _.cloneDeep(state);
   const [sRow, sCol] = source.droppableId.split('-');
   const [dRow, dCol] = destination.droppableId.split('-');

@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../contexts/auth';
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 
 const ProfilePage = () => {
   const { currentUser } = useContext(AuthContext);
@@ -10,7 +12,7 @@ const ProfilePage = () => {
   const [userLongestWord, setUserLongestWord] = useState<string>('');
 
   const getUserById = async (uid) => {
-    await fetch(`http://localhost:4200/user/${uid}`)
+    await fetch(`${publicRuntimeConfig.serverUrl}/user/${uid}`)
       .then((res) => res.json())
       .then((data) => {
         setUserName(data.userName);
