@@ -64,9 +64,9 @@ const Room = () => {
 
   useEffect(() => {
     socket.emit('enteredRoom', id);
-
-    socket.on('receiveTiles', (tiles: TileInterface[]) => {
-      setState((prevState: GameStateInterface) => ({
+    console.log(dictionary[0])
+    socket.on('receiveTiles', (tiles) => {
+      setState((prevState) => ({
         ...prevState,
         playerTiles: prevState.playerTiles.concat(tiles[socket?.id]),
       }));
@@ -199,102 +199,104 @@ const Room = () => {
     <div className="flex flex-col h-screen w-screen">
       <NavBar />
 
-      <div className="flex flex-row m-4 justify-between">
-        <div className="flex flex-row items-center ml-8 bg-secondary p-2 rounded-full">
-          <h1 className="mr-2 text-xl md:text-3xl text-primary">game room code:</h1>
-          <div className="w-auto h-16 p-2 bg-primary text-xl md:text-3xl rounded-full flex items-center text-center">{id}</div>
+      <div className="flex flex-col flex-grow h-3/4 w-full mt-3">
+        <div className="flex flex-row m-4 justify-between">
+          <div className="flex flex-row items-center bg-secondary p-2 rounded-full">
+            <h1 className="mr-2 text-xl md:text-3xl text-primary">game room code:</h1>
+            <div className="w-auto p-2 bg-primary text-xl md:text-3xl rounded-full flex items-center text-center">{id}</div>
+          </div>
+          <div className="flex flex-row items-center mr-8 bg-secondary p-2 rounded-full">
+            <h1 className="mr-2 text-xl md:text-3xl text-primary">tiles in bunch:</h1>
+            <div className="w-16 h-16 p-2 bg-primary text-xl md:text-3xl rounded-full flex items-center text-center">{tilesRemaining}</div>
+          </div>
         </div>
-        { roomActive &&
-          <div>
-            <button type="submit" className="button-yellow" onClick={handleReset}>Reset</button>
-            <button type="submit" className="button-yellow" onClick={handlePeel}>Peel!</button>
-          </div>
-        }
-        <div className="flex flex-row items-center mr-8 bg-secondary p-2 rounded-full">
-          <h1 className="mr-2 text-xl md:text-3xl text-primary">tiles in bunch:</h1>
-          <div className="w-16 h-16 p-2 bg-primary text-xl md:text-3xl rounded-full flex items-center text-center">{tilesRemaining}</div>
-        </div>
-      </div>
 
-      <div className="flex w-screen h-3/4 justify-center">
-        <div className="flex flex-col w-1/4 h-full flex-grow content-center">
-          <div className="flex justify-center">
-            <button
-              type="button"
-              className="button-yellow"
-              onClick={handleLeaveGame}
-            >
-              Leave Game
-            </button>
-          </div>
-
-          <div className="flex flex-col bg-secondary text-primary text-base md:text-xl h-1/4 rounded-2xl m-2 text-center overflow-y-scroll scroll-bar-light">
-            { actionMessages
-              && actionMessages.map((message: string, index: number) => (
-                <div key={index.toString().concat(message)}>
-                  {message}
-                </div>
-              ))
-            }
-          </div>
-
-          <div className="flex flex-col bg-secondary text-primary text-base md:text-xl h-1/4 rounded-2xl m-2 text-center overflow-y-scroll scroll-bar-light">
-            <div className="mt-2 width-full">
-              { playersInRoom
-                && playersInRoom.map((player: string, index: number) => (
-                  // mt-2
-                  <div className={playerReady(player)} key={index.toString().concat(player)}>
-                    {`Player ${index + 1}: ${player}`}
-                  </div>
-                ))}
-            </div>
-          </div>
-
-          <div className="flex justify-center">
-            { !readyPressed
-              && (
+        <div className="flex w-screen h-4/5 w-1/4 justify-center">
+          <div className="flex flex-col w-1/4 content-center m-2">
+            <div className="flex justify-center">
               <button
                 type="button"
                 className="button-yellow"
-                onClick={handleReadyPlayer}
+                onClick={handleLeaveGame}
               >
-                Ready?!
+                leave game
               </button>
-              )}
-            { roomReady && playerHost && !roomActive
-              && (
+            </div>
+
+            <div className="flex flex-col bg-secondary text-primary text-base md:text-xl h-1/4 w-full mr-2 rounded-2xl">
+              <div className="h-3/4 w-5/6 text-center overflow-y-scroll scroll-bar-light">
+                { actionMessages
+                  && actionMessages.map((message, index) => (
+                    <div key={index.toString().concat(message)}>
+                      {message}
+                    </div>
+                  ))
+                }
+              </div>
+            </div>
+
+            <div className="flex flex-col bg-secondary text-primary text-base md:text-xl h-1/4 w-full mr-2 mt-2 rounded-2xl">
+              <div className="h-3/4 w-5/6 text-center overflow-y-scroll scroll-bar-light">
+                { playersInRoom
+                  && playersInRoom.map((player, index) => (
+                    <div className={playerReady(player)} key={index.toString().concat(player)}>
+                      {`Player ${index + 1}: ${player}`}
+                    </div>
+                  ))}
+              </div>
+            </div>
+
+            <div className="flex justify-center">
+              { !readyPressed
+                && (
                 <button
                   type="button"
                   className="button-yellow"
-                  onClick={handleStartGame}
+                  onClick={handleReadyPlayer}
                 >
-                  Start Game!
+                  ready?!
                 </button>
-              )}
+                )}
+              { roomReady && playerHost && !roomActive
+                && (
+                  <button
+                    type="button"
+                    className="button-yellow"
+                    onClick={handleStartGame}
+                  >
+                    start game!
+                  </button>
+                )}
+            </div>
           </div>
-        </div>
 
-        <div className="w-3/4">
-          <Board
-            state={state}
-            setState={setState}
-            gridSize={gridSize}
-            handleDump={handleDump}
-          />
-        </div>
-
-        <div className="flex flex-col flex-grow m-2">
-
-          <button type="submit" className="button-yellow" onClick={handlePeel}>Peel!</button>
-
-          <div>
-            <button type="submit" className="button-yellow" onClick={handleBanana}>Banana!</button>
+          <div className="w-3/4">
+            <Board
+              state={state}
+              setState={setState}
+              gridSize={gridSize}
+              handleDump={handleDump}
+            />
           </div>
+
+          <div className="fixed flex flex-col bottom-32 right-2">
+            <button type="submit" className="button-yellow" onClick={handleReset}>reset</button>
+
+            {state.playerTiles.length < 1
+              ? <button type="submit" className="button-yellow" onClick={handlePeel}>peel!</button> : null }
+
+            <div>
+              <button type="submit" className="button-yellow" onClick={handleBanana}>BANANA!</button>
+              {/* { tilesRemaining < 1 && state.playerTiles.length < 1 &&
+              } */}
+            </div>
+          </div>
+
+        {/* TESTING END OF GAME POPUP */}
+                  <button type="button" onClick={toggleEndPopup} className="bg-pink-400 text-white fixed bottom-8 right-8">click here to get game popup</button>
+                  {endOpen ? <GameEndPopup /> : null}
         </div>
 
-      {/* TESTING END OF GAME POPUP */}
-                <button type="button" onClick={toggleEndPopup} className="bg-pink-400 text-white fixed bottom-8 right-8">click here to get game popup</button>
-                {endOpen ? <GameEndPopup /> : null}
       </div>
     </div>
   );

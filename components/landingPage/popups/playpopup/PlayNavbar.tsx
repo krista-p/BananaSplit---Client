@@ -1,11 +1,11 @@
 // eslint-disable-next-line object-curly-newline
 const PlayNavbar = ({ closePlay, handleJoinGameTab, handleCreateRoomTab, joinGameTab }) => (
-  <nav className="flex flex-row justify-between w-full">
-    <button type="button" onClick={handleJoinGameTab} className={joinGameTab ? 'open-tab-left' : 'closed-tab'}>join game</button>
+  <nav className="flex flex-row w-full">
+    {/*    <button type="button" onClick={handleJoinGameTab} className={joinGameTab ? 'open-tab-left' : 'closed-tab'}>join game</button>
 
-    <button type="button" onClick={handleCreateRoomTab} className={!joinGameTab ? 'open-tab-right' : 'closed-tab'}>create game</button>
-
-    <button type="button" onClick={closePlay} className="close-button">X</button>
+    <button type="button" onClick={handleCreateRoomTab} className={!joinGameTab ? 'open-tab-right' : 'closed-tab'}>create game</button> */}
+    <div className="w-full"></div>
+    <button type="button" onClick={closePlay} className="close-button float-right">X</button>
   </nav>
 );
 
