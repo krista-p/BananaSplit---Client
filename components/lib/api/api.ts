@@ -1,9 +1,10 @@
-const SERVER_URL = process.env.SERVER_URL;
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 
-// NOTE: Doens't like with .env variable
+// NOTE: Doesn't like with .env variable
 export const createUser = (email, userName, uid) => {
   console.log(email, userName);
-  fetch('http://localhost:4200/user/create', {
+  fetch(publicRuntimeConfig.serverUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

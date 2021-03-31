@@ -158,7 +158,6 @@ const Room = () => {
         alertNotification('Play all tiles!');
       } else if (state.playerTiles.length === 0 && tilesRemaining < playersInRoom.length) {
         // Check if all words are valid
-        console.log(dictCheck(gridWords, dictionary));
         if (dictCheck(gridWords, dictionary).length) {
           const matrixClone: any[][] = _.cloneDeep(state.matrix);
           const rottenTiles: TileInterface[] = _.cloneDeep(state.playerTiles);
@@ -175,6 +174,9 @@ const Room = () => {
           setState(initialState);
         }
         else {
+          const matrixObject: any = {};
+
+
           socket.emit('endGame', id);
         }
       };
@@ -197,7 +199,7 @@ const Room = () => {
 
   return (
     <div className="flex flex-col h-screen w-screen">
-      <NavBar />
+      {/* <NavBar /> */}
 
       <div className="flex flex-col flex-grow h-3/4 w-full mt-3">
         <div className="flex flex-row m-4 justify-between">
@@ -284,7 +286,7 @@ const Room = () => {
               <button type="submit" className="button-yellow" onClick={handlePeel}>peel!</button>
             }
 
-            { tilesRemaining < playersInRoom.length && 
+            { tilesRemaining < playersInRoom.length &&
               <button type="submit" className="button-yellow" onClick={handleBanana}>BANANA!</button>
             }
 

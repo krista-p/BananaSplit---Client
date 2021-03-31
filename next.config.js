@@ -1,3 +1,11 @@
-const withFonts = require('next-fonts');
+const withPlugins = require('next-compose-plugins');
 
-module.exports = withFonts();
+const plugins = [];
+
+const config = {
+  publicRuntimeConfig: {
+    serverUrl: process.env.NEXT_PUBLIC_SERVER_URL
+  },
+}
+
+module.exports = withPlugins(plugins, config);

@@ -11,7 +11,6 @@ const Board = ({ state, setState, gridSize, handleDump }) => {
   const onBeforeCapture = ({ draggableId }) => {
     const tile = document.getElementById(draggableId);
     tile.classList.add('while-dragging');
-    console.log(tile);
   };
 
   const onDragStart = (start: StartInterface) => {

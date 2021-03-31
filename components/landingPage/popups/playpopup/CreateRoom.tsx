@@ -5,7 +5,10 @@ import { createGameRoomCode } from '../../../lib/utils/createGameRoomCode';
 import { AuthContext } from '../../../../contexts/auth';
 import { alertNotification } from '../alertpopup/AlertPopup';
 
-export const socket = io('http://localhost:4300', {
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
+
+export const socket = io(publicRuntimeConfig.serverUrl, {
   withCredentials: true,
   forceNew: true,
 });
