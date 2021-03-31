@@ -24,8 +24,8 @@ const Login = ({ closeLogin }) => {
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="mt-2 md:mt-4 font-bold text-3xl md:text-5xl text-secondary">
+    <div className="flex flex-col items-center overflow-y-auto scroll-bar-white">
+      <div className="mt-2 md:mt-8 font-bold text-3xl md:text-6xl text-secondary">
         <h1>login</h1>
       </div>
 
@@ -40,8 +40,8 @@ const Login = ({ closeLogin }) => {
           <input type="password" placeholder="bananabread..." onChange={handlePasswordChange} className="input-field" />
         </div>
 
-        <div className="m-4 flex flex-col items-center">
-          <button type="submit" className="button-yellow">go bananas!</button>
+        <div className="mt-6 flex flex-col items-center">
+          <button type="submit" className="button-yellow text-4xl">go bananas!</button>
         </div>
       </form>
 

@@ -1,8 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import _ from 'lodash';
-
-import NavBar from '../../components/Navbar';
+import Image from 'next/image';
 import Board from '../../components/gamePage/Board';
 import GameEndPopup from '../../components/gamePage/gameEndPopup/GameEndPopup';
 import { alertNotification } from '../../components/landingPage/popups/alertpopup/AlertPopup';
@@ -64,7 +63,7 @@ const Room = () => {
 
   useEffect(() => {
     socket.emit('enteredRoom', id);
-    console.log(dictionary[0])
+
     socket.on('receiveTiles', (tiles) => {
       setState((prevState) => ({
         ...prevState,
@@ -199,15 +198,25 @@ const Room = () => {
     <div className="flex flex-col h-screen w-screen">
       {/* <NavBar /> */}
 
-      <div className="flex flex-col flex-grow h-3/4 w-full mt-3">
+      <div className="flex flex-col flex-grow h-3/4 w-full">
         <div className="flex flex-row m-4 justify-between">
-          <div className="flex flex-row items-center bg-secondary p-2 rounded-full">
-            <h1 className="mr-2 text-xl md:text-3xl text-primary">game room code:</h1>
-            <div className="w-auto p-2 bg-primary text-xl md:text-3xl rounded-full flex items-center text-center">{id}</div>
+          <div className="flex flex-row items-center bg-secondary p-2 border-4 border-primary rounded-full">
+            <h1 className="ml-4 mr-2 text-xl md:text-3xl text-primary">game room code:</h1>
+            <div className="mr-2 w-auto p-2 px-4 bg-primary text-xl md:text-3xl rounded-full flex items-center text-center">{id}</div>
           </div>
-          <div className="flex flex-row items-center mr-8 bg-secondary p-2 rounded-full">
-            <h1 className="mr-2 text-xl md:text-3xl text-primary">tiles in bunch:</h1>
-            <div className="w-16 h-16 p-2 bg-primary text-xl md:text-3xl rounded-full flex items-center text-center">{tilesRemaining}</div>
+
+          <div className="flex flex-row items-center bg-secondary px-8 border-4 border-primary rounded-full">
+            <Image
+                src="/bananasplitlogo.png"
+                alt="banana split logo"
+                width="320"
+                height="100"
+              />
+          </div>
+
+          <div className="flex flex-row items-center mr-8 bg-secondary p-2 border-4 border-primary rounded-full">
+            <h1 className="ml-4 mr-2 text-xl md:text-3xl text-primary">tiles in bunch:</h1>
+            <div className="w-16 h-16 p-3 bg-primary text-xl md:text-3xl rounded-full flex items-center text-center">{tilesRemaining}</div>
           </div>
         </div>
 
@@ -216,15 +225,15 @@ const Room = () => {
             <div className="flex justify-center">
               <button
                 type="button"
-                className="button-yellow"
+                className="button-yellow text-4xl"
                 onClick={handleLeaveGame}
               >
                 leave game
               </button>
             </div>
 
-            <div className="flex flex-col bg-secondary text-primary text-base md:text-xl h-1/4 w-full mr-2 rounded-2xl">
-              <div className="h-3/4 w-5/6 text-center overflow-y-scroll scroll-bar-light">
+            <div className="flex flex-col bg-secondary text-primary text-base md:text-xl h-1/3 w-full mr-2 border-4 border-primary rounded-2xl">
+              <div className="h-3/4 w-5/6 pl-8 text-center overflow-y-scroll scroll-bar-light">
                 { actionMessages
                   && actionMessages.map((message, index) => (
                     <div key={index.toString().concat(message)}>
@@ -235,8 +244,8 @@ const Room = () => {
               </div>
             </div>
 
-            <div className="flex flex-col bg-secondary text-primary text-base md:text-xl h-1/4 w-full mr-2 mt-2 rounded-2xl">
-              <div className="h-3/4 w-5/6 text-center overflow-y-scroll scroll-bar-light">
+            <div className="flex flex-col bg-secondary text-primary text-base md:text-xl h-1/3 w-full mr-2 mt-2 border-4 border-primary rounded-2xl">
+              <div className="h-3/4 w-5/6 text-center pl-8 overflow-y-scroll scroll-bar-light">
                 { playersInRoom
                   && playersInRoom.map((player, index) => (
                     <div className={playerReady(player)} key={index.toString().concat(player)}>
@@ -251,7 +260,7 @@ const Room = () => {
                 && (
                 <button
                   type="button"
-                  className="button-yellow"
+                  className="button-yellow text-4xl"
                   onClick={handleReadyPlayer}
                 >
                   ready?!
@@ -270,7 +279,7 @@ const Room = () => {
             </div>
           </div>
 
-          <div className="w-3/4">
+          <div className="w-3/4 h-full">
             <Board
               state={state}
               setState={setState}

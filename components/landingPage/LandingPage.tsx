@@ -31,11 +31,11 @@ const LandingPage = () => {
         ? <div className="absolute w-full h-full bg-gray-900 opacity-50" />
         : null }
 
-      <div className="self-start mt-8 ml-8 h-80 w-80 sm:h-96 sm:w-96 bg-primary border-8 border-secondary rounded-full shadow-lg">
+      <div className="self-start mt-8 ml-8 h-80 w-80 md:h-100 md:w-100 bg-primary border-8 border-secondary rounded-full shadow-lg">
         <Rules />
       </div>
 
-      <div className="self-end mb-8 mr-8 h-60 w-60 sm:h-80 sm:w-80 bg-secondary border-8 border-primary rounded-full shadow-lg flex items-center justify-center">
+      <div className="self-end mb-8 mr-8 h-60 w-60 md:h-96 md:w-96 bg-secondary border-8 border-primary rounded-full shadow-lg flex items-center justify-center">
         <ButtonContainer
           openLogin={toggleLoginPopup}
           openPlay={togglePlayPopup}

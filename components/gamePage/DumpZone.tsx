@@ -3,7 +3,7 @@ import { Droppable } from 'react-beautiful-dnd';
 
 export default function DumpZone() {
   return (
-    <div className="w-1/4 h-1/4 mx-2 mt-8 bg-secondary rounded-2xl">
+    <div className="w-1/4 h-1/4 mx-2 mt-8 bg-secondary border-4 border-primary rounded-2xl">
       <Droppable
         droppableId="dumpzone"
       >

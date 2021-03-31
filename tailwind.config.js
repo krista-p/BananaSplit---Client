@@ -19,8 +19,11 @@ module.exports = {
       backgroundImage: {
         'hero-pattern': "url('/AWbanana.png')",
       },
-      minWidth: {
-        '16': '16',
+      height: {
+        '100': '32rem',
+      },
+      width: {
+        '100': '32rem',
       },
     },
   },

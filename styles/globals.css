@@ -48,15 +48,15 @@ a {
   }
 
   .open-tab-left {
-    @apply h-10 md:h-16 text-2xl text-primary w-2/3 border-t-4 border-r-4 border-primary focus:outline-none;
+    @apply h-10 md:h-16 text-4xl text-primary w-2/3 border-t-4 border-r-4 border-primary focus:outline-none;
   }
 
   .open-tab-right {
-    @apply h-10 md:h-16 text-2xl text-primary w-2/3 border-t-4 border-l-4 border-primary focus:outline-none;
+    @apply h-10 md:h-16 text-4xl text-primary w-2/3 border-t-4 border-l-4 border-primary focus:outline-none;
   }  
 
   .closed-tab {
-    @apply h-10 md:h-16 text-2xl text-secondary w-2/3 border-b-4 border-primary focus:outline-none;
+    @apply h-10 md:h-16 text-4xl text-secondary w-2/3 border-b-4 border-primary focus:outline-none;
   }
 
   .close-button {
@@ -72,7 +72,7 @@ a {
   }
 
   .popup-title-small {
-    @apply m-2 font-bold text-lg md:text-2xl text-primary;
+    @apply m-2 font-bold text-lg md:text-4xl text-primary;
   }
 
   .button-yellow {
@@ -85,6 +85,10 @@ a {
 
   .scroll-bar-light {
     @apply h-full scrollbar-thin scrollbar-thumb-primary scrollbar-track-secondary m-4 scrollbar-thumb-rounded;
+  }
+
+  .scroll-bar-white {
+    @apply h-full scrollbar-thin scrollbar-thumb-primary scrollbar-track-white m-4 scrollbar-thumb-rounded;
   }
 
   .tile {

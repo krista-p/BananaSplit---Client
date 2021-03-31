@@ -15,7 +15,7 @@ const PlayPopup = ({ closePlay }) => {
   };
 
   return (
-    <div className="popup-big h-3/5">
+    <div className="popup-big h-3/5 w-2/5 ml-24 mt-12 overflow-y-hidden">
       <PlayNavbar
         closePlay={closePlay}
         joinGameTab={joinGameTab}

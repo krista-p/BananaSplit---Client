@@ -79,9 +79,6 @@ export const wordFinder = (check: (number | Igrid)[][]): string[] => {
 
   // store words in set
   const wordSet: Set<string> = new Set([]);
-
-  // not sure if this is okay??
-  // but need a copy of grid in order to get vertical words
   const newGrid: (number | Igrid)[][] = JSON.parse(JSON.stringify(grid));
 
   // iterate thru grid
@@ -100,12 +97,13 @@ export const wordFinder = (check: (number | Igrid)[][]): string[] => {
   return [...wordSet].sort();
 };
 
-export const dictCheck = (words: string[], dict: string[]): string[] => {
+export const dictCheck = (words: string[], dict): string[] => {
+  const parse = JSON.parse(dict);
   const valid: string[] = [];
   const incorrect: string[] = [];
   for (let i = 0; i < words.length; i++) {
-    for (let j = 0; j < dict.length; j++) {
-      if (words[i] === dict[j]) {
+    for (let j = 0; j < parse.length; j++) {
+      if (words[i] === parse[j]) {
         valid.push(words[i]);
       }
     }

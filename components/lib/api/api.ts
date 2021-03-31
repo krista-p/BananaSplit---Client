@@ -1,4 +1,5 @@
 import getConfig from 'next/config';
+
 const { publicRuntimeConfig } = getConfig();
 
 // NOTE: Doesn't like with .env variable
