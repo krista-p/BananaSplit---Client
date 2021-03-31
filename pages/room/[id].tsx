@@ -8,7 +8,7 @@ import RottenBananaPopup from '../../components/gamePage/rottenBananaPopup/Rotte
 import { alertNotification } from '../../components/landingPage/popups/alertpopup/AlertPopup';
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
 import { numBoards, wordFinder, dictCheckInvalid, dictCheckValid, longestWord } from '../../components/lib/utils/wordChecker';
-import * as dictionary from '../../components/lib/utils/dictionary.json';
+import dictionary from '../../components/lib/utils/dictionary.json';
 import { GameStateInterface, TileInterface } from '../../interfaces';
 
 const gridSize: number = 15;
@@ -63,7 +63,7 @@ const Room = () => {
       setState((prev) => {
         console.log(prev);
         const gridWords = wordFinder(prev.matrix);
-        const validWords = dictCheckValid(gridWords, dictionary.default);
+        const validWords = dictCheckValid(gridWords, dictionary);
         
         const playerWordObject: any = {};
         
@@ -188,8 +188,8 @@ const Room = () => {
   const handleBanana = (e) => {
     e.preventDefault();
     const gridWords = wordFinder(state.matrix);
-    const invalidWords = dictCheckInvalid(gridWords, dictionary.default);
-    const validWords = dictCheckValid(gridWords, dictionary.default);
+    const invalidWords = dictCheckInvalid(gridWords, dictionary);
+    const validWords = dictCheckValid(gridWords, dictionary);
 
     try {
       if (state.playerTiles.length > 0 || tilesRemaining >= playersInRoom.length) {

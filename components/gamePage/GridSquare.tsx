@@ -1,10 +1,10 @@
 import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
-import { GameStateType, TileType } from '../../interfaces';
+import { GameStateInterface, TileInterface } from '../../interfaces';
 import Tile from './Tile';
 
 interface SquarePropsType {
-  state: GameStateType,
+  state: GameStateInterface,
   squareId: string,
   gridSize: number,
 }
@@ -13,13 +13,13 @@ const gridSquare = (props: SquarePropsType) => {
   const { state, squareId, gridSize } = props;
   const { matrix } = state;
   const [rowIndex, colIndex] = squareId.split('-');
-  const placeholderTile: TileType = matrix[rowIndex][colIndex];
+  const placeholderTile: TileInterface = matrix[rowIndex][colIndex];
 
   const squareContents = () => {
     if (!matrix[rowIndex][colIndex]) {
       return '';
     }
-    const currentTile: TileType = matrix[rowIndex][colIndex];
+    const currentTile: TileInterface = matrix[rowIndex][colIndex];
     const index: number = parseInt(rowIndex, 10) * gridSize + parseInt(colIndex, 10);
     return (
       <Tile
