@@ -7,7 +7,7 @@ import GameEndPopup from '../../components/gamePage/gameEndPopup/GameEndPopup';
 import RottenBananaPopup from '../../components/gamePage/rottenBananaPopup/RottenBananaPopup';
 import { alertNotification } from '../../components/landingPage/popups/alertpopup/AlertPopup';
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
-import { numBoards, wordFinder, dictCheckInvalid, dictCheckValid, longestWord } from '../../components/lib/utils/wordChecker';
+import { numBoards, wordFinder, dictCheckInvalid, dictCheckValid, longestWordCheck } from '../../components/lib/utils/wordChecker';
 import dictionary from '../../components/lib/utils/dictionary.json';
 import { GameStateInterface, TileInterface } from '../../interfaces';
 
@@ -36,6 +36,11 @@ const Room = () => {
   const [endOpen, setEndOpen] = useState<boolean>(false);
   const [rottenOpen, setRottenOpen] = useState<boolean>(false);
 
+  const [endGameLongestWord, setEndGameLongestWord] = useState('');
+  const [endGameLongestWordUser, setEndGameLongestWordUser] = useState('');
+  const [endGameMostWords, setEndGameMostWords] = useState('');
+  const [endGameMostWordUsers, setEndGameMostWordUsers] = useState('');
+
   useEffect(() => {
     socket.on('playersInRoom', (players: string[]) => {
       setPlayersInRoom(players);
@@ -58,21 +63,29 @@ const Room = () => {
     socket.on('tilesRemaining', (res: number) => {
       setTilesRemaining(res);
     });
-
-    socket.on('roomWordCheck', (id: string) => {
+    
+    socket.on('roomWordCheck', (winnerObject: any) => {
       setState((prev) => {
         const gridWords = wordFinder(prev.matrix);
         const validWords = dictCheckValid(gridWords, dictionary);
+        
+        const longestWord = longestWordCheck(validWords);
+        const amountOfWords = validWords.length;
 
-        const playerWordObject: any = {};
-
-        playerWordObject[socket.id] = {
-          longestWord: longestWord(validWords),
-          amountOfWords: validWords.length,
-        };
-
-        socket.emit('roomWordCheckResponse', playerWordObject);
+        socket.emit('roomWordCheckResponse', { id, longestWord, amountOfWords });
         return prev;
+      });
+    });
+
+    socket.on('statCheck', ({ endLongestWord, endMostWords }) => {
+      setEndGameLongestWord(endLongestWord.getEndLongestWord);
+      endLongestWord.getEndUserName.map((user) => {
+        if (user) setEndGameLongestWordUser(user);
+      });
+
+      setEndGameMostWords(endMostWords.getEndMostWords);
+      endMostWords.getEndMostUserName.map((user) => {
+        if (user) setEndGameMostWordUsers(user);
       });
     });
 
@@ -204,13 +217,12 @@ const Room = () => {
           socket.emit('rottenBanana', id);
           setState(initialState);
         } else {
-          const playerWordObject: any = {};
+          console.log(validWords, 'valid incoming');
 
-          playerWordObject[socket.id] = {
-            longestWord: longestWord(validWords),
-            amountOfWords: validWords.length,
-          };
-          socket.emit('endGame', { id, playerWordObject });
+          const longestWord = longestWordCheck(validWords);
+          const amountOfWords = validWords.length;
+
+          socket.emit('endGame', { id, longestWord, amountOfWords });
         }
       }
     } catch (err) {
@@ -348,7 +360,8 @@ const Room = () => {
 
           </div>
 
-          {endOpen ? <GameEndPopup winner={gameWinner} rottenBanana={rottenBanana} /> : null}
+          {endOpen ? <GameEndPopup winner={gameWinner} rottenBanana={rottenBanana} endGameLongestWord={endGameLongestWord} endGameLongestWordUser={endGameLongestWordUser} endGameMostWords={endGameMostWords} endGameMostWordUsers={endGameMostWordUsers} /> : null}
+
           {rottenOpen ? <RottenBananaPopup rottenBanana={rottenBanana} /> : null}
         </div>
 

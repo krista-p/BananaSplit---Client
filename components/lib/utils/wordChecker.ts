@@ -128,10 +128,9 @@ export const dictCheckValid = (words: string[], dict): string[] => {
   return valid;
 };
 
-export const longestWord = (array) => {
+export const longestWordCheck = (array) => {
   array.sort((a: string, b: string) => {
     return b.length - a.length;
   });
-  console.log(array, 'longest word check');
   return array[0];
 };
