@@ -280,15 +280,17 @@ const Room = () => {
           </div>
 
           <div className="fixed flex flex-col bottom-32 right-2">
-            { state.playerTiles.length < 1 && tilesRemaining > 0 &&
+            { state.playerTiles.length < 1 && tilesRemaining > 0 && roomActive &&
               <button type="submit" className="button-yellow" onClick={handlePeel}>peel!</button>
             }
 
-            { tilesRemaining < playersInRoom.length &&
+            { tilesRemaining < playersInRoom.length && 
               <button type="submit" className="button-yellow" onClick={handleBanana}>BANANA!</button>
             }
 
-            <button type="submit" className="button-yellow" onClick={handleReset}>reset</button>
+            { roomActive &&
+              <button type="submit" className="button-yellow" onClick={handleReset}>reset</button>
+            }
           </div>
 
         {/* TESTING END OF GAME POPUP */}
