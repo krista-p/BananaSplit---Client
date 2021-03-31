@@ -169,7 +169,8 @@ const Room = () => {
               }
             }
           }
-          socket.emit('rottenBanana', { id, rottenTiles });
+          socket.emit('rottenBanana', id);
+          console.log('should be rotten');
           setState(initialState);
         }
         else {

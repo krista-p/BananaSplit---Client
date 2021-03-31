@@ -98,12 +98,12 @@ export const wordFinder = (check: (number | Igrid)[][]): string[] => {
 };
 
 export const dictCheck = (words: string[], dict): string[] => {
-  const parse = JSON.parse(dict);
+  // const parse = JSON.parse(dict);
   const valid: string[] = [];
   const incorrect: string[] = [];
   for (let i = 0; i < words.length; i++) {
-    for (let j = 0; j < parse.length; j++) {
-      if (words[i] === parse[j]) {
+    for (let j = 0; j < dict.length; j++) {
+      if (words[i] === dict[j]) {
         valid.push(words[i]);
       }
     }
