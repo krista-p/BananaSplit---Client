@@ -78,6 +78,11 @@ const Room = () => {
     });
 
     socket.on('rottenBananaResponse', (res: string) => {
+      setRottenOpen(true);
+    });
+
+    socket.on('rottenUserName', (res: string) => {
+      console.log(res);
       setRottenBanana(res);
     });
 
