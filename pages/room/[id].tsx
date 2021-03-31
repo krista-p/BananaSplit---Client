@@ -152,6 +152,7 @@ const Room = () => {
   const handleBanana = (e) => {
     e.preventDefault();
     const gridWords = wordFinder(state.matrix);
+console.log((dictionary))
     try {
       if (state.playerTiles.length > 0 || tilesRemaining >= playersInRoom.length) {
         alertNotification('Play all tiles!');
@@ -249,7 +250,7 @@ const Room = () => {
                 { playersInRoom
                   && playersInRoom.map((player, index) => (
                     <div className={playerReady(player)} key={index.toString().concat(player)}>
-                      {`Player ${index + 1}: ${player}`}
+                      {`player ${index + 1}: ${player}`}
                     </div>
                   ))}
               </div>
@@ -270,12 +271,22 @@ const Room = () => {
                 && (
                   <button
                     type="button"
-                    className="button-yellow"
+                    className="button-yellow text-4xl"
                     onClick={handleStartGame}
                   >
                     start game!
                   </button>
                 )}
+              { roomActive
+              && (
+                <button
+                  type="submit"
+                  className="button-yellow text-4xl"
+                  onClick={handleReset}
+                >
+                  reset
+                </button>
+              )}
             </div>
           </div>
 
@@ -297,9 +308,6 @@ const Room = () => {
               <button type="submit" className="button-yellow" onClick={handleBanana}>BANANA!</button>
             }
 
-            { roomActive &&
-              <button type="submit" className="button-yellow" onClick={handleReset}>reset</button>
-            }
           </div>
 
         {/* TESTING END OF GAME POPUP */}
