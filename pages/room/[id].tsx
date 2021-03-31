@@ -39,6 +39,7 @@ const Room = () => {
     });
     socket.on('actionMessage', (res) => {
       setActionMessages((prev: string[]) => [...prev, res]);
+      console.log(res, 'message incoming');
     });
     socket.on('roomReadyResponse', (res: boolean) => {
       setRoomReady(res);
@@ -54,6 +55,10 @@ const Room = () => {
     });
     socket.on('tilesRemaining', (res: number) => {
       setTilesRemaining(res);
+    });
+    socket.on('endGameResponse', () => {
+      console.log('should open popup');
+      setEndOpen(true);
     });
   }, []);
 
@@ -106,7 +111,7 @@ const Room = () => {
         alertNotification('Tiles must be connected!');
       } else if (state.playerTiles.length !== 0) {
         alertNotification('Tiles in your pile!');
-      } else if (state.playerTiles.length === 0 && numBoards(state.matrix) < 2) {
+      } else if (state.playerTiles.length === 0 && numBoards(state.matrix) < 2 && tilesRemaining > 0) {
         socket.emit('peelAction', id);
       }
     } catch (err) {
@@ -114,6 +119,7 @@ const Room = () => {
     }
   };
 
+  // TODO: Dump only if bunch tiles is > 0
   const handleDump = (tileToDump: TileInterface, stateClone: GameStateInterface) => {
     try {
       setState(stateClone);
@@ -148,10 +154,11 @@ const Room = () => {
     e.preventDefault();
     const gridWords = wordFinder(state.matrix);
     try {
-      if (state.playerTiles.length > 0 || tilesRemaining > 0) {
+      if (state.playerTiles.length > 0 || tilesRemaining >= playersInRoom.length) {
         alertNotification('Play all tiles!');
-      } else if (state.playerTiles.length === 0 && tilesRemaining === 0) {
+      } else if (state.playerTiles.length === 0 && tilesRemaining < playersInRoom.length) {
         // Check if all words are valid
+        console.log(dictCheck(gridWords, dictionary));
         if (dictCheck(gridWords, dictionary).length) {
           const matrixClone: any[][] = _.cloneDeep(state.matrix);
           const rottenTiles: TileInterface[] = _.cloneDeep(state.playerTiles);
@@ -168,7 +175,7 @@ const Room = () => {
           setState(initialState);
         }
         else {
-          console.log('board is good');
+          socket.emit('endGame', id);
         }
       };
     } catch (err) {
