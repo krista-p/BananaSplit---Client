@@ -4,6 +4,7 @@ import _ from 'lodash';
 import Image from 'next/image';
 import Board from '../../components/gamePage/Board';
 import GameEndPopup from '../../components/gamePage/gameEndPopup/GameEndPopup';
+import RottenBananaPopup from '../../components/gamePage/rottenBananaPopup/RottenBananaPopup';
 import { alertNotification } from '../../components/landingPage/popups/alertpopup/AlertPopup';
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
 import { numBoards, wordFinder, dictCheckInvalid, dictCheckValid } from '../../components/lib/utils/wordChecker';
@@ -32,6 +33,7 @@ const Room = () => {
   const [state, setState] = useState(initialState);
   // THIS IS FOR END OF GAME POPUP
   const [endOpen, setEndOpen] = useState<boolean>(false);
+  const [rottenOpen, setRottenOpen] = useState<boolean>(false);
 
   useEffect(() => {
     socket.on('playersInRoom', (players: string[]) => {
@@ -204,6 +206,10 @@ const Room = () => {
     setEndOpen(!endOpen);
   };
 
+  const toggleRottenPopup = () => {
+    setRottenOpen(!rottenOpen);
+  };
+
   return (
     <div className="flex flex-col h-screen w-screen">
       {/* <NavBar /> */}
@@ -308,13 +314,13 @@ const Room = () => {
             />
           </div>
 
-          <div className="fixed flex flex-col bottom-32 right-2">
+          <div className="fixed flex flex-col bottom-9 ml-28">
             { state.playerTiles.length < 1 && tilesRemaining > 0 && roomActive &&
-              <button type="submit" className="button-yellow" onClick={handlePeel}>peel!</button>
+              <button type="submit" className="button-yellow text-7xl" onClick={handlePeel}>peel!</button>
             }
 
-            { tilesRemaining < playersInRoom.length &&
-              <button type="submit" className="button-yellow" onClick={handleBanana}>BANANA!</button>
+            { tilesRemaining < playersInRoom.length && !state.playerTiles.length &&
+              <button type="submit" className="button-yellow text-5xl" onClick={handleBanana}>BANANA!!</button>
             }
 
           </div>
@@ -322,6 +328,8 @@ const Room = () => {
         {/* TESTING END OF GAME POPUP */}
                   <button type="button" onClick={toggleEndPopup} className="bg-pink-400 text-white fixed bottom-8 right-8">click here to get game popup</button>
                   {endOpen ? <GameEndPopup winner={gameWinner} /> : null}
+                  <button type="button" onClick={toggleRottenPopup} className="bg-pink-400 text-white fixed bottom-2 right-8">click here to get rotten popup</button>
+                  {rottenOpen ? <RottenBananaPopup winner={gameWinner} /> : null}
         </div>
 
       </div>

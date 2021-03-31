@@ -4,10 +4,10 @@ import Link from 'next/link';
 
 const GameEndPopup = ({ winner }) => {
   return (
-    <div className="w-screen md:w-screen h-auto top-40 md:top-24 bottom-24 fixed border-secondary border-8 bg-primary shadow-lg rounded-lg overflow-y-scroll">
-      <div className="flex flex-row m-2">
+    <div className="w-screen md:w-screen h-auto top-0 bottom-24 fixed border-secondary border-8 bg-primary shadow-lg overflow-y-auto scroll-bar-dark">
+      <div className="flex flex-row m-4">
         <div className="flex flex-col w-3/4">
-          <h1 className="text-xl md:text-3xl m-4">and the winning banana is... <span className="text-2xl md:text-5xl bg-secondary px-2 text-primary rounded-full">{winner}</span></h1>
+          <h1 className="text-xl md:text-3xl m-2">and the winning banana is... <span className="text-2xl md:text-5xl bg-secondary px-2 text-primary rounded-full">{winner}</span></h1>
 
           <div className="m-4">
             <EndBoard />

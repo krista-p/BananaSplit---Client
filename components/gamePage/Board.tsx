@@ -1,6 +1,7 @@
 import React from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import _ from 'lodash';
+import { ChevronDoubleLeftIcon, ChevronDoubleUpIcon, ChevronDoubleRightIcon, ChevronDoubleDownIcon } from '@heroicons/react/solid';
 import Grid from './Grid';
 import PlayerTiles from './PlayerTiles';
 import { reorder, move } from '../lib/utils';
@@ -114,24 +115,24 @@ const Board = ({ state, setState, gridSize, handleDump }) => {
         onDragEnd={onDragEnd}
       >
         <div className="flex flex-row w-full h-full">
+          <ChevronDoubleLeftIcon onMouseDown={left} onMouseUp={timerClear} className="text-secondary h-12 w-12 hover:text-primary relative top-1/3 cursor-pointer" />
           <div className="flex flex-col w-3/4 justify-center items-center h-full">
+            <ChevronDoubleUpIcon onMouseDown={up} onMouseUp={timerClear} className="text-secondary h-12 w-12 hover:text-primary relative top-0 cursor-pointer" />
             <div id="grid-window" className="h-full w-full border-8 border-secondary rounded-2xl overflow-hidden">
-              <button type="button" onMouseDown={up} onMouseUp={timerClear} style={{ height: '50px', width: '100px', position: 'absolute', right: '100px', bottom: '300px', background: 'green' }}>UP</button>
-              <button type="button" onMouseDown={left} onMouseUp={timerClear} style={{ height: '50px', width: '100px', position: 'absolute', right: '150px', bottom: '250px', background: 'green' }}>LEFT</button>
-              <button type="button" onMouseDown={down} onMouseUp={timerClear} style={{ height: '50px', width: '100px', position: 'absolute', right: '100px', bottom: '200px', background: 'green' }}>DOWN</button>
-              <button type="button" onMouseDown={right} onMouseUp={timerClear} style={{ height: '50px', width: '100px', position: 'absolute', right: '50px', bottom: '250px', background: 'green' }}>RIGHT</button>
               <Grid
                 state={state}
                 setState={setState}
                 gridSize={gridSize}
               />
             </div>
+            <ChevronDoubleDownIcon onMouseDown={down} onMouseUp={timerClear} className="text-secondary h-12 w-12 hover:text-primary relative bottom-0 cursor-pointer" />
             <div className="h-1/4 mb-4 w-full">
               <PlayerTiles
                 state={state}
               />
             </div>
           </div>
+          <ChevronDoubleRightIcon onMouseDown={right} onMouseUp={timerClear} className="text-secondary h-12 w-12 hover:text-primary relative top-1/3 cursor-pointer" />
           {/* TODO: Testing making a droppable zone for dumping tiles */}
           <DumpZone />
 
