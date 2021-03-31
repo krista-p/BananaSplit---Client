@@ -1,11 +1,11 @@
-import { useCallback, useContext, useState } from 'react';
+import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { io } from 'socket.io-client';
+import getConfig from 'next/config';
 import { createGameRoomCode } from '../../../lib/utils/createGameRoomCode';
 import { AuthContext } from '../../../../contexts/auth';
 import { alertNotification } from '../alertpopup/AlertPopup';
 
-import getConfig from 'next/config';
 const { publicRuntimeConfig } = getConfig();
 
 export const socket = io(publicRuntimeConfig.serverUrl, {
@@ -56,7 +56,7 @@ const CreateRoom = () => {
       <form>
 
         <div className="m-4 flex flex-col items-center">
-          <button type="submit" className="button-yellow" onClick={handleCreateGame}>go bananas!</button>
+          <button type="submit" className="button-yellow text-3xl" onClick={handleCreateGame}>go bananas!</button>
         </div>
       </form>
 

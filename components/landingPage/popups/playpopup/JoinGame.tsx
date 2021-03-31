@@ -74,9 +74,9 @@ const JoinGame = () => {
   };
 
   return (
-    <div className="mx-4 flex flex-col items-center">
+    <div className="mx-4 flex flex-col items-center overflow-y-auto scroll-bar-white">
 
-      <div className="font-bold text-3xl md:text-5xl text-secondary bg-primary p-4 rounded-lg">
+      <div className="font-bold text-3xl md:text-7xl text-primary">
         <h1>let's play!</h1>
       </div>
 
@@ -86,12 +86,12 @@ const JoinGame = () => {
             <h1 className="font-bold text-3xl md:text-4xl text-secondary">join a room!</h1>
             {
               !currentUser &&
-              <input type="text" placeholder="username..." className="my-4 w-full input-field" value={guestPrivateUserName} onChange={handlePrivateUserName} />
+              <input type="text" placeholder="username..." className="my-2 w-full input-field" value={guestPrivateUserName} onChange={handlePrivateUserName} />
             }
 
-            <input type="text" placeholder="room code..." className="my-4 w-full input-field" value={gameRoomCode} onChange={handleGameCode} />
+            <input type="text" placeholder="room code..." className="my-2 w-full input-field" value={gameRoomCode} onChange={handleGameCode} />
 
-            <button type="submit" className="w-full button-yellow">go bananas!</button>
+            <button type="submit" className="w-full button-yellow text-3xl">go bananas!</button>
           </div>
         </form>
 

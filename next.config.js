@@ -4,8 +4,8 @@ const plugins = [];
 
 const config = {
   publicRuntimeConfig: {
-    serverUrl: process.env.NEXT_PUBLIC_SERVER_URL
+    serverUrl: process.env.NEXT_PUBLIC_SERVER_URL,
   },
-}
+};
 
 module.exports = withPlugins(plugins, config);

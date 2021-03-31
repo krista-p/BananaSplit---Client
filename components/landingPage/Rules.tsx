@@ -1,9 +1,9 @@
 const Rules = () => (
-  <div className="m-8">
+  <div className="m-12">
     <div className="flex items-center justify-center">
       <h1 className="text-secondary text-5xl font-bold">rules</h1>
     </div>
-    <div className="m-4 h-40 md:h-48 overflow-y-scroll scroll-bar-dark">
+    <div className="m-4 h-32 md:h-72 overflow-y-auto scroll-bar-dark">
       <p>
         Rules of the game: Don’t drink and drive.
         Don’t be rude.
