@@ -58,7 +58,7 @@ const Room = () => {
 
   useEffect(() => {
     socket.emit('enteredRoom', id);
-    console.log(dictionary[0])
+
     socket.on('receiveTiles', (tiles) => {
       setState((prevState) => ({
         ...prevState,

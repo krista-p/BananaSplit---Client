@@ -89,23 +89,24 @@ export const wordFinder = (check: (number | Igrid)[][]): string[] => {
     for (let j = 0; j < grid[i].length; j++) {
       if (grid[i][j] !== 0) {
         const horizontalWord = dfsHorizontal(grid, i, j, grid[i][j]);
-        if (horizontalWord.length > 1) wordSet.add(horizontalWord);
+        if (horizontalWord.length > 1) wordSet.add(horizontalWord.toLowerCase());
       }
       if (newGrid[i][j] !== 0) {
         const verticalWord = dfsVertical(newGrid, i, j, newGrid[i][j]);
-        if (verticalWord.length > 1) wordSet.add(verticalWord);
+        if (verticalWord.length > 1) wordSet.add(verticalWord.toLowerCase());
       }
     }
   }
   return [...wordSet].sort();
 };
 
-export const dictCheck = (words: string[], dict: string[]): string[] => {
+export const dictCheck = (words: string[], dict): string[] => {
+  const parse = JSON.parse(dict);
   const valid: string[] = [];
   const incorrect: string[] = [];
   for (let i = 0; i < words.length; i++) {
-    for (let j = 0; j < dict.length; j++) {
-      if (words[i] === dict[j]) {
+    for (let j = 0; j < parse.length; j++) {
+      if (words[i] === parse[j]) {
         valid.push(words[i]);
       }
     }
