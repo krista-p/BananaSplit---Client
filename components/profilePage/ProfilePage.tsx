@@ -43,12 +43,12 @@ const ProfilePage = () => {
 
         <div className="ml-14 mt-8 font-bold text-3xl md:text-7xl">
           <h1 className="text-primary">{userName}</h1>
-          <h2 className="text-secondary">{userEmail}</h2>
+          <h2 className="text-secondary text-5xl">{userEmail}</h2>
         </div>
       </div>
 
       <div className="flex flex-col justify-between">
-        <div className="mt-8 mr-14 h-32 w-32 md:h-72 md:w-72 bg-secondary border-4 md:border-8 border-primary rounded-full shadow-lg">
+        <div className="mt-8 h-32 w-32 md:h-64 md:w-64 bg-secondary border-4 md:border-8 border-primary rounded-full shadow-lg">
           <div className="flex flex-col items-center text-primary mt-4 md:mt-14">
             <h1 className="text-4xl md:text-7xl mb-2 md:mb-4">wins</h1>
             <h2 className=" text-3xl md:text-6xl">{userScore}</h2>
