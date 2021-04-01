@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import _ from 'lodash';
 import { ChevronDoubleLeftIcon, ChevronDoubleUpIcon, ChevronDoubleRightIcon, ChevronDoubleDownIcon } from '@heroicons/react/solid';
@@ -9,6 +9,8 @@ import DumpZone from './DumpZone';
 import { StartInterface, ResultInterface } from '../../interfaces';
 
 const Board = ({ state, setState, gridSize, handleDump }) => {
+  const boardWindow = useRef(null);
+
   const onBeforeCapture = ({ draggableId }) => {
     const tile = document.getElementById(draggableId);
     tile.classList.add('while-dragging');
@@ -84,20 +86,20 @@ const Board = ({ state, setState, gridSize, handleDump }) => {
   };
   // let scrollTimer;
 
-  const gridWindow = document.getElementById('grid-window');
+  // const gridWindow = document.getElementById('grid-window');
 
   const onDirectionClick = (direction: string): any => {
     if (direction === 'up') {
-      gridWindow.scrollTop -= 10;
+      boardWindow.current.scrollTop -= 10;
     }
     if (direction === 'right') {
-      gridWindow.scrollLeft += 10;
+      boardWindow.current.scrollLeft += 10;
     }
     if (direction === 'left') {
-      gridWindow.scrollLeft -= 10;
+      boardWindow.current.scrollLeft -= 10;
     }
     if (direction === 'bottom') {
-      gridWindow.scrollTop += 10;
+      boardWindow.current.scrollTop += 10;
     }
   };
 
@@ -129,24 +131,24 @@ const Board = ({ state, setState, gridSize, handleDump }) => {
         onDragEnd={onDragEnd}
       >
         <div className="flex flex-row w-full h-full">
-          <ChevronDoubleLeftIcon onMouseDown={onDirectionClick('left')} className="text-secondary h-12 w-12 hover:text-primary relative top-1/3 cursor-pointer" />
+          <ChevronDoubleLeftIcon onClick={() => onDirectionClick('left')} className="text-secondary h-12 w-12 hover:text-primary relative top-1/3 cursor-pointer" />
           <div className="flex flex-col w-3/4 justify-center items-center h-full">
-            <ChevronDoubleUpIcon onMouseDown={onDirectionClick('up')} className="text-secondary h-12 w-12 hover:text-primary relative top-0 cursor-pointer" />
-            <div id="grid-window" className="h-full w-full border-8 border-secondary rounded-2xl overflow-hidden">
+            <ChevronDoubleUpIcon onClick={() => onDirectionClick('up')} className="text-secondary h-12 w-12 hover:text-primary relative top-0 cursor-pointer" />
+            <div id="grid-window" ref={boardWindow} className="h-full w-full border-8 border-secondary rounded-2xl overflow-hidden">
               <Grid
                 state={state}
                 setState={setState}
                 gridSize={gridSize}
               />
             </div>
-            <ChevronDoubleDownIcon onMouseDown={onDirectionClick('down')} className="text-secondary h-12 w-12 hover:text-primary relative bottom-0 cursor-pointer" />
+            <ChevronDoubleDownIcon onClick={() => onDirectionClick('down')} className="text-secondary h-12 w-12 hover:text-primary relative bottom-0 cursor-pointer" />
             <div className="h-1/4 mb-4 w-full">
               <PlayerTiles
                 state={state}
               />
             </div>
           </div>
-          <ChevronDoubleRightIcon onMouseDown={onDirectionClick('right')} className="text-secondary h-12 w-12 hover:text-primary relative top-1/3 cursor-pointer" />
+          <ChevronDoubleRightIcon onClick={() => onDirectionClick('right')} className="text-secondary h-12 w-12 hover:text-primary relative top-1/3 cursor-pointer" />
           {/* TODO: Testing making a droppable zone for dumping tiles */}
           <DumpZone />
 
