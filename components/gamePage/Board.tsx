@@ -82,30 +82,44 @@ const Board = ({ state, setState, gridSize, handleDump }) => {
       handleDump(tileToPlace, stateClone);
     }
   };
-  let scrollTimer;
-  const up = () => {
+  // let scrollTimer;
+
+  const onDirectionClick = (direction: string): any => {
     const gridWindow = document.getElementById('grid-window');
-    scrollTimer = setInterval(() => {gridWindow.scrollTop -= 10}, 200);
+
+    if (direction === 'up') {
+      gridWindow.scrollTop -= 10;
+    }
+    if (direction === 'right') {
+      gridWindow.scrollLeft += 10;
+    }
+    if (direction === 'left') {
+      gridWindow.scrollLeft -= 10;
+    }
+    if (direction === 'bottom') {
+      gridWindow.scrollTop += 10;
+    }
   };
 
-  const left = () => {
-    const gridWindow = document.getElementById('grid-window');
-    scrollTimer = setInterval(() => {gridWindow.scrollLeft -= 10}, 200);
-  };
+  // const up = () => {
+  //   scrollTimer = setInterval(() => {}, 200);
+  // };
 
-  const down = () => {
-    const gridWindow = document.getElementById('grid-window');
-    scrollTimer = setInterval(() => {gridWindow.scrollTop += 10}, 200);
-  };
+  // const left = () => {
+  //   scrollTimer = setInterval(() => {gridWindow.scrollLeft -= 10}, 200);
+  // };
 
-  const right = () => {
-    const gridWindow = document.getElementById('grid-window');
-    scrollTimer = setInterval(() => {gridWindow.scrollLeft += 10}, 200);
-  };
+  // const down = () => {
+  //   scrollTimer = setInterval(() => {gridWindow.scrollTop += 10}, 200);
+  // };
 
-  const timerClear = () => {
-    clearInterval(scrollTimer);
-  };
+  // const right = () => {
+  //   scrollTimer = setInterval(() => {gridWindow.scrollLeft += 10}, 200);
+  // };
+
+  // const timerClear = () => {
+  //   clearInterval(scrollTimer);
+  // };
 
   return (
     <div className="flex flex-row h-full w-full">
@@ -115,9 +129,9 @@ const Board = ({ state, setState, gridSize, handleDump }) => {
         onDragEnd={onDragEnd}
       >
         <div className="flex flex-row w-full h-full">
-          <ChevronDoubleLeftIcon onMouseOver={left} onMouseOut={timerClear} className="text-secondary h-12 w-12 hover:text-primary relative top-1/3 cursor-pointer" />
+          <ChevronDoubleLeftIcon onMouseDown={onDirectionClick('left')} className="text-secondary h-12 w-12 hover:text-primary relative top-1/3 cursor-pointer" />
           <div className="flex flex-col w-3/4 justify-center items-center h-full">
-            <ChevronDoubleUpIcon onMouseOver={up} onMouseOut={timerClear} className="text-secondary h-12 w-12 hover:text-primary relative top-0 cursor-pointer" />
+            <ChevronDoubleUpIcon onMouseDown={onDirectionClick('up')} className="text-secondary h-12 w-12 hover:text-primary relative top-0 cursor-pointer" />
             <div id="grid-window" className="h-full w-full border-8 border-secondary rounded-2xl overflow-hidden">
               <Grid
                 state={state}
@@ -125,14 +139,14 @@ const Board = ({ state, setState, gridSize, handleDump }) => {
                 gridSize={gridSize}
               />
             </div>
-            <ChevronDoubleDownIcon onMouseOver={down} onMouseOut={timerClear} className="text-secondary h-12 w-12 hover:text-primary relative bottom-0 cursor-pointer" />
+            <ChevronDoubleDownIcon onMouseDown={onDirectionClick('down')} className="text-secondary h-12 w-12 hover:text-primary relative bottom-0 cursor-pointer" />
             <div className="h-1/4 mb-4 w-full">
               <PlayerTiles
                 state={state}
               />
             </div>
           </div>
-          <ChevronDoubleRightIcon onMouseOver={right} onMouseOut={timerClear} className="text-secondary h-12 w-12 hover:text-primary relative top-1/3 cursor-pointer" />
+          <ChevronDoubleRightIcon onMouseDown={onDirectionClick('right')} className="text-secondary h-12 w-12 hover:text-primary relative top-1/3 cursor-pointer" />
           {/* TODO: Testing making a droppable zone for dumping tiles */}
           <DumpZone />
 
