@@ -11,7 +11,7 @@ import { numBoards, wordFinder, dictCheckInvalid, dictCheckValid, longestWordChe
 import dictionary from '../../components/lib/utils/dictionary.json';
 import { GameStateInterface, TileInterface } from '../../interfaces';
 
-const gridSize: number = 30;
+const gridSize: number = 50;
 
 const initialState: GameStateInterface = {
   playerTiles: [],

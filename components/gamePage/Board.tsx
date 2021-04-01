@@ -115,24 +115,24 @@ const Board = ({ state, setState, gridSize, handleDump }) => {
         onDragEnd={onDragEnd}
       >
         <div className="flex flex-row w-full h-full">
-          <ChevronDoubleLeftIcon onMouseOver={left} onMouseOut={timerClear} className="text-secondary h-12 w-12 hover:text-primary relative top-1/3 cursor-pointer" />
+          {/*<ChevronDoubleLeftIcon onMouseOver={left} onMouseOut={timerClear} className="text-secondary h-12 w-12 hover:text-primary relative top-1/3 cursor-pointer" /> */}
           <div className="flex flex-col w-3/4 justify-center items-center h-full">
-            <ChevronDoubleUpIcon onMouseOver={up} onMouseOut={timerClear} className="text-secondary h-12 w-12 hover:text-primary relative top-0 cursor-pointer" />
-            <div id="grid-window" className="h-full w-full border-8 border-secondary rounded-2xl overflow-hidden">
+            {/*<ChevronDoubleUpIcon onMouseOver={up} onMouseOut={timerClear} className="text-secondary h-12 w-12 hover:text-primary relative top-0 cursor-pointer" /> */}
+            <div id="grid-window" className="h-full w-full border-8 border-secondary rounded-2xl overflow-scroll scroll-bar-white">
               <Grid
                 state={state}
                 setState={setState}
                 gridSize={gridSize}
               />
             </div>
-            <ChevronDoubleDownIcon onMouseOver={down} onMouseOut={timerClear} className="text-secondary h-12 w-12 hover:text-primary relative bottom-0 cursor-pointer" />
+            {/*<ChevronDoubleDownIcon onMouseOver={down} onMouseOut={timerClear} className="text-secondary h-12 w-12 hover:text-primary relative bottom-0 cursor-pointer" /> */}
             <div className="h-1/4 mb-4 w-full">
               <PlayerTiles
                 state={state}
               />
             </div>
           </div>
-          <ChevronDoubleRightIcon onMouseOver={right} onMouseOut={timerClear} className="text-secondary h-12 w-12 hover:text-primary relative top-1/3 cursor-pointer" />
+          {/*<ChevronDoubleRightIcon onMouseOver={right} onMouseOut={timerClear} className="text-secondary h-12 w-12 hover:text-primary relative top-1/3 cursor-pointer" /> */}
           {/* TODO: Testing making a droppable zone for dumping tiles */}
           <DumpZone />
 
