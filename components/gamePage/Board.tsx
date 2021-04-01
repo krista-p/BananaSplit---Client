@@ -90,16 +90,16 @@ const Board = ({ state, setState, gridSize, handleDump }) => {
 
   const onDirectionClick = (direction: string): any => {
     if (direction === 'up') {
-      boardWindow.current.scrollTop -= 10;
+      boardWindow.current.scrollTop -= 20;
     }
     if (direction === 'right') {
-      boardWindow.current.scrollLeft += 10;
+      boardWindow.current.scrollLeft += 20;
     }
     if (direction === 'left') {
-      boardWindow.current.scrollLeft -= 10;
+      boardWindow.current.scrollLeft -= 20;
     }
-    if (direction === 'bottom') {
-      boardWindow.current.scrollTop += 10;
+    if (direction === 'down') {
+      boardWindow.current.scrollTop += 20;
     }
   };
 
