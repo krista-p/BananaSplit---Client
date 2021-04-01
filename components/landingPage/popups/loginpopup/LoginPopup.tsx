@@ -15,7 +15,7 @@ const LoginPopup = ({ closeLogin }) => {
   };
 
   return (
-    <div className="popup-big w-1/3 ml-32 overflow-hidden">
+    <div className="popup-big w-1/3 ml-24 lg:ml-0 overflow-hidden sm:inset-x-0 lg:inset-x-1/4 h-3/5 sm:w-3/4 lg:w-1/2">
       <LoginNavbar
         closeLogin={closeLogin}
         loginTab={loginTab}

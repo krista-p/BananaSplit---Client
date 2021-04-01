@@ -3,7 +3,7 @@ const Rules = () => (
     <div className="flex items-center justify-center">
       <h1 className="text-secondary text-5xl font-bold">rules</h1>
     </div>
-    <div className="m-4 h-32 md:h-72 text-lg overflow-y-auto scroll-bar-rules text-center">
+    <div className="m-4 h-36 md:h-72 text-sm md:text-lg overflow-y-auto scroll-bar-rules text-center">
       <ul className="m-2">
         <li>
           <span className="text-2xl font-bold">object: </span>

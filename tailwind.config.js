@@ -20,9 +20,11 @@ module.exports = {
       },
       height: {
         '100': '32rem',
+        'mobile': 'calc(100vh * 100)',
       },
       width: {
         '100': '32rem',
+        'mobile': 'calc(100vw * 100)',
       },
     },
   },

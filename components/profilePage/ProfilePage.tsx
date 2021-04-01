@@ -55,7 +55,7 @@ const ProfilePage = () => {
           </div>
         </div>
 
-        <div className="mb-4 mr-12 h-40 w-40 md:h-80 md:w-80 bg-secondary border-4 md:border-8 border-primary rounded-full shadow-lg">
+        <div className="mb-4 mr-12 h-48 w-48 md:h-80 md:w-80 bg-secondary border-4 md:border-8 border-primary rounded-full shadow-lg">
           <div className="flex flex-col items-center text-middle text-primary mt-8 md:mt-20">
             <h1 className="mb-4 md:mb-8 text-xl md:text-4xl">longest word</h1>
             <h2 className="text-lg md:text-2xl">{userLongestWord}</h2>

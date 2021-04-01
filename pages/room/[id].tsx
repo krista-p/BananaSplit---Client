@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import _ from 'lodash';
 import Image from 'next/image';
 import Board from '../../components/gamePage/Board';
+import MobilePopup from '../../components/MobilePopup';
 import GameEndPopup from '../../components/gamePage/gameEndPopup/GameEndPopup';
 import RottenBananaPopup from '../../components/gamePage/rottenBananaPopup/RottenBananaPopup';
 import { alertNotification } from '../../components/landingPage/popups/alertpopup/AlertPopup';
@@ -366,6 +367,7 @@ const Room = () => {
         </div>
 
       </div>
+      <MobilePopup />
     </div>
   );
 };
