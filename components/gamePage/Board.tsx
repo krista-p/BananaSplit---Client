@@ -85,22 +85,22 @@ const Board = ({ state, setState, gridSize, handleDump }) => {
   let scrollTimer;
   const up = () => {
     const gridWindow = document.getElementById('grid-window');
-    scrollTimer = setInterval(() => {gridWindow.scrollTop -= 10}, 50);
+    scrollTimer = setInterval(() => {gridWindow.scrollTop -= 10}, 200);
   };
 
   const left = () => {
     const gridWindow = document.getElementById('grid-window');
-    scrollTimer = setInterval(() => {gridWindow.scrollLeft -= 10}, 50);
+    scrollTimer = setInterval(() => {gridWindow.scrollLeft -= 10}, 200);
   };
 
   const down = () => {
     const gridWindow = document.getElementById('grid-window');
-    scrollTimer = setInterval(() => {gridWindow.scrollTop += 10}, 50);
+    scrollTimer = setInterval(() => {gridWindow.scrollTop += 10}, 200);
   };
 
   const right = () => {
     const gridWindow = document.getElementById('grid-window');
-    scrollTimer = setInterval(() => {gridWindow.scrollLeft += 10}, 50);
+    scrollTimer = setInterval(() => {gridWindow.scrollLeft += 10}, 200);
   };
 
   const timerClear = () => {
