@@ -84,9 +84,9 @@ const Board = ({ state, setState, gridSize, handleDump }) => {
   };
   // let scrollTimer;
 
-  const onDirectionClick = (direction: string): any => {
-    const gridWindow = document.getElementById('grid-window');
+  const gridWindow = document.getElementById('grid-window');
 
+  const onDirectionClick = (direction: string): any => {
     if (direction === 'up') {
       gridWindow.scrollTop -= 10;
     }
