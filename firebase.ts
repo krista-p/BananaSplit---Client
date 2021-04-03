@@ -17,4 +17,5 @@ if (!firebase.apps.length) {
 const app: firebase.app.App = firebase.app();
 export const auth: firebase.auth.Auth = firebase.auth();
 
+// eslint-disable-next-line no-console
 console.log(app.name ? 'Firebase Mode Activated!' : 'Firebase not working :(');

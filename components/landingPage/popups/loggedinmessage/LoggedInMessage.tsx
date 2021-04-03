@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from 'next/image';
 
 const LoggedInMessage = ({ closeLoggedInMessage }) => (
   <div className="popup-big w-1/2 h-2/3">
@@ -20,7 +20,11 @@ const LoggedInMessage = ({ closeLoggedInMessage }) => (
         width="220"
         height="220"
       />
-      <h1>you silly <span className="font-bold text-3xl md:text-5xl text-primary">banana</span>!!</h1>
+      <h1>
+        you silly
+        <span className="font-bold text-3xl md:text-5xl text-primary">banana</span>
+        !!
+      </h1>
     </div>
   </div>
 );

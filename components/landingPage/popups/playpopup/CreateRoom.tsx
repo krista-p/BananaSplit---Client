@@ -17,7 +17,8 @@ const CreateRoom = () => {
   const router = useRouter();
   const { currentUser } = useContext(AuthContext);
 
-  let userName, userID;
+  let userName;
+  let userID;
   if (currentUser) {
     userName = currentUser.displayName;
     userID = currentUser.uid;
@@ -35,7 +36,6 @@ const CreateRoom = () => {
           if (res) {
             router.push(`/room/${gameRoomCode}`);
           } else {
-            console.log('Player already has game!');
             alertNotification('User attached to game');
           }
         });
@@ -43,6 +43,7 @@ const CreateRoom = () => {
         alertNotification('Login or Create Account!');
       }
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error(err);
     }
   };

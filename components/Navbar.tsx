@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { AuthContext } from '../contexts/auth';
 import { auth } from '../firebase';
 
@@ -25,17 +25,19 @@ const NavBar = () => {
         </Link>
       </div>
       { currentUser
-        ? <div onClick={toggleProfilePopup} className="profile-button">
-          <div className="w-full h-full cursor-pointer ml-1">
-            <Image
-            onClick={toggleProfilePopup}
-            src="/monkeycap.png"
-            alt="Monkey"
-            width="40"
-            height="50"
-            />
+        ? (
+          <div onClick={toggleProfilePopup} className="profile-button">
+            <div className="w-full h-full cursor-pointer ml-1">
+              <Image
+                onClick={toggleProfilePopup}
+                src="/monkeycap.png"
+                alt="Monkey"
+                width="40"
+                height="50"
+              />
+            </div>
           </div>
-        </div>
+        )
         : null }
       { currentUser && profileOpen
         && (

@@ -1,9 +1,8 @@
-import { useRouter } from "next/router";
-import { useContext, useState } from "react";
-import { AuthContext } from "../../../../contexts/auth";
-import { alertNotification } from "../alertpopup/AlertPopup";
-import { socket } from "./CreateRoom";
-import CreateRoom from './CreateRoom';
+import { useRouter } from 'next/router';
+import { useContext, useState } from 'react';
+import { AuthContext } from '../../../../contexts/auth';
+import { alertNotification } from '../alertpopup/AlertPopup';
+import CreateRoom, { socket } from './CreateRoom';
 
 const JoinGame = () => {
   const router = useRouter();
@@ -28,8 +27,6 @@ const JoinGame = () => {
   const handleGameCode = (e) => {
     setGameRoomCode(e.target.value);
   };
-
-  // if (!gameRoomCode) return alertNotification('Enter Room Code!');
 
   // User or Guest can Join Game (Only Private Currently)
   const handleSumbitJoinPrivateGame = (e) => {
@@ -64,6 +61,7 @@ const JoinGame = () => {
         });
       }
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error(err);
     }
   };
@@ -100,7 +98,13 @@ const JoinGame = () => {
             <h2 className="popup-title-small">random</h2>
             {
               !currentUser
-              && <input type="text" placeholder="username..." className="my-4 w-full input-field" value={guestRandomUserName} onChange={handleRandomUserName} />
+              && <input
+              type="text"
+              placeholder="username..."
+              className="my-4 w-full input-field"
+              value={guestRandomUserName}
+              onChange={handleRandomUserName}
+              />
             }
             <button type="submit" className="w-full button-yellow">go bananas!</button>
           </div>

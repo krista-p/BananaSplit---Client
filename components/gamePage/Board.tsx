@@ -1,21 +1,18 @@
 import React, { useRef } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import _ from 'lodash';
-import { ChevronDoubleLeftIcon, ChevronDoubleUpIcon, ChevronDoubleRightIcon, ChevronDoubleDownIcon } from '@heroicons/react/solid';
+import {
+  ChevronDoubleLeftIcon, ChevronDoubleUpIcon, ChevronDoubleRightIcon, ChevronDoubleDownIcon,
+} from '@heroicons/react/solid';
 import Grid from './Grid';
 import PlayerTiles from './PlayerTiles';
 import { reorder, move } from '../lib/utils';
 import DumpZone from './DumpZone';
 import { StartInterface, ResultInterface } from '../../interfaces';
 
-// enum Direction {
-//   TOP = "TOP",
-//   DOWN = "DOWN",
-//   RIGHT = "RIGHT",
-//   LEFT = "LEFT"
-// }
-
-const Board = ({ state, setState, gridSize, handleDump }) => {
+const Board = ({
+  state, setState, gridSize, handleDump
+}) => {
   const boardWindow = useRef(null);
 
   const onBeforeCapture = ({ draggableId }) => {
@@ -87,13 +84,9 @@ const Board = ({ state, setState, gridSize, handleDump }) => {
       } else {
         stateClone.playerTiles.splice(sourceIndex, 1);
       }
-      // const dragSource = sourceId !== 'playerTiles' ? state.matrix : state.playerTiles;
       handleDump(tileToPlace, stateClone);
     }
   };
-  // let scrollTimer;
-
-  // const gridWindow = document.getElementById('grid-window');
 
   const onDirectionClick = (direction: string): void => {
     if (direction === 'up') {
@@ -136,7 +129,6 @@ const Board = ({ state, setState, gridSize, handleDump }) => {
             </div>
           </div>
           <ChevronDoubleRightIcon onClick={() => onDirectionClick('right')} className="text-secondary h-12 w-12 hover:text-primary relative top-1/3 cursor-pointer" />
-          {/* TODO: Testing making a droppable zone for dumping tiles */}
           <DumpZone />
 
         </div>

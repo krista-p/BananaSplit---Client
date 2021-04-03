@@ -9,7 +9,6 @@ export default function Grid({ state, setState, gridSize }) {
     setState({ ...state, gridTiles: boardMatrix });
   }, []);
 
-  /* NOTE Start game board render functions */
   const renderSquare = (squareId: string) => (
     <div className="w-14 h-14" key={`square${squareId}`}>
       <GridSquare
@@ -35,9 +34,7 @@ export default function Grid({ state, setState, gridSize }) {
       }
     </div>
   );
-  /* NOTE End game board render functions */
 
-  /* NOTE Start game board builder functions */
   const buildCol = (colId: number) => {
     row.push(renderSquare(`${colId}`));
   };
@@ -50,7 +47,6 @@ export default function Grid({ state, setState, gridSize }) {
   };
 
   buildBoard();
-  /* NOTE End game board builder functions */
 
   return (
     <div>

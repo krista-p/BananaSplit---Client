@@ -1,6 +1,5 @@
 import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
-import { TileInterface } from '../../interfaces';
 import { TileType } from '../../types';
 import Tile from './Tile';
 

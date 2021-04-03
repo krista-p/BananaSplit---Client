@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import _ from 'lodash';
@@ -8,7 +9,13 @@ import GameEndPopup from '../../components/gamePage/gameEndPopup/GameEndPopup';
 import RottenBananaPopup from '../../components/gamePage/rottenBananaPopup/RottenBananaPopup';
 import { alertNotification } from '../../components/landingPage/popups/alertpopup/AlertPopup';
 import { socket } from '../../components/landingPage/popups/playpopup/CreateRoom';
-import { numBoards, wordFinder, dictCheckInvalid, dictCheckValid, longestWordCheck } from '../../components/lib/utils/wordChecker';
+import {
+  numBoards,
+  wordFinder,
+  dictCheckInvalid,
+  dictCheckValid,
+  longestWordCheck,
+} from '../../components/lib/utils/wordChecker';
 import dictionary from '../../components/lib/utils/dictionary.json';
 import { GameStateInterface, TileInterface } from '../../interfaces';
 
@@ -33,10 +40,8 @@ const Room = () => {
   const [gameWinner, setGameWinner] = useState('');
   const [rottenBanana, setRottenBanana] = useState('');
   const [state, setState] = useState(initialState);
-  // THIS IS FOR END OF GAME POPUP
   const [endOpen, setEndOpen] = useState<boolean>(false);
   const [rottenOpen, setRottenOpen] = useState<boolean>(false);
-
   const [endGameLongestWord, setEndGameLongestWord] = useState('');
   const [endGameLongestWordUser, setEndGameLongestWordUser] = useState('');
   const [endGameMostWords, setEndGameMostWords] = useState('');
@@ -64,15 +69,13 @@ const Room = () => {
     socket.on('tilesRemaining', (res: number) => {
       setTilesRemaining(res);
     });
-    
+
     socket.on('roomWordCheck', (winnerObject: any) => {
       setState((prev) => {
         const gridWords = wordFinder(prev.matrix);
         const validWords = dictCheckValid(gridWords, dictionary);
-        
         const longestWord = longestWordCheck(validWords);
         const amountOfWords = validWords.length;
-
         socket.emit('roomWordCheckResponse', { id, longestWord, amountOfWords });
         return prev;
       });
@@ -99,7 +102,6 @@ const Room = () => {
     });
 
     socket.on('endGameResponse', (res: string) => {
-      console.log(res)
       setGameWinner(res);
       setEndOpen(true);
     });
@@ -122,6 +124,7 @@ const Room = () => {
       router.push('/');
       socket.emit('leaveGame', id);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error(err);
     }
   };
@@ -133,6 +136,7 @@ const Room = () => {
       socket.emit('hostSearch', id);
       socket.emit('playerReady', id);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error(err);
     }
   };
@@ -142,6 +146,7 @@ const Room = () => {
     try {
       socket.emit('startGame', id);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error(err);
     }
   };
@@ -154,10 +159,13 @@ const Room = () => {
         alertNotification('Tiles must be connected!');
       } else if (state.playerTiles.length !== 0) {
         alertNotification('Tiles in your pile!');
-      } else if (state.playerTiles.length === 0 && numBoards(state.matrix) < 2 && tilesRemaining > 0) {
+      } else if (state.playerTiles.length === 0
+        && numBoards(state.matrix) < 2
+        && tilesRemaining > 0) {
         socket.emit('peelAction', id);
       }
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error(err);
     }
   };
@@ -168,6 +176,7 @@ const Room = () => {
       setState(stateClone);
       socket.emit('dumpAction', { id, tileToDump });
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error(err);
     }
   };
@@ -175,7 +184,6 @@ const Room = () => {
   const handleReset = (e) => {
     e.preventDefault();
     try {
-      console.log(state.matrix);
       const { matrix, playerTiles } = state;
       const matrixClone: any[][] = _.cloneDeep(matrix);
       const playerTilesClone: TileInterface[] = _.cloneDeep(playerTiles);
@@ -189,6 +197,7 @@ const Room = () => {
       }
       setState({ matrix: matrixClone, playerTiles: playerTilesClone });
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error(err);
     }
   };
@@ -218,15 +227,13 @@ const Room = () => {
           socket.emit('rottenBanana', id);
           setState(initialState);
         } else {
-          console.log(validWords, 'valid incoming');
-
           const longestWord = longestWordCheck(validWords);
           const amountOfWords = validWords.length;
-
           socket.emit('endGame', { id, longestWord, amountOfWords });
         }
       }
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error(err);
     }
   };
@@ -236,15 +243,6 @@ const Room = () => {
       return 'bg-primary text-secondary w-auto rounded-full m-2';
     }
     return 'm-2';
-  };
-
-  // TESTING END OF GAME POPUP!!!!!
-  const toggleEndPopup = () => {
-    setEndOpen(!endOpen);
-  };
-
-  const toggleRottenPopup = () => {
-    setRottenOpen(!rottenOpen);
   };
 
   return (
@@ -291,8 +289,7 @@ const Room = () => {
                     <div key={index.toString().concat(message)}>
                       {message}
                     </div>
-                  ))
-                }
+                  ))}
               </div>
             </div>
 
@@ -351,17 +348,26 @@ const Room = () => {
           </div>
 
           <div className="fixed flex flex-col bottom-24 right-4">
-            { state.playerTiles.length < 1 && tilesRemaining > 0 && roomActive &&
-              <button type="submit" className="button-yellow text-5xl" onClick={handlePeel}>peel!</button>
-            }
+            { state.playerTiles.length < 1 && tilesRemaining > 0 && roomActive
+            && <button type="submit" className="button-yellow text-5xl" onClick={handlePeel}>peel!</button> }
 
-            { tilesRemaining < playersInRoom.length && !state.playerTiles.length &&
-              <button type="submit" className="button-yellow text-4xl" onClick={handleBanana}>BANANA!!</button>
-            }
+            { tilesRemaining < playersInRoom.length && !state.playerTiles.length
+            && <button type="submit" className="button-yellow text-4xl" onClick={handleBanana}>BANANA!!</button> }
 
           </div>
 
-          {endOpen ? <GameEndPopup winner={gameWinner} rottenBanana={rottenBanana} endGameLongestWord={endGameLongestWord} endGameLongestWordUser={endGameLongestWordUser} endGameMostWords={endGameMostWords} endGameMostWordUsers={endGameMostWordUsers} /> : null}
+          { endOpen
+            ? (
+              <GameEndPopup
+                winner={gameWinner}
+                rottenBanana={rottenBanana}
+                endGameLongestWord={endGameLongestWord}
+                endGameLongestWordUser={endGameLongestWordUser}
+                endGameMostWords={endGameMostWords}
+                endGameMostWordUsers={endGameMostWordUsers}
+              />
+            )
+            : null}
 
           {rottenOpen ? <RottenBananaPopup rottenBanana={rottenBanana} /> : null}
         </div>

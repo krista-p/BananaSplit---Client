@@ -31,6 +31,7 @@ const Register = ({ closeLogin }) => {
       const { uid } = user;
       createUser(newEmail, userName, uid);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.log({ errorInSignUp: err });
     }
   };

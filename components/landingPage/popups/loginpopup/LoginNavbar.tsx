@@ -1,4 +1,6 @@
-const LoginNavbar = ({ closeLogin, handleLoginTab, handleRegisterTab, loginTab }) => (
+const LoginNavbar = ({
+  closeLogin, handleLoginTab, handleRegisterTab, loginTab,
+}) => (
   <nav className="flex flex-row justify-between w-full">
     <button type="button" onClick={handleLoginTab} className={loginTab ? 'open-tab-left' : 'closed-tab'}>log in</button>
 

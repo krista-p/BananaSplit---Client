@@ -19,6 +19,7 @@ const Login = ({ closeLogin }) => {
     try {
       await auth.signInWithEmailAndPassword(email, password);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.log({ errorInSignIn: err });
     }
   };
