@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="images/bananasplitlogo.png" />
+  <img src="screenshots/bananasplitlogo.png" />
 </p>
 
 # Banana/Split Client
@@ -8,12 +8,47 @@ Banana/Split is a fast paced game where you can battle with others creating word
 
 ## Screenshots
 
+Landing Page
 <p align="center">
-  <img src="" />
+  <img src="screenshots/landingpage.png" />
 </p>
+
+Profile Page
+<p align="center">
+  <img src="screenshots/profilepage.png" />
+</p>
+
+Room Page with Players Ready
+<p align="center">
+  <img src="screenshots/playersready.png" />
+</p>
+
+Invalid Word on Board - Player Presses Banana
+<p align="center">
+  <img src="screenshots/spelledincorrect.png" />
+</p>
+
+Player is Rotten Banana
+<p align="center">
+  <img src="screenshots/loser.png" />
+</p>
+
+Valid Words on Board - Player Presses Banana
+<p align="center">
+  <img src="screenshots/spelledright.png" />
+</p>
+
+Player is Winner
+<p align="center">
+  <img src="screenshots/winner.png" />
+</p>
+
+## Demo Video
+[![](http://img.youtube.com/vi/l9poSQ65Dms/0.jpg)](http://www.youtube.com/watch?v=l9poSQ65Dms "https://youtu.be/l9poSQ65Dms")
 
 ## Recommended
 1. [Server Repo](https://github.com/Villux-NV/BananaSplit---Server) for back end
+**Deployed link found in server repo**
 
 ## Getting started
 
