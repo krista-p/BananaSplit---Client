@@ -87,7 +87,7 @@ Client
 ## Author
 
 * Krista Polikaitis - [Github](https://github.com/krista-p) - [LinkedIn](https://www.linkedin.com/in/krista-polikaitis/)
-* Derek Pizzolatto - [Github](https://github.com/chuck517) - [LinkedIn]()
+* Derek Pizzolatto - [Github](https://github.com/chuck517) - [LinkedIn](www.linkedin.com/in/derek-pizzolatto)
 * Nick Villarreal - [Github](https://github.com/Villux-NV) - [LinkedIn](https://www.linkedin.com/in/nick-villarreal/)
 * Ben Krapivsky - [Github](https://github.com/Benkr)
 
